@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ArcadiaSbApplication {
+public class ArcadiaLoginApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ArcadiaSbApplication.class, args);
+        SpringApplication.run(ArcadiaLoginApplication.class, args);
     }
 
 }

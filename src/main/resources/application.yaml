@@ -1,1 +1,22 @@
-spring.application.name=Arcadia_SB
+spring:
+  application:
+    name: ArcadiaLogin
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+  datasource:
+    url: jdbc:mariadb://localhost:3306/test
+    username: root
+    password: 1234
+    driver-class-name: org.mariadb.jdbc.Driver
+server:
+  port: 8080
+
+jwt:
+  issuer: syj0422@gachon.ac.kr
+  secret_key: arcadia-profit
