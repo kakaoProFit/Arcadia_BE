@@ -2,9 +2,9 @@ spring:
   application:
     name: login_rest_api_security_jwt
   datasource:
-    url: jdbc:mariadb://172.16.212.109:3306/mango
-    username: mango
-    password: mango
+    url: jdbc:mariadb://35.216.99.76:3306/test
+    username: test
+    password: test
   jpa:
     hibernate:
       ddl-auto: update
