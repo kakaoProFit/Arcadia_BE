@@ -1,6 +1,6 @@
 package com.example.oauth2.config;
 
-//import com.example.oauth2.jwt.JwtAuthorizationFilter;
+import com.example.oauth2.jwt.JwtAuthorizationFilter;
 import com.example.oauth2.oauth2.service.CustomOAuth2UserService;
 import com.example.oauth2.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.example.oauth2.oauth2.handler.OAuth2AuthenticationFailureHandler;
@@ -29,7 +29,7 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
-//    private final JwtAuthorizationFilter jwtAuthorizationFilter;
+    private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -56,7 +56,7 @@ public class SecurityConfig {
                                 .failureHandler(oAuth2AuthenticationFailureHandler)
                 );
 
-//        http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

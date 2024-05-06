@@ -1,6 +1,6 @@
 package com.example.oauth2.oauth2.handler;
 
-//import com.example.oauth2.jwt.TokenProvider;
+import com.example.oauth2.jwt.TokenProvider;
 import com.example.oauth2.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.example.oauth2.oauth2.service.OAuth2UserPrincipal;
 import com.example.oauth2.oauth2.user.OAuth2Provider;
@@ -29,7 +29,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final OAuth2UserUnlinkManager oAuth2UserUnlinkManager;
-//    private final TokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -78,11 +78,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     principal.getUserInfo().getAccessToken()
             );
 
-//            String accessToken = tokenProvider.createToken(authentication);
+            String accessToken = tokenProvider.createToken(authentication);
             String refreshToken = "test_refresh_token";
 
             return UriComponentsBuilder.fromUriString(targetUrl)
-//                    .queryParam("access_token", accessToken)
+                    .queryParam("access_token", accessToken)
                     .queryParam("refresh_token", refreshToken)
                     .build().toUriString();
 
