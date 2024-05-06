@@ -1,6 +1,7 @@
 package com.example.oauth2.config;
 
 import com.example.oauth2.jwt.JwtAuthorizationFilter;
+import com.example.oauth2.jwt.TokenProvider;
 import com.example.oauth2.oauth2.service.CustomOAuth2UserService;
 import com.example.oauth2.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.example.oauth2.oauth2.handler.OAuth2AuthenticationFailureHandler;

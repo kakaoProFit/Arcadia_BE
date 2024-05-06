@@ -4,10 +4,13 @@ import com.example.oauth2.oauth2.util.CookieUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.web.AuthorizationRequestRepository;
 import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
+
+import com.example.oauth2.jwt.TokenProvider;
 
 @RequiredArgsConstructor
 @Component
@@ -17,6 +20,9 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
     public static final String REDIRECT_URI_PARAM_COOKIE_NAME = "redirect_uri";
     public static final String MODE_PARAM_COOKIE_NAME = "mode";
     private static final int COOKIE_EXPIRE_SECONDS = 180;
+
+    @Autowired
+    private TokenProvider tokenProvider;
 
     @Override
     public OAuth2AuthorizationRequest loadAuthorizationRequest(HttpServletRequest request) {
@@ -34,6 +40,8 @@ public class HttpCookieOAuth2AuthorizationRequestRepository
             CookieUtils.deleteCookie(request, response, MODE_PARAM_COOKIE_NAME);
             return;
         }
+
+//        String token = tokenProvider.createToken(authorizationRequest);
 
         CookieUtils.addCookie(response,
                 OAUTH2_AUTHORIZATION_REQUEST_COOKIE_NAME,
