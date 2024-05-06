@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: login_rest_api_security_jwt
+  datasource:
+    url: jdbc:mariadb://172.16.212.109:3306/mango
+    username: mango
+    password: mango
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: true
+security:
+  jwt:
+    secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
+    expiration-time: 3600000
+server:
+  port: 8005
