@@ -85,4 +85,11 @@ public class JwtService {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
+
+    @Value("${security.jwt.refresh-token-expiration-time}")
+    private long refreshTokenExpiration;
+
+    public String generateRefreshToken(UserDetails userDetails){
+        return buildToken(new HashMap<>(), userDetails, refreshTokenExpiration);
+    }
 }

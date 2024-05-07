@@ -1,5 +1,8 @@
 package profit.login_rest_api_security_jwt.controller;
 
+import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import profit.login_rest_api_security_jwt.entity.User;
 import profit.login_rest_api_security_jwt.dto.LoginUserDto;
 import profit.login_rest_api_security_jwt.response.LoginResponse;
@@ -12,16 +15,21 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RequestMapping("/auth")
 @RestController
 public class AuthenticationController {
     private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
     private final AuthenticationService authenticationService;
 
-    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService) {
+    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService, UserDetailsService userDetailsService) {
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
+        this.userDetailsService = userDetailsService;
     }
 
     @PostMapping("/signup")
@@ -36,11 +44,32 @@ public class AuthenticationController {
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
+        String refreshToken = jwtService.generateRefreshToken(authenticatedUser);
 
         LoginResponse loginResponse = new LoginResponse();
-        loginResponse.setToken(jwtToken);
+        loginResponse.setAccestoken(jwtToken);
+        loginResponse.setRefreshtoken(refreshToken);
         loginResponse.setExpiresIn(jwtService.getExpirationTime());
 
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<Map<String, String>> refreshAccessToken(@RequestBody Map<String, String> refreshTokenRequest) {
+        String refreshToken = refreshTokenRequest.get("refreshToken");
+
+        // RefreshToken을 사용하여 UserDetails를 가져옵니다.
+        UserDetails userDetails = userDetailsService.loadUserByUsername(jwtService.extractUsername(refreshToken));
+
+        // 새로운 AccessToken과 RefreshToken을 생성합니다.
+        String newAccessToken = jwtService.generateToken(userDetails);
+        String newRefreshToken = jwtService.generateRefreshToken(userDetails);
+
+        // 새로운 AccessToken과 RefreshToken을 클라이언트에게 반환합니다.
+        Map<String, String> response = new HashMap<>();
+        response.put("accessToken", newAccessToken);
+        response.put("refreshToken", newRefreshToken);
+
+        return ResponseEntity.ok(response);
     }
 }
