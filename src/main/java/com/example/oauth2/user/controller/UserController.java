@@ -16,4 +16,5 @@ public class UserController {
     public String getUserInfo(@AuthenticationPrincipal UserDetails userDetails) {
         return userDetails.getUsername();
     }
+
 }

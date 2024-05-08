@@ -15,6 +15,7 @@ spring:
     password: 1111
     driver-class-name: org.mariadb.jdbc.Driver
 
+
   security:
     oauth2:
       client:
@@ -69,3 +70,9 @@ logging:
 
 server:
   port: 8080
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
