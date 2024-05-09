@@ -6,6 +6,7 @@ public class NaverOAuth2UserInfo implements OAuth2UserInfo {
 
     private final Map<String, Object> attributes;
     private final String accessToken;
+    private final String refreshToken;
     private final String id;
     private final String email;
     private final String name;
@@ -14,8 +15,9 @@ public class NaverOAuth2UserInfo implements OAuth2UserInfo {
     private final String nickName;
     private final String profileImageUrl;
 
-    public NaverOAuth2UserInfo(String accessToken, Map<String, Object> attributes) {
+    public NaverOAuth2UserInfo(String accessToken, String refreshToken, Map<String, Object> attributes) {
         this.accessToken = accessToken;
+        this.refreshToken = refreshToken;
         // attributes 맵의 response 키의 값에 실제 attributes 맵이 할당되어 있음
         this.attributes = (Map<String, Object>) attributes.get("response");
         this.id = (String) this.attributes.get("id");
@@ -37,6 +39,9 @@ public class NaverOAuth2UserInfo implements OAuth2UserInfo {
     public String getAccessToken() {
         return accessToken;
     }
+
+    @Override
+    public String getRefreshToken() { return refreshToken; }
 
     @Override
     public Map<String, Object> getAttributes() {

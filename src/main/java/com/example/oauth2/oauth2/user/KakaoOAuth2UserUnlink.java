@@ -15,9 +15,10 @@ public class KakaoOAuth2UserUnlink implements OAuth2UserUnlink {
     private final RestTemplate restTemplate;
 
     @Override
-    public void unlink(String accessToken) {
+    public void unlink(String accessToken, String refreshToken) {
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(accessToken);
+        headers.setBearerAuth(refreshToken);
         HttpEntity<Object> entity = new HttpEntity<>("", headers);
         restTemplate.exchange(URL, HttpMethod.POST, entity, String.class);
     }

@@ -20,7 +20,7 @@ public class NaverOAuth2UserUnlink implements OAuth2UserUnlink {
     private String clientSecret;
 
     @Override
-    public void unlink(String accessToken) {
+    public void unlink(String accessToken, String refreshToken) {
 
         String url = URL +
                 "?service_provider=NAVER" +
