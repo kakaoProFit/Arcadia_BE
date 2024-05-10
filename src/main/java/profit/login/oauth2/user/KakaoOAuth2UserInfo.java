@@ -35,6 +35,7 @@ public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
 
         this.attributes.put("id", id);
         this.attributes.put("email", this.email);
+        this.attributes.put("nickname", this.nickName);
     }
 
     @Override
