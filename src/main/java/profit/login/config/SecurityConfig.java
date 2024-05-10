@@ -1,11 +1,11 @@
 package profit.login.config;
 
-import com.example.oauth2.jwt.JwtAuthorizationFilter;
-import com.example.oauth2.jwt.TokenProvider;
-import com.example.oauth2.oauth2.service.CustomOAuth2UserService;
-import com.example.oauth2.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.example.oauth2.oauth2.handler.OAuth2AuthenticationFailureHandler;
-import com.example.oauth2.oauth2.handler.OAuth2AuthenticationSuccessHandler;
+import profit.login.jwt.JwtAuthorizationFilter;
+import profit.login.jwt.TokenProvider;
+import profit.login.oauth2.service.CustomOAuth2UserService;
+import profit.login.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import profit.login.oauth2.handler.OAuth2AuthenticationFailureHandler;
+import profit.login.oauth2.handler.OAuth2AuthenticationSuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,11 +34,6 @@ public class SecurityConfig {
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http.csrf(AbstractHttpConfigurer::disable)
@@ -46,7 +41,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(antMatcher("/api/**")).permitAll() // 모든 /api/** 경로에 대한 접근을 허용
+                        .requestMatchers(antMatcher("/auth/**")).permitAll() // 모든 /api/** 경로에 대한 접근을 허용
                         .anyRequest().authenticated()) // 다른 모든 요청은 인증되어야 함
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(configure ->

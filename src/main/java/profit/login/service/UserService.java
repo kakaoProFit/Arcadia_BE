@@ -1,8 +1,8 @@
-package profit.login.login_rest_api_security_jwt.service;
+package profit.login.service;
 
 import org.springframework.stereotype.Service;
-import profit.login.login_rest_api_security_jwt.entity.User;
-import profit.login.login_rest_api_security_jwt.repository.UserRepository;
+import profit.login.entity.User;
+import profit.login.repository.UserRepository;
 
 import java.util.ArrayList;
 import java.util.List;

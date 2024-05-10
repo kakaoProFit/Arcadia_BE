@@ -7,12 +7,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import profit.login.login_rest_api_security_jwt.dto.LoginUserDto;
-import profit.login.login_rest_api_security_jwt.dto.RegisterUserDto;
-import profit.login.login_rest_api_security_jwt.entity.User;
-import profit.login.login_rest_api_security_jwt.response.LoginResponse;
-import profit.login.login_rest_api_security_jwt.service.AuthenticationService;
-import profit.login.login_rest_api_security_jwt.service.JwtService;
+import profit.login.dto.LoginUserDto;
+import profit.login.dto.RegisterUserDto;
+import profit.login.entity.User;
+import profit.login.response.LoginResponse;
+import profit.login.service.AuthenticationService;
+import profit.login.service.JwtService;
 
 import java.util.HashMap;
 import java.util.Map;

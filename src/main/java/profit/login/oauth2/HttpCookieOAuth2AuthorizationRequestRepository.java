@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import com.example.oauth2.jwt.TokenProvider;
+import profit.login.jwt.TokenProvider;
 
 @RequiredArgsConstructor
 @Component

@@ -1,6 +1,6 @@
 package profit.login.oauth2.service;
 
-import com.example.oauth2.oauth2.user.OAuth2UserInfo;
+import profit.login.oauth2.user.OAuth2UserInfo;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;

@@ -1,4 +1,4 @@
-package profit.login.login_rest_api_security_jwt.service;
+package profit.login.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

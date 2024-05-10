@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
-import profit.login.login_rest_api_security_jwt.service.JwtService;
+import profit.login.service.JwtService;
 
 import java.io.IOException;
 

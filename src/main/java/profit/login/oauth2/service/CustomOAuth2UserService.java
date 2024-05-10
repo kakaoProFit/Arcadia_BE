@@ -1,9 +1,9 @@
 package profit.login.oauth2.service;
 
 
-import com.example.oauth2.oauth2.exception.OAuth2AuthenticationProcessingException;
-import com.example.oauth2.oauth2.user.OAuth2UserInfo;
-import com.example.oauth2.oauth2.user.OAuth2UserInfoFactory;
+import profit.login.oauth2.exception.OAuth2AuthenticationProcessingException;
+import profit.login.oauth2.user.OAuth2UserInfo;
+import profit.login.oauth2.user.OAuth2UserInfoFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;

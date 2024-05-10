@@ -1,4 +1,4 @@
-package profit.login.login_rest_api_security_jwt.response;
+package profit.login.response;
 
 import lombok.Getter;
 import lombok.Setter;

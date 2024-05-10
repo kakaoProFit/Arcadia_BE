@@ -1,11 +1,11 @@
 package profit.login.oauth2.handler;
 
-import com.example.oauth2.jwt.TokenProvider;
-import com.example.oauth2.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
-import com.example.oauth2.oauth2.service.OAuth2UserPrincipal;
-import com.example.oauth2.oauth2.user.OAuth2Provider;
-import com.example.oauth2.oauth2.user.OAuth2UserUnlinkManager;
-import com.example.oauth2.oauth2.util.CookieUtils;
+import profit.login.jwt.TokenProvider;
+import profit.login.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
+import profit.login.oauth2.service.OAuth2UserPrincipal;
+import profit.login.oauth2.user.OAuth2Provider;
+import profit.login.oauth2.user.OAuth2UserUnlinkManager;
+import profit.login.oauth2.util.CookieUtils;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,8 +19,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.util.Optional;
 
-import static com.example.oauth2.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.MODE_PARAM_COOKIE_NAME;
-import static com.example.oauth2.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
+import static profit.login.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.MODE_PARAM_COOKIE_NAME;
+import static profit.login.oauth2.HttpCookieOAuth2AuthorizationRequestRepository.REDIRECT_URI_PARAM_COOKIE_NAME;
 
 @Slf4j
 @RequiredArgsConstructor

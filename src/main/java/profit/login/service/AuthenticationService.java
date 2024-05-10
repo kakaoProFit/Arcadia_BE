@@ -1,13 +1,13 @@
-package profit.login.login_rest_api_security_jwt.service;
+package profit.login.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import profit.login.login_rest_api_security_jwt.dto.LoginUserDto;
-import profit.login.login_rest_api_security_jwt.dto.RegisterUserDto;
-import profit.login.login_rest_api_security_jwt.entity.User;
-import profit.login.login_rest_api_security_jwt.repository.UserRepository;
+import profit.login.dto.LoginUserDto;
+import profit.login.dto.RegisterUserDto;
+import profit.login.entity.User;
+import profit.login.repository.UserRepository;
 
 @Service
 public class AuthenticationService {

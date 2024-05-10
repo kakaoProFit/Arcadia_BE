@@ -9,7 +9,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import profit.login.login_rest_api_security_jwt.repository.UserRepository;
+import profit.login.repository.UserRepository;
 
 @Configuration
 public class ApplicationConfiguration {
