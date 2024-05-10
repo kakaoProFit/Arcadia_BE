@@ -5,11 +5,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import profit.login_rest_api_security_jwt.repository.UserRepository;
-import profit.login_rest_api_security_jwt.dto.RegisterUserDto;
-import profit.login_rest_api_security_jwt.dto.LoginUserDto;
-import profit.login_rest_api_security_jwt.entity.User;
-import profit.login_rest_api_security_jwt.response.LoginResponse;
 import profit.login.dto.LoginUserDto;
 import profit.login.dto.RegisterUserDto;
 import profit.login.entity.User;
