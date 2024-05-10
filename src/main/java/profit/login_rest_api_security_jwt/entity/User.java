@@ -39,6 +39,8 @@ public class User implements UserDetails {
     @Column(name = "updated_at")
     private Date updatedAt;
 
+
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();
@@ -53,6 +55,9 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
+
+
 
     @Override
     public boolean isAccountNonExpired() {

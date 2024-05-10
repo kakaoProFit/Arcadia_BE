@@ -2,6 +2,8 @@ package profit.login_rest_api_security_jwt.dto;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 
 @Getter
 @Setter
@@ -9,6 +11,8 @@ public class LoginUserDto {
     private String email;
 
     private String password;
+
+    private String refreshToken;
 
     // getters and setters here...
     String setEmail(String email){
@@ -20,4 +24,6 @@ public class LoginUserDto {
         this.password = password;
         return this.password;
     }
+
+
 }

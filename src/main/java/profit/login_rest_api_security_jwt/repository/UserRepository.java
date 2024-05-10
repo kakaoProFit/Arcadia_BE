@@ -9,4 +9,5 @@ import profit.login_rest_api_security_jwt.entity.User;
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
     Optional<User> findByEmail(String email);
+
 }
