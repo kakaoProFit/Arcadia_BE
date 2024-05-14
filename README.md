@@ -1,9 +1,9 @@
-## API DOCUMENTATION
+# API DOCUMENTATION
 
 ### 일반 로그인
 
 
-### 소셜 로그인
+## 소셜 로그인
 Callback URL을 직접 호출함으로써 로그인 기능을 실행
 
 ### NAVER
