@@ -10,10 +10,14 @@ public class NaverOAuth2UserInfo implements OAuth2UserInfo {
     private final String id;
     private final String email;
     private final String name;
-    private final String firstName;
-    private final String lastName;
+
     private final String nickName;
     private final String profileImageUrl;
+
+    private final String phoneNumber;
+    private final String birthday;
+
+    private final String gender;
 
     public NaverOAuth2UserInfo(String accessToken, String refreshToken, Map<String, Object> attributes) {
         this.accessToken = accessToken;
@@ -23,11 +27,13 @@ public class NaverOAuth2UserInfo implements OAuth2UserInfo {
         this.id = (String) this.attributes.get("id");
         this.email = (String) this.attributes.get("email");
         this.name = (String) this.attributes.get("name");
-        this.firstName = null;
-        this.lastName = null;
-        this.nickName = (String) attributes.get("nickname");
+        this.nickName = (String) this.attributes.get("nickname");
         ;
         this.profileImageUrl = (String) attributes.get("profile_image");
+
+        this.phoneNumber = (String) this.attributes.get("mobile");
+        this.birthday = (String) this.attributes.get("birthday");
+        this.gender = (String) this.attributes.get("gender");
     }
 
     @Override
@@ -64,14 +70,10 @@ public class NaverOAuth2UserInfo implements OAuth2UserInfo {
     }
 
     @Override
-    public String getFirstName() {
-        return firstName;
-    }
+    public String getPhoneNumber() { return phoneNumber; }
 
     @Override
-    public String getLastName() {
-        return lastName;
-    }
+    public String getBirthday() { return birthday; }
 
     @Override
     public String getNickname() {
@@ -82,4 +84,7 @@ public class NaverOAuth2UserInfo implements OAuth2UserInfo {
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
+
+    @Override
+    public String getGender() {return gender;}
 }

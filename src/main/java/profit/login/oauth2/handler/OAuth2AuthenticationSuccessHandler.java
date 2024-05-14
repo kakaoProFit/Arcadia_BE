@@ -1,9 +1,14 @@
 package profit.login.oauth2.handler;
 
+import io.lettuce.core.AbstractRedisAsyncCommands;
+import profit.login.dto.RegisterUserDto;
+import profit.login.dto.SocialRegisterUserDto;
+import profit.login.entity.User;
 import profit.login.jwt.TokenProvider;
 import profit.login.oauth2.HttpCookieOAuth2AuthorizationRequestRepository;
 import profit.login.oauth2.service.OAuth2UserPrincipal;
 import profit.login.oauth2.user.OAuth2Provider;
+import profit.login.oauth2.user.OAuth2UserInfo;
 import profit.login.oauth2.user.OAuth2UserUnlinkManager;
 import profit.login.oauth2.util.CookieUtils;
 import jakarta.servlet.http.Cookie;
@@ -15,6 +20,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
+import profit.login.repository.UserRepository;
+import profit.login.dto.SocialRegisterUserDto;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -30,6 +37,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final OAuth2UserUnlinkManager oAuth2UserUnlinkManager;
     private final TokenProvider tokenProvider;
+    private final UserRepository UserRepository;
+    private final UserRepository userRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -71,20 +80,28 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         if ("login".equalsIgnoreCase(mode)) {
             // TODO: DB 저장
             // TODO: 리프레시 토큰 DB 저장
-            log.info("email={}, name={}, nickname={}, accessToken={}, refreshToken={}", principal.getUserInfo().getEmail(),
+
+            log.info("email={}, name={}, nickname={}, phoneNumber={}, birthday={}, gender={}, accessToken={}, refreshToken={}", principal.getUserInfo().getEmail(),
                     principal.getUserInfo().getName(),
                     principal.getUserInfo().getNickname(),
+                    principal.getUserInfo().getPhoneNumber(),
+                    principal.getUserInfo().getBirthday(),
+                    principal.getUserInfo().getGender(),
                     principal.getUserInfo().getAccessToken(),
                     principal.getUserInfo().getRefreshToken()
             );
 
+
             String accessToken = tokenProvider.createToken(authentication);
             String refreshToken = tokenProvider.createRefreshToken(authentication);
+
 
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .queryParam("access_token", accessToken)
                     .queryParam("refresh_token", refreshToken)
                     .build().toUriString();
+
+
 
         } else if ("unlink".equalsIgnoreCase(mode)) {
 
@@ -103,6 +120,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 .queryParam("error", "Login failed")
                 .build().toUriString();
     }
+
 
     private OAuth2UserPrincipal getOAuth2UserPrincipal(Authentication authentication) {
         Object principal = authentication.getPrincipal();
