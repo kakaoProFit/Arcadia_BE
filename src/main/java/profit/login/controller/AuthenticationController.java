@@ -1,8 +1,12 @@
 package profit.login.controller;
 
+import jakarta.mail.MessagingException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.http.ResponseEntity;
@@ -11,14 +15,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import profit.login.dto.EmailCheckReq;
 import profit.login.dto.LoginUserDto;
 import profit.login.dto.RegisterUserDto;
 import profit.login.entity.User;
 import profit.login.response.LoginResponse;
 import profit.login.service.AuthenticationService;
+import profit.login.service.EmailService;
 import profit.login.service.JwtService;
 import profit.login.service.TokenRedisService;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,6 +33,7 @@ import java.util.Map;
 
 @RequestMapping("/auth")
 @RestController
+@Slf4j
 public class AuthenticationController {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
@@ -33,11 +41,14 @@ public class AuthenticationController {
 
     private final AuthenticationService authenticationService;
 
-    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService, UserDetailsService userDetailsService, TokenRedisService tokenRedisService) {
+    private final EmailService emailService;
+
+    public AuthenticationController(JwtService jwtService, AuthenticationService authenticationService, UserDetailsService userDetailsService, TokenRedisService tokenRedisService, EmailService emailService) {
         this.jwtService = jwtService;
         this.authenticationService = authenticationService;
         this.userDetailsService = userDetailsService;
         this.tokenRedisService = tokenRedisService;
+        this.emailService = emailService;
     }
 
     @PostMapping("/signup")
@@ -96,6 +107,42 @@ public class AuthenticationController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    //인증메일 발송
+    @PostMapping("/sign-up/emailCheck")
+    public ResponseEntity<Map<String, String>> emailCheck(@RequestBody EmailCheckReq emailCheckReq) throws MessagingException, UnsupportedEncodingException {
+        log.info(emailCheckReq.getEmail());
+        String authCode = emailService.sendEmail(emailCheckReq.getEmail());
+        String email = emailCheckReq.getEmail();
+        log.info("getEmail: " + email);
+        log.info("authCode: " + authCode);
+        // refresh token과 access token을 Redis에 저장
+        tokenRedisService.saveCode(email, authCode);
+
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("authCode", authCode);
+
+        return ResponseEntity.ok(responseBody);
+    }
+
+    @PostMapping("/sign-up/verify")
+    public ResponseEntity<Map<String, String>> emailVerify(@RequestBody EmailCheckReq emailCheckReq) throws MessagingException, UnsupportedEncodingException{
+        String emailCode  = tokenRedisService.getCode(emailCheckReq.getEmail());
+
+        if(emailCode.equals(emailCheckReq.getEmailcode())){
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("emailCode: ", emailCode);
+            log.info("인증되었습니다");
+            return ResponseEntity.ok(responseBody);
+        }
+        else {
+            log.info("이메일이 일치하지 않습니다.");
+            return ResponseEntity.notFound().build();
+
+        }
+    }
+
+
 
 
 

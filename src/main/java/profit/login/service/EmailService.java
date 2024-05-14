@@ -1,97 +1,84 @@
 package profit.login.service;
 
-import profit.login.EmailRedis.EmailRedisUtil;
-import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.templatemode.TemplateMode;
-import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmailService {
+    private final JavaMailSender emailSender;
+    private String authNum; // 인증 번호
 
-    private final JavaMailSender javaMailSender;
-    private final EmailRedisUtil emailRedisUtil;
-    private static final String senderEmail = "gwanilgim632@gmail.com";
-
-    private String createCode() {
-        int leftLimit = 48; // number '0'
-        int rightLimit = 122; // alphabet 'z'
-        int targetStringLength = 6;
+    // 인증번호 8자리 무작위 생성
+    public void createCode() {
         Random random = new Random();
+        StringBuffer key = new StringBuffer();
 
-        return random.ints(leftLimit, rightLimit + 1)
-                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 | i >= 97))
-                .limit(targetStringLength)
-                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                .toString();
+        for(int i=0; i<8; i++) {
+            int idx = random.nextInt(3);
+
+            switch (idx) {
+                case 0 :
+                    key.append((char) ((int)random.nextInt(26) + 97));
+                    break;
+                case 1:
+                    key.append((char) ((int)random.nextInt(26) + 65));
+                    break;
+                case 2:
+                    key.append(random.nextInt(9));
+                    break;
+            }
+        }
+        authNum = key.toString();
     }
 
-    // 이메일 내용 초기화
-    private String setContext(String code) {
-        Context context = new Context();
-        TemplateEngine templateEngine = new TemplateEngine();
-        ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+    // 메일 양식 작성
+    public MimeMessage createEmailForm(String email) throws MessagingException, UnsupportedEncodingException {
+        createCode();
+        String setFrom = "testtest12@gmail.com";
+        String toEmail = email;
+        String title = "데옹 인증번호 테스트";
 
-        context.setVariable("code", code);
+        MimeMessage message = emailSender.createMimeMessage();
+        message.addRecipients(MimeMessage.RecipientType.TO, toEmail);
+        message.setSubject(title);
 
-        templateResolver.setPrefix("templates/");
-        templateResolver.setSuffix(".html");
-        templateResolver.setTemplateMode(TemplateMode.HTML);
-        templateResolver.setCacheable(false);
+        // 메일 내용
+        String msgOfEmail="";
+        msgOfEmail += "<div style='margin:20px;'>";
+        msgOfEmail += "<h1> 안녕하세요 test 입니다. </h1>";
+        msgOfEmail += "<br>";
+        msgOfEmail += "<p>아래 코드를 입력해주세요<p>";
+        msgOfEmail += "<br>";
+        msgOfEmail += "<p>감사합니다.<p>";
+        msgOfEmail += "<br>";
+        msgOfEmail += "<div align='center' style='border:1px solid black; font-family:verdana';>";
+        msgOfEmail += "<h3 style='color:blue;'>회원가입 인증 코드입니다.</h3>";
+        msgOfEmail += "<div style='font-size:130%'>";
+        msgOfEmail += "CODE : <strong>";
+        msgOfEmail += authNum + "</strong><div><br/> ";
+        msgOfEmail += "</div>";
 
-        templateEngine.setTemplateResolver(templateResolver);
-
-        return templateEngine.process("mail", context);
-    }
-
-    // 이메일 폼 생성
-    private MimeMessage createEmailForm(String email) throws MessagingException {
-        String authCode = createCode();
-
-        MimeMessage message = javaMailSender.createMimeMessage();
-        message.addRecipients(MimeMessage.RecipientType.TO, email);
-        message.setSubject("안녕하세요. 인증번호입니다.");
-        message.setFrom(senderEmail);
-        message.setText(setContext(authCode), "utf-8", "html");
-
-        // Redis 에 해당 인증코드 인증 시간 설정
-        emailRedisUtil.setDataExpire(email, authCode, 60 * 30L);
+        message.setFrom(setFrom);
+        message.setText(msgOfEmail, "utf-8", "html");
 
         return message;
     }
 
-    // 인증코드 이메일 발송
-    public void sendEmail(String toEmail) throws MessagingException {
-        if (toEmail == null) {
-            // toEmail이 null인 경우에 대한 처리를 수행합니다.
-            return;
-        }
-//        if (emailRedisUtil.existData(toEmail)) {
-//            emailRedisUtil.deleteData(toEmail);
-//        }
-        // 이메일 폼 생성
-        MimeMessage emailForm = createEmailForm(toEmail);
-        // 이메일 발송
-        javaMailSender.send(emailForm);
-    }
+    //실제 메일 전송
+    public String sendEmail(String email) throws MessagingException, UnsupportedEncodingException {
 
-    // 코드 검증
-    public Boolean verifyEmailCode(String email, String code) {
-        String codeFoundByEmail = emailRedisUtil.getData(email);
-        log.info("code found by email: " + codeFoundByEmail);
-        if (codeFoundByEmail == null) {
-            return false;
-        }
-        return codeFoundByEmail.equals(code);
+        //메일전송에 필요한 정보 설정
+        MimeMessage emailForm = createEmailForm(email);
+        //실제 메일 전송
+        emailSender.send(emailForm);
+
+        return authNum; //인증 코드 반환
     }
 }

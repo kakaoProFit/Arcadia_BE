@@ -45,10 +45,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
+    implementation group: 'org.glassfish.jaxb', name: 'jaxb-runtime', version: '2.3.2'
+
 
 
     //Email
-    implementation 'com.sun.mail:jakarta.mail:1.6.7'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     //thymeleaf
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
