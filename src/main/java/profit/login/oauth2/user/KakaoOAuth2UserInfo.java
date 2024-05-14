@@ -10,10 +10,11 @@ public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
     private final String id;
     private final String email;
     private final String name;
-    private final String firstName;
-    private final String lastName;
     private final String nickName;
     private final String profileImageUrl;
+    private final String phoneNumber;
+    private final String birthday;
+    private final String gender;
 
     public KakaoOAuth2UserInfo(String accessToken, String refreshToken, Map<String, Object> attributes) {
         this.accessToken = accessToken;
@@ -25,17 +26,20 @@ public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
 
         this.id = ((Long) attributes.get("id")).toString();
         this.email = (String) kakaoAccount.get("email");
+        this.phoneNumber = (String) kakaoAccount.get("phone_number");
+        this.birthday = (String) kakaoAccount.get("birthday");
 
-        this.name = null;
-        this.firstName = null;
-        this.lastName = null;
+        this.name = (String) kakaoAccount.get("name");
         this.nickName = (String) kakaoAccount.get("profile_nickname");
-        ;
         this.profileImageUrl = (String) attributes.get("profile_image_url");
+        this.gender = (String) kakaoAccount.get("gender");
 
         this.attributes.put("id", id);
         this.attributes.put("email", this.email);
         this.attributes.put("nickname", this.nickName);
+        this.attributes.put("phone_number", this.phoneNumber);
+        this.attributes.put("birthday",this.birthday);
+        this.attributes.put("gender",this.gender);
     }
 
     @Override
@@ -74,22 +78,21 @@ public class KakaoOAuth2UserInfo implements OAuth2UserInfo {
     }
 
     @Override
-    public String getFirstName() {
-        return firstName;
-    }
-
-    @Override
-    public String getLastName() {
-        return lastName;
-    }
-
-    @Override
     public String getNickname() {
         return nickName;
     }
 
     @Override
+    public String getPhoneNumber() { return phoneNumber; }
+
+    @Override
+    public String getBirthday() { return birthday; }
+
+    @Override
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
+
+    @Override
+    public String getGender() {return gender;}
 }
