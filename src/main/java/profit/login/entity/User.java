@@ -7,6 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import profit.question_board.service.Board;
 
 import java.util.Collection;
 import java.util.Date;
@@ -20,7 +21,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
-    private Integer id;
+    private String id;
 
     @Column(nullable = false)
     private String fullName;
@@ -31,6 +32,18 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;      // 권한
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Board> boards;     // 작성글
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Like> likes;       // 유저가 누른 좋아요
+
+    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    private List<Comment> comments; // 댓글
+
     @CreationTimestamp
     @Column(updatable = false, name = "created_at")
     private Date createdAt;
@@ -38,6 +51,31 @@ public class User implements UserDetails {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
+
+    private Integer receivedLikeCnt; // 유저가 받은 좋아요 개수(본인제외)
+    public void likeChange(Integer receivedLikeCnt) {
+        this.receivedLikeCnt = receivedLikeCnt;
+
+        //우리는 아래형식을 좋아요수 대신 포인트로 대체예정
+        if (this.receivedLikeCnt >= 10 && this.userRole.equals(UserRole.SILVER)) {
+            this.userRole = UserRole.GOLD;
+        }
+    }
+
+
+    private String nickname;    // 닉네임
+    public void edit(String newPassword, String newNickname) {
+        this.password = newPassword;
+        this.nickname = newNickname;
+    }
+
+    public void changeRole() {
+        if (userRole.equals(UserRole.BRONZE)) userRole = UserRole.SILVER;
+        else if (userRole.equals(UserRole.SILVER)) userRole = UserRole.GOLD;
+        else if (userRole.equals(UserRole.GOLD)) userRole = UserRole.BLACKLIST;
+        else if (userRole.equals(UserRole.BLACKLIST)) userRole = UserRole.BRONZE;
+    }
 
 
 
@@ -78,6 +116,8 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+
 
     // Getters and setters
 }
