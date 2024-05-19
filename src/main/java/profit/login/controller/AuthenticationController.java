@@ -76,6 +76,16 @@ public class AuthenticationController {
         return ResponseEntity.ok(loginResponse);
     }
 
+    @DeleteMapping("/logout/{id}")
+    public ResponseEntity<Map<String, String>> logout(@PathVariable String id) {
+        tokenRedisService.deleteRefreshToken(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Logout successful");
+        return ResponseEntity.ok(response);
+    }
+
+
+
     @PostMapping("/refresh/{id}")
     public ResponseEntity<Map<String, String>> refreshAccessToken(@RequestBody Map<String, String> refreshTokenRequest, @PathVariable Integer id) {
         String refreshToken = refreshTokenRequest.get("refreshToken");
