@@ -1,16 +1,13 @@
-package profit.question_board.service;
+package profit.question_board.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import profit.login.dto.LoginUserDto;
 import profit.login.entity.User;
-import profit.question_board.Entity.BaseEntity;
 import profit.login.entity.Like;
 import profit.login.entity.Comment;
-import profit.question_board.Entity.UploadImage;
 import profit.question_board.dto.BoardDto;
 
 import java.util.List;

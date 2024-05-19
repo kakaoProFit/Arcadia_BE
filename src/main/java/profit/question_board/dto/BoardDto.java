@@ -1,6 +1,6 @@
 package profit.question_board.dto;
 
-import profit.question_board.service.Board;
+import profit.question_board.Entity.Board;
 import profit.question_board.Entity.UploadImage;
 
 

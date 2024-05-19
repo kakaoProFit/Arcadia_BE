@@ -1,4 +1,4 @@
-package profit.question_board.service;
+package profit.question_board.Entity;
 
 public enum BoardCategory {
     FREE, GREETING, GOLD;

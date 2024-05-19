@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import profit.question_board.service.Board;
 
 @Entity
 @AllArgsConstructor
