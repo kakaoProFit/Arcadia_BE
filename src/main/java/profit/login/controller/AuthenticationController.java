@@ -144,7 +144,7 @@ public class AuthenticationController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<Map<String, String>> deleteUser(@RequestBody RegisterUserDto registerUserDto) {
-        String email = registerU    serDto.getEmail();
+        String email = registerUserDto.getEmail();
         log.info("Email: " + email);
         String password = registerUserDto.getPassword();
         log.info("password: " + password);
