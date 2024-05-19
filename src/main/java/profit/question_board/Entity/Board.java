@@ -1,10 +1,8 @@
 package profit.question_board.Entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.mongodb.core.mapping.Document;
 import profit.login.entity.User;
 import profit.login.entity.Like;
 import profit.login.entity.Comment;
@@ -17,6 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Getter
+@Setter
+@Document(collection = "board")
 public class Board extends BaseEntity {
 
     @Id

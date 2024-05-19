@@ -3,9 +3,8 @@ spring:
     name:
       board
 
+
+
   data:
     mongodb:
       uri: mongodb+srv://cluster0.hcj9xiu.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0
-
-server:
-  port: 8080

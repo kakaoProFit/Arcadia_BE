@@ -1,6 +1,7 @@
 spring:
   application:
     name: ArcadiaLogin
+
   jpa:
     show-sql: true
     properties:
@@ -69,6 +70,8 @@ security:
 logging:
   level:
     profit.login.jwt: DEBUG
+
+
 
 server:
   port: 8080

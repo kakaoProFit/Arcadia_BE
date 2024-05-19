@@ -41,7 +41,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers(antMatcher("/auth/**")).permitAll() // 모든 /api/** 경로에 대한 접근을 허용
+                        .requestMatchers("/auth/**","/mongo/**").permitAll() // 모든 /api/** 경로에 대한 접근을 허용
                         .anyRequest().authenticated()) // 다른 모든 요청은 인증되어야 함
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(configure ->
