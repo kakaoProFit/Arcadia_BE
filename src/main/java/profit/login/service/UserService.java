@@ -1,18 +1,27 @@
 package profit.login.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import profit.login.entity.User;
 import profit.login.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> allUsers() {
@@ -29,4 +38,21 @@ public class UserService {
 
         return users;
     }
+
+
+
+
+
+
+    @Transactional
+    public void changeRole(String id) {
+        User user = userRepository.findById(id).get();
+        // admin 페이지 만들거면 Role을 일반과 전문가로 이분화 하여서 진행해야함
+        //일단 예시로 만들어놓음.
+        user.changeRole();
+    }
+
+
+
+
 }

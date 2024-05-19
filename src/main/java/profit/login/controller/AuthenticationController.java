@@ -142,6 +142,18 @@ public class AuthenticationController {
         }
     }
 
+    @DeleteMapping("/delete")
+    public ResponseEntity<Map<String, String>> deleteUser(@RequestBody RegisterUserDto registerUserDto) {
+        String email = registerU    serDto.getEmail();
+        log.info("Email: " + email);
+        String password = registerUserDto.getPassword();
+        log.info("password: " + password);
+        authenticationService.deleteUser(email, password);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User deleted successfully");
+        return ResponseEntity.ok(response);
+    }
+
 
 
 

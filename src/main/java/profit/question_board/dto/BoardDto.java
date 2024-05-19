@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 public class BoardDto {
 
-    private Long id;
+    private String id;
     private String userLoginId;
     private String userNickname;
     private String title;

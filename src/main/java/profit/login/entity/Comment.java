@@ -24,8 +24,8 @@ public class Comment extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;      // 작성자
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Board board;    // 댓글이 달린 게시판
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    private Board board;    // 댓글이 달린 게시판
 
     public void update(String newBody) {
         this.body = newBody;

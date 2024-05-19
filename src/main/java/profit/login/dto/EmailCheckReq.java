@@ -12,5 +12,6 @@ import lombok.Setter;
 public class EmailCheckReq {
     private String email;
 
+    //이메일로 발송된 코드
     private  String emailcode;
 }
