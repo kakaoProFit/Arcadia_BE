@@ -1,11 +1,10 @@
-package profit.question_board.Entity;
+package profit.login.question_board.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import profit.question_board.service.Board;
 
 @Entity
 @AllArgsConstructor
@@ -15,7 +14,7 @@ import profit.question_board.service.Board;
 public class UploadImage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String originalFilename;    // 원본 파일명

@@ -1,7 +1,7 @@
-package profit.question_board.dto;
+package profit.login.question_board.dto;
 
-import profit.question_board.service.Board;
-import profit.question_board.Entity.UploadImage;
+import profit.login.question_board.Entity.Board;
+import profit.login.question_board.Entity.UploadImage;
 
 
 import lombok.Builder;
@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 public class BoardDto {
 
-    private String id;
+    private Long id;
     private String userLoginId;
     private String userNickname;
     private String title;
@@ -28,7 +28,7 @@ public class BoardDto {
     public static BoardDto of(Board board) {
         return BoardDto.builder()
                 .id(board.getId())
-                .userLoginId(board.getUser().getId())
+                .userLoginId(board.getUser().getEmail())
                 .userNickname(board.getUser().getNickname())
                 .title(board.getTitle())
                 .body(board.getBody())

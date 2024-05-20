@@ -1,17 +1,14 @@
-package profit.question_board.service;
+package profit.login.question_board.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import profit.login.dto.LoginUserDto;
 import profit.login.entity.User;
-import profit.question_board.Entity.BaseEntity;
+import profit.login.question_board.dto.BoardDto;
 import profit.login.entity.Like;
 import profit.login.entity.Comment;
-import profit.question_board.Entity.UploadImage;
-import profit.question_board.dto.BoardDto;
 
 import java.util.List;
 
@@ -23,8 +20,8 @@ import java.util.List;
 public class Board extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private String title;   // 제목
     private String body;    // 본문
