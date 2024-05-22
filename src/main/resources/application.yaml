@@ -3,7 +3,10 @@ spring:
     default: dev # 기본 환경을 dev로
 
   application:
-    name: ArcadiaLogin
+    name: Arcadia
+
+  main:
+    allow-bean-definition-overriding: true #MONGODB 오류로 임시 추가
 
   jpa:
     show-sql: true
@@ -72,7 +75,13 @@ spring:
       port: 6379
       password: 1234
     mongodb:
-      uri: mongodb+srv://cluster0.hcj9xiu.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0
+#      host: localhost
+#      port: 27017
+#      authentication-database: admin
+#      database: test
+#      username: test
+#      password: 1111
+      uri: mongodb+srv://test:1111@cluster0.hcj9xiu.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0
 
 security:
   jwt:
@@ -86,7 +95,7 @@ logging:
     profit.login.jwt: DEBUG
 
 server:
-  port: 8005
+  port: 8080
 
 management:
   endpoints:
