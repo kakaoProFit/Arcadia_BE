@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: ArcadiaLogin
+
+  spring:
+    config:
+      activate:
+        on-profile: dev
