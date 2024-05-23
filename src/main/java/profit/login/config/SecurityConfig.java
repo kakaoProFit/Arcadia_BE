@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/auth/**").permitAll() // /auth/** 경로에 대해 모든 요청을 허용
                         .requestMatchers("/mongo/**").permitAll() // /mongo/** 경로에 대해 모든 요청을 허용
+                        .requestMatchers("/boards/**").permitAll()
                         .anyRequest().authenticated()) // 다른 모든 요청은 인증되어야 함
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .oauth2Login(configure ->

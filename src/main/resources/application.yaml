@@ -5,6 +5,16 @@ spring:
   application:
     name: Arcadia
 
+  cloud:
+    aws:
+      region:
+        static: us-east-1
+      credentials:
+        access-key: AKIAYULU4KVEB2PRPDJR
+        secret-key: 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
+      s3:
+        bucket: arcadia-image
+
   main:
     allow-bean-definition-overriding: true #MONGODB 오류로 임시 추가
 
@@ -38,8 +48,8 @@ spring:
               - profile_image
             client-name: Naver
           kakao:
-            client-id: fbe01848499bbc280e8f47c457cf03a3
-            client-secret: oZT4PQHd5HKHVVAwNm9pTe7G7w4pZjgH
+            client-id: 0c1ede23c3f7062dad95583783c87699
+            client-secret: JfyJ3ZXursQ1SnQv8jUB4IWbyg7zNg2J
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             scope:
