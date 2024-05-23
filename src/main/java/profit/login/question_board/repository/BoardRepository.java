@@ -2,11 +2,13 @@ package profit.login.question_board.repository;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import profit.login.entity.UserRole;
 import profit.login.question_board.Entity.Board;
 import profit.login.question_board.Entity.BoardCategory;
+import profit.login.question_board.dto.BoardDto;
 
 import java.util.List;
 
@@ -27,4 +29,10 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     List<Board> findAllByCategoryAndUserUserRole(BoardCategory category, UserRole userRole);
     Long countAllByUserUserRole(UserRole userRole);
     Long countAllByCategoryAndUserUserRoleNot(BoardCategory category, UserRole userRole);
+
+
+
+    Page<BoardDto> findAllByCategory(BoardCategory category, Pageable pageable);
+
+
 }
