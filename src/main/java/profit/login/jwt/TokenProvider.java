@@ -31,7 +31,7 @@ package profit.login.jwt;
                 @PostConstruct
                 public void init() {
                     // 안전한 크기의 키 생성
-                    this.key = Keys.secretKeyFor(SignatureAlgorithm.HS512);
+                    this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
                 }
 
                 public boolean validateToken(String token) {
@@ -64,7 +64,7 @@ package profit.login.jwt;
                             .setSubject(authentication.getName())
                             .setIssuedAt(date)
                             .setExpiration(expiryDate)
-                            .signWith(key, SignatureAlgorithm.HS512)
+                            .signWith(key, SignatureAlgorithm.HS256)
                             .compact();
                     log.info("JWT token created: {}", token);
                     return token;
@@ -78,7 +78,7 @@ package profit.login.jwt;
                             .setSubject(authentication.getName())
                             .setIssuedAt(date)
                             .setExpiration(expiryDate)
-                            .signWith(key, SignatureAlgorithm.HS512)
+                            .signWith(key, SignatureAlgorithm.HS256)
                             .compact();
                     log.info("Refresh token created: {}", refreshToken);
                     return refreshToken;
