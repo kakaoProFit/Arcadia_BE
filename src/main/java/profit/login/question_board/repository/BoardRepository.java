@@ -30,6 +30,8 @@ public interface BoardRepository extends JpaRepository<Board, Long> {
     Long countAllByUserUserRole(UserRole userRole);
     Long countAllByCategoryAndUserUserRoleNot(BoardCategory category, UserRole userRole);
 
+    Page<Board> findAllByCategoryAndTitle(BoardCategory category, String title, PageRequest pageRequest);
+
 
 
     Page<BoardDto> findAllByCategory(BoardCategory category, Pageable pageable);

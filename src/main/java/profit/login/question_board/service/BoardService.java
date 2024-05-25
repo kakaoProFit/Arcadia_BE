@@ -37,16 +37,17 @@ public class BoardService {
     private final CommentRepository commentRepository;
     private final UploadImageService uploadImageService;
 
-    public Page<Board> getBoardList(BoardCategory category, PageRequest pageRequest, String searchType, String keyword) {
-        if (searchType != null && keyword != null) {
-            if (searchType.equals("title")) {
-                return boardRepository.findAllByCategoryAndTitleContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
-            } else {
-                return boardRepository.findAllByCategoryAndUserNicknameContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
+        public Page<Board> getBoardList(BoardCategory category, PageRequest pageRequest, String searchType, String keyword) {
+            if (searchType != null && keyword != null) {
+                if (searchType.equals("title")) {
+                    return boardRepository.findAllByCategoryAndTitleContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
+                }
+                else {
+                    return boardRepository.findAllByCategoryAndUserNicknameContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
+                }
             }
+            return boardRepository.findAllByCategoryAndUserUserRoleNot(category, UserRole.ADMIN, pageRequest);
         }
-        return boardRepository.findAllByCategoryAndUserUserRoleNot(category, UserRole.ADMIN, pageRequest);
-    }
 
     public List<Board> getNotice(BoardCategory category) {
         return boardRepository.findAllByCategoryAndUserUserRole(category, UserRole.ADMIN);
