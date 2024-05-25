@@ -92,7 +92,7 @@ public class BoardController {
 
 
     @PostMapping("/{category}")
-    public ResponseEntity<BoardWriteResponse> boardWrite(@PathVariable String category, @ModelAttribute BoardCreateRequest req,
+    public ResponseEntity<BoardWriteResponse> boardWrite(@PathVariable String category, @RequestBody BoardCreateRequest req,
                                                          Authentication authentication) throws IOException {
 
         BoardCategory boardCategory = BoardCategory.of(category);
