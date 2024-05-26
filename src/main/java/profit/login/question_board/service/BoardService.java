@@ -37,16 +37,17 @@ public class BoardService {
     private final CommentRepository commentRepository;
     private final UploadImageService uploadImageService;
 
-    public Page<Board> getBoardList(BoardCategory category, PageRequest pageRequest, String searchType, String keyword) {
-        if (searchType != null && keyword != null) {
-            if (searchType.equals("title")) {
-                return boardRepository.findAllByCategoryAndTitleContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
-            } else {
-                return boardRepository.findAllByCategoryAndUserNicknameContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
+        public Page<Board> getBoardList(BoardCategory category, PageRequest pageRequest, String searchType, String keyword) {
+            if (searchType != null && keyword != null) {
+                if (searchType.equals("title")) {
+                    return boardRepository.findAllByCategoryAndTitleContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
+                }
+                else {
+                    return boardRepository.findAllByCategoryAndUserNicknameContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
+                }
             }
+            return boardRepository.findAllByCategoryAndUserUserRoleNot(category, UserRole.ADMIN, pageRequest);
         }
-        return boardRepository.findAllByCategoryAndUserUserRoleNot(category, UserRole.ADMIN, pageRequest);
-    }
 
     public List<Board> getNotice(BoardCategory category) {
         return boardRepository.findAllByCategoryAndUserUserRole(category, UserRole.ADMIN);
@@ -64,16 +65,16 @@ public class BoardService {
     }
 
     @Transactional
-    public Long writeBoard(BoardCreateRequest req, BoardCategory category, String email, Authentication auth) throws IOException {
+    public Long writeBoard(BoardCreateRequest req, BoardCategory category, String email, Authentication authentication) throws IOException {
 
         User loginUser = userRepository.findByEmail(email).get();
 
         Board savedBoard = boardRepository.save(req.toEntity(category, loginUser));
 
-        UploadImage uploadImage = uploadImageService.saveImage(req.getUploadImage(), savedBoard);
-        if (uploadImage != null) {
-            savedBoard.setUploadImage(uploadImage);
-        }
+//        UploadImage uploadImage = uploadImageService.saveImage(req.getUploadImage(), savedBoard);
+//        if (uploadImage != null) {
+//            savedBoard.setUploadImage(uploadImage);
+//        }
 //         아래 부분에 글작성시 추가 포인트 지급하는 코드 구현 필요
         return savedBoard.getId();
     }
