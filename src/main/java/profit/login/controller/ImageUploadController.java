@@ -59,7 +59,7 @@ public class ImageUploadController {
 
             byte[] content = outputStream.toByteArray();
             HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.IMAGE_JPEG);  // Set appropriate content type based on your file type
+            headers.setContentType(MediaType.IMAGE_JPEG);
             headers.setContentLength(content.length);
 
             return new ResponseEntity<>(content, headers, HttpStatus.OK);

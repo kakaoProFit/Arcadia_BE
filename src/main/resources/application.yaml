@@ -96,6 +96,7 @@ spring:
 security:
   jwt:
     secret-key: 3cfa76ef14937c1c0ea519f8fc057a80fcd04a7420f8e8bcd0a7567c272e007b
+    secret-key-encoding-base64 : M2NmYTc2ZWYxNDkzN2MxYzBlYTUxOWY4ZmMwNTdhODBmY2QwNGE3NDIwZjhlOGJjZDBhNzU2N2MyNzJlMDA3Yg==
     expiration-time: 3600000
     refresh-token-expiration-time: 604800000
     refresh-expiration-time: 60480000
