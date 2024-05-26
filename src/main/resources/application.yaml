@@ -91,6 +91,7 @@ spring:
 #      database: test
 #      username: test
 #      password: 1111
+      database : test
       uri: mongodb+srv://test:1111@cluster0.hcj9xiu.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0
 
 security:
