@@ -1,4 +1,4 @@
-package profit.question_board.Entity;
+package profit.login.question_board.Entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

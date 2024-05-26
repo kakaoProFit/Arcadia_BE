@@ -76,6 +76,16 @@ public class AuthenticationController {
         return ResponseEntity.ok(loginResponse);
     }
 
+    @DeleteMapping("/logout/{id}")
+    public ResponseEntity<Map<String, String>> logout(@PathVariable String id) {
+        tokenRedisService.deleteRefreshToken(id);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Logout successful");
+        return ResponseEntity.ok(response);
+    }
+
+
+
     @PostMapping("/refresh/{id}")
     public ResponseEntity<Map<String, String>> refreshAccessToken(@RequestBody Map<String, String> refreshTokenRequest, @PathVariable Integer id) {
         String refreshToken = refreshTokenRequest.get("refreshToken");
@@ -140,6 +150,18 @@ public class AuthenticationController {
             return ResponseEntity.notFound().build();
 
         }
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<Map<String, String>> deleteUser(@RequestBody RegisterUserDto registerUserDto) {
+        String email = registerUserDto.getEmail();
+        log.info("Email: " + email);
+        String password = registerUserDto.getPassword();
+        log.info("password: " + password);
+        authenticationService.deleteUser(email, password);
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "User deleted successfully");
+        return ResponseEntity.ok(response);
     }
 
 

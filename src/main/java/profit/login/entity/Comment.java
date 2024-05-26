@@ -5,8 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import profit.question_board.Entity.BaseEntity;
-import profit.question_board.service.Board;
+import profit.login.question_board.Entity.BaseEntity;
+import profit.login.question_board.Entity.Board;
 
 @Entity
 @AllArgsConstructor
@@ -16,7 +16,7 @@ import profit.question_board.service.Board;
 public class Comment extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String body;

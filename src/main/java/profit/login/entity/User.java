@@ -7,7 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import profit.question_board.service.Board;
+import profit.login.question_board.Entity.Board;
 
 import java.util.Collection;
 import java.util.Date;
@@ -21,7 +21,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
-    private String id;
+    private Long id;
 
     @Column(nullable = false)
     private String fullName;
@@ -70,6 +70,8 @@ public class User implements UserDetails {
         this.nickname = newNickname;
     }
 
+    // admin 페이지 만들거면 아래 등급을 일반과 전문가로 이분화 하여서 진행해야함
+    //일단 예시로 만들어놓음.
     public void changeRole() {
         if (userRole.equals(UserRole.BRONZE)) userRole = UserRole.SILVER;
         else if (userRole.equals(UserRole.SILVER)) userRole = UserRole.GOLD;
@@ -84,6 +86,8 @@ public class User implements UserDetails {
         return List.of();
     }
 
+
+    //복호화해서 가져오는 비밀번호
     @Override
     public String getPassword() {
         return password;

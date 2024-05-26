@@ -1,4 +1,4 @@
-package profit.login.dto;
+package profit.login.question_board.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,9 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmailCheckReq {
-    private String email;
-
-    //이메일로 발송된 코드
-    private  String emailcode;
+public class ErrorResponse {
+    private String message;
+    private String nextUrl;
 }

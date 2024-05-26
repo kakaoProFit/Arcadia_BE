@@ -5,10 +5,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import profit.login.dto.LoginUserDto;
 import profit.login.dto.RegisterUserDto;
 import profit.login.entity.User;
 import profit.login.repository.UserRepository;
+
+import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -60,6 +63,25 @@ public class AuthenticationService {
 
         return userRepository.findByEmail(input.getEmail())
                 .orElseThrow();
+    }
+
+
+    //향후 추가 구현해야함.
+//    private final LikeRepository likeRepository;
+//    private final CommentRepository commentRepository;
+    @Transactional
+    public void deleteUser(String email, String password) {
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
+            if (passwordEncoder.matches(password, user.getPassword())) {
+                userRepository.delete(user);
+            } else {
+                throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            }
+        } else {
+            throw new IllegalArgumentException("유저를 찾을 수 없습니다.");
+        }
     }
 
 
