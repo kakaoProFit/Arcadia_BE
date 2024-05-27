@@ -1,6 +1,7 @@
 package profit.login.question_board.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
@@ -29,6 +30,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BoardService {
 
     private final BoardRepository boardRepository;
@@ -40,6 +42,7 @@ public class BoardService {
         public Page<Board> getBoardList(BoardCategory category, PageRequest pageRequest, String searchType, String keyword) {
             if (searchType != null && keyword != null) {
                 if (searchType.equals("title")) {
+                    log.info("find all: " + boardRepository.findAllByCategoryAndTitleContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest));
                     return boardRepository.findAllByCategoryAndTitleContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
                 }
                 else {

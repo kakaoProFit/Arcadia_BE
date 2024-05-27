@@ -1,6 +1,8 @@
 package profit.login.controller;
 
 import jakarta.mail.MessagingException;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -59,14 +61,24 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto) {
+    public ResponseEntity<LoginResponse> authenticate(@RequestBody LoginUserDto loginUserDto, HttpServletResponse response) {
         User authenticatedUser = authenticationService.authenticate(loginUserDto);
 
         String accessToken = jwtService.generateToken(authenticatedUser);
         String refreshToken = jwtService.generateRefreshToken(authenticatedUser);
 
-        // refresh token과 access token을 Redis에 저장
+        // refresh token을 Redis에 저장
         tokenRedisService.saveToken(String.valueOf(authenticatedUser.getId()), refreshToken);
+
+        // access token 쿠키 생성 및 설정
+        Cookie accessTokenCookie = new Cookie("accessToken", accessToken);
+        accessTokenCookie.setHttpOnly(true);
+        accessTokenCookie.setSecure(true); // HTTPS 사용 시에만 설정
+        accessTokenCookie.setPath("/");
+        accessTokenCookie.setMaxAge((int) jwtService.getExpirationTime()); // 만료 시간 설정
+
+        // 쿠키를 응답에 추가
+        response.addCookie(accessTokenCookie);
 
         LoginResponse loginResponse = new LoginResponse();
         loginResponse.setAccestoken(accessToken);
@@ -75,6 +87,7 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(loginResponse);
     }
+
 
     @DeleteMapping("/logout/{id}")
     public ResponseEntity<Map<String, String>> logout(@PathVariable String id) {
