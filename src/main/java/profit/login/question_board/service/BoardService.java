@@ -92,16 +92,18 @@ public class BoardService {
         }
 
         Board board = optBoard.get();
-        // 게시글에 이미지가 있었으면 삭제
-        if (board.getUploadImage() != null) {
-            uploadImageService.deleteImage(board.getUploadImage());
-            board.setUploadImage(null);
-        }
 
-        UploadImage uploadImage = uploadImageService.saveImage(dto.getNewImage(), board);
-        if (uploadImage != null) {
-            board.setUploadImage(uploadImage);
-        }
+        //이미지관련 일단 생략
+//        // 게시글에 이미지가 있었으면 삭제
+//        if (board.getUploadImage() != null) {
+//            uploadImageService.deleteImage(board.getUploadImage());
+//            board.setUploadImage(null);
+//        }
+//
+//        UploadImage uploadImage = uploadImageService.saveImage(dto.getNewImage(), board);
+//        if (uploadImage != null) {
+//            board.setUploadImage(uploadImage);
+//        }
         board.update(dto);
 
         return board.getId();
@@ -116,12 +118,12 @@ public class BoardService {
         if (optBoard.isEmpty() || !optBoard.get().getCategory().toString().equalsIgnoreCase(category)) {
             return null;
         }
-
-        User boardUser = optBoard.get().getUser();
-        boardUser.likeChange(boardUser.getReceivedLikeCnt() - optBoard.get().getLikeCnt());
-        if (optBoard.get().getUser() != null) {
-            uploadImageService.deleteImage(optBoard.get().getUploadImage());
-        }
+        //질문게시글은 어차피 삭제 안되고, 자유 게시글을 삭제할 경우 해당 게시글에 좋아를요를 표시한 유저의 좋아요 표시글 리스트를 갱신한다.
+//        User boardUser = optBoard.get().getUser();
+//        boardUser.likeChange(boardUser.getReceivedLikeCnt() - optBoard.get().getLikeCnt());
+//        if (optBoard.get().getUser() != null) {
+//            uploadImageService.deleteImage(optBoard.get().getUploadImage());
+//        }
         boardRepository.deleteById(boardId);
         return boardId;
     }

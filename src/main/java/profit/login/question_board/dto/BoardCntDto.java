@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 public class BoardCntDto {
-    // 나중에 일기, 질문, 자유로 나누면 될듯.
+    // 쓸거면 나중에 일기, 질문, 자유로 나누면 될듯.
     private Long totalNoticeCnt;
     private Long totalBoardCnt;
     private Long totalGreetingCnt;

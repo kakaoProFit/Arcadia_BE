@@ -152,8 +152,19 @@ public class BoardController {
 
     @PostMapping("/{category}/{boardId}/edit")
     public ResponseEntity<BoardWriteResponse> boardEdit(@PathVariable String category, @PathVariable Long boardId,
-                                                    @RequestBody BoardDto dto) throws IOException {
-        Long editedBoardId = boardService.editBoard(boardId, category, dto);
+                                                        @RequestBody BoardDto boardDto
+                                                    ) throws IOException {
+
+
+        Long editedBoardId = boardService.editBoard(boardId, category, boardDto);
+        log.info("Edited Board ID: " + editedBoardId);
+
+        if (editedBoardId == null) {
+            return ResponseEntity.badRequest().body(BoardWriteResponse.builder()
+                    .message("게시글을 수정할 수 없습니다.")
+                    .nextUrl("/")
+                    .build());
+        }
 
         String message;
         String nextUrl;
@@ -167,7 +178,7 @@ public class BoardController {
         }
         else {
             message = editedBoardId + "번 글이 수정되었습니다.";
-            nextUrl = "/boards/" + category + "/" + boardId;
+            nextUrl = "/boards/" + category + "/" + editedBoardId;
 
             return ResponseEntity.ok(BoardWriteResponse.builder()
                     .message(message)
@@ -177,30 +188,40 @@ public class BoardController {
     }
 
     @GetMapping("/{category}/{boardId}/delete")
-    public String boardDelete(@PathVariable String category, @PathVariable Long boardId, Model model) throws IOException {
+    public ResponseEntity<BoardWriteResponse> boardDelete(@PathVariable String category, @PathVariable Long boardId) throws IOException {
         if (category.equals("greeting")) {
-            model.addAttribute("message", "가입인사는 삭제할 수 없습니다.");
-            model.addAttribute("nextUrl", "/boards/greeting");
-            return "printMessage";
+            return ResponseEntity.badRequest().body(BoardWriteResponse.builder()
+                    .message("가입인사는 삭제할 수 없습니다.")
+                    .nextUrl("/boards/greeting")
+                    .build());
         }
 
         Long deletedBoardId = boardService.deleteBoard(boardId, category);
 
-        // id에 해당하는 게시글이 없거나 카테고리가 일치하지 않으면 에러 메세지 출력
-        // 게시글이 존재해 삭제했으면 삭제 완료 메세지 출력
-        model.addAttribute("message", deletedBoardId == null ? "해당 게시글이 존재하지 않습니다" : deletedBoardId + "번 글이 삭제되었습니다.");
-        model.addAttribute("nextUrl", "/boards/" + category);
-        return "printMessage";
+        String message;
+        String nextUrl;
+        if (deletedBoardId == null) {
+            message = "해당 게시글이 존재하지 않습니다";
+            nextUrl = "/boards/" + category;
+        } else {
+            message = deletedBoardId + "번 글이 삭제되었습니다.";
+            nextUrl = "/boards/" + category;
+        }
+
+        return ResponseEntity.ok(BoardWriteResponse.builder()
+                .message(message)
+                .nextUrl(nextUrl)
+                .build());
     }
 
-    @ResponseBody
-    @GetMapping("/images/{filename}")
-    public Resource showImage(@PathVariable String filename) throws MalformedURLException {
-        return new UrlResource("file:" + uploadImageService.getFullPath(filename));
-    }
-
-    @GetMapping("/images/download/{boardId}")
-    public ResponseEntity<UrlResource> downloadImage(@PathVariable Long boardId) throws MalformedURLException {
-        return uploadImageService.downloadImage(boardId);
-    }
+//    @ResponseBody
+//    @GetMapping("/images/{filename}")
+//    public Resource showImage(@PathVariable String filename) throws MalformedURLException {
+//        return new UrlResource("file:" + uploadImageService.getFullPath(filename));
+//    }
+//
+//    @GetMapping("/images/download/{boardId}")
+//    public ResponseEntity<UrlResource> downloadImage(@PathVariable Long boardId) throws MalformedURLException {
+//        return uploadImageService.downloadImage(boardId);
+//    }
 }

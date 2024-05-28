@@ -8,7 +8,6 @@
 
 ### POST
 - /auth/signup
-
 - /auth/login
 - /auth/refresh/{id}  -> 테스트용
 - /auth/sign-up/emailCheck
@@ -19,6 +18,8 @@
 - /refresh-token/{id}
 - /boards/list/{category}
 - /boards/read/{category}/{boardId}
+- /boards/read/{category}/{boardId}/edit
+- /boards/{category}/{boardId}/delete
 
 ### DELETE
 - /auth/lougout/{id}
