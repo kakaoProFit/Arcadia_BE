@@ -1,6 +1,5 @@
 # API DOCUMENTATION
 
-<<<<<<< Updated upstream
 소셜 로그인을 제외한 문서는 모두 Swagger UI를 통해서 제공 예정
 =======
 # 테스트 가능한 API
