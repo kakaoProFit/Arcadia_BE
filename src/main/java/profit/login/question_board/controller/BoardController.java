@@ -47,7 +47,7 @@ public class BoardController {
     private final AuthenticationService authenticationService;
 
 
-    @GetMapping("/{category}")
+    @GetMapping("/list/{category}")
     public ResponseEntity<?> boardListPage(@PathVariable String category,
                                            @RequestParam(required = false, defaultValue = "1") int page,
                                            @RequestParam(required = false) String sortType,
@@ -105,7 +105,7 @@ public class BoardController {
 
 
     //게시물 작성
-    @PostMapping("/{category}")
+    @PostMapping("/write/{category}")
     public ResponseEntity<BoardWriteResponse> boardWrite(@PathVariable String category, @RequestBody BoardCreateRequest req,
                                                          Authentication authentication) throws IOException {
 
@@ -137,7 +137,7 @@ public class BoardController {
     }
 
 
-    @GetMapping("/{category}/{boardId}")
+    @GetMapping("/read/{category}/{boardId}")
     @ResponseBody
     public BoardDto boardDetailPage(@PathVariable String category, @PathVariable Long boardId, Authentication authentication) {
         BoardDto boardDto = boardService.getBoard(boardId, category);
