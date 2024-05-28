@@ -23,7 +23,7 @@
 - /auth/lougout/{id}
 - /auth/delete
 
-### 기테 테스트가 필요시
+### 기타 테스트가 필요시
 #### MongoDB 
 - /mongo/find (GET)
 - /mongo/save (POST)
