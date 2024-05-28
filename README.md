@@ -5,7 +5,6 @@
 =======
 # 테스트 가능한 API
 
-
 ### POST
 - /auth/signup
 - /auth/login
@@ -25,7 +24,14 @@
 - /auth/lougout/{id}
 - /auth/delete
 
+### 기테 테스트가 필요시
+#### MongoDB 
+- /mongo/find (GET)
+- /mongo/save (POST)
 
+#### S3
+- /s3/upload (GET)
+- /s3/download (POST)
 
 ### 일반 로그인
 
