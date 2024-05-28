@@ -7,6 +7,7 @@ import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
@@ -150,18 +151,29 @@ public class BoardController {
 
 
     @PostMapping("/{category}/{boardId}/edit")
-    public String boardEdit(@PathVariable String category, @PathVariable Long boardId,
-                            @ModelAttribute BoardDto dto, Model model) throws IOException {
+    public ResponseEntity<BoardWriteResponse> boardEdit(@PathVariable String category, @PathVariable Long boardId,
+                                                    @RequestBody BoardDto dto) throws IOException {
         Long editedBoardId = boardService.editBoard(boardId, category, dto);
 
-        if (editedBoardId == null) {
-            model.addAttribute("message", "해당 게시글이 존재하지 않습니다.");
-            model.addAttribute("nextUrl", "/boards/" + category);
-        } else {
-            model.addAttribute("message", editedBoardId + "번 글이 수정되었습니다.");
-            model.addAttribute("nextUrl", "/boards/" + category + "/" + boardId);
+        String message;
+        String nextUrl;
+
+        BoardCategory boardCategory = BoardCategory.of(category);
+        if (boardCategory == null) {
+            return ResponseEntity.badRequest().body(BoardWriteResponse.builder()
+                    .message("카테고리가 존재하지 않습니다.")
+                    .nextUrl("/")
+                    .build());
         }
-        return "printMessage";
+        else {
+            message = editedBoardId + "번 글이 수정되었습니다.";
+            nextUrl = "/boards/" + category + "/" + boardId;
+
+            return ResponseEntity.ok(BoardWriteResponse.builder()
+                    .message(message)
+                    .nextUrl(nextUrl)
+                    .build());
+        }
     }
 
     @GetMapping("/{category}/{boardId}/delete")

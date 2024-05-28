@@ -1,6 +1,34 @@
 # API DOCUMENTATION
 
+<<<<<<< Updated upstream
 소셜 로그인을 제외한 문서는 모두 Swagger UI를 통해서 제공 예정
+=======
+# 테스트 가능한 API
+
+
+### POST
+- /auth/signup
+
+- /auth/login
+- /auth/refresh/{id}  -> 테스트용
+- /auth/sign-up/emailCheck
+- /auth/sign-up/verify
+- /boards/write/{category}
+
+### GET
+- /refresh-token/{id}
+- /boards/list/{category}
+- /boards/read/{category}/{boardId}
+
+### DELETE
+- /auth/lougout/{id}
+- /auth/delete
+
+
+
+### 일반 로그인
+
+>>>>>>> Stashed changes
 
 ## 소셜 로그인
 Callback URL을 직접 호출함으로써 로그인 기능을 실행
