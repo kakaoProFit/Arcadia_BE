@@ -45,7 +45,9 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/swagger-ui.html",
             "/v2/api-docs",
-            "/webjars/**"
+            "/v3/api-docs",
+            "/webjars/**",
+            "/swagger-ui/**"
     };
 
 
@@ -58,6 +60,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
+//                                .requestMatchers("/**").permitAll() //토큰 발급해서 인증하고 API 테스트하기 번거로울때 사용, 절대 배포때 주석 풀지 말기
                         .requestMatchers(SwaggerPatterns).permitAll()
                         .requestMatchers(HttpMethod.POST, "/boards/free").authenticated()
                         .anyRequest().authenticated()
@@ -81,7 +84,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8080"));
+        configuration.setAllowedOrigins(List.of("http://arcadia-spring.p-e.kr"));
         configuration.setAllowedMethods(List.of("GET","POST"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
 

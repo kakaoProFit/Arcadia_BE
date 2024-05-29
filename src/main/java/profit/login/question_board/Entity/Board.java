@@ -34,7 +34,7 @@ public class Board extends BaseEntity {
 
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<Like> likes;       // 좋아요
-    private Integer likeCnt;        // 좋아요 수
+    private Integer likeCnt;        // 좋아요 수S
 
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<Comment> comments; // 댓글
