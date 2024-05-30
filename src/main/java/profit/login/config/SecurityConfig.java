@@ -41,6 +41,12 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final TokenProvider tokenProvider;
     private final AuthenticationProvider authenticationProvider;
+    private static final String[] SwaggerPatterns = {
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
 
 
     @Bean
@@ -52,9 +58,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
+<<<<<<< src/main/java/profit/login/config/SecurityConfig.java
                         .requestMatchers(HttpMethod.POST, "/boards/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/comments/**").authenticated()
-                        .anyRequest().authenticated())
+                        .requestMatchers(SwaggerPatterns).permitAll()
+                        .anyRequest().authenticated()
+                        )
+>>>>>>> src/main/java/profit/login/config/SecurityConfig.java
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .oauth2Login(configure ->
