@@ -58,13 +58,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
-<<<<<<< src/main/java/profit/login/config/SecurityConfig.java
                         .requestMatchers(HttpMethod.POST, "/boards/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/comments/**").authenticated()
                         .requestMatchers(SwaggerPatterns).permitAll()
                         .anyRequest().authenticated()
                         )
->>>>>>> src/main/java/profit/login/config/SecurityConfig.java
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .oauth2Login(configure ->
