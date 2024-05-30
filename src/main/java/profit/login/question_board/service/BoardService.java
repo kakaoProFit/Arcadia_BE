@@ -15,8 +15,10 @@ import profit.login.question_board.Entity.Board;
 import profit.login.question_board.Entity.BoardCategory;
 import profit.login.question_board.Entity.UploadImage;
 import profit.login.question_board.dto.BoardCntDto;
+import profit.login.question_board.dto.BoardContentDto;
 import profit.login.question_board.dto.BoardCreateRequest;
 import profit.login.question_board.dto.BoardDto;
+import profit.login.question_board.repository.BoardDocumentRepository;
 import profit.login.question_board.repository.BoardRepository;
 import profit.login.question_board.repository.CommentRepository;
 import profit.login.question_board.repository.LikeRepository;
@@ -38,6 +40,8 @@ public class BoardService {
     private final LikeRepository likeRepository;
     private final CommentRepository commentRepository;
     private final UploadImageService uploadImageService;
+
+    private final BoardDocumentRepository boardDocumentRepository;
 
         public Page<Board> getBoardList(BoardCategory category, PageRequest pageRequest, String searchType, String keyword) {
             if (searchType != null && keyword != null) {
@@ -68,11 +72,13 @@ public class BoardService {
     }
 
     @Transactional
-    public Long writeBoard(BoardCreateRequest req, BoardCategory category, String email, Authentication authentication) throws IOException {
+    public Long writeBoard(BoardCreateRequest req, BoardContentDto bcd, BoardCategory category, String email, Authentication authentication) throws IOException {
 
         User loginUser = userRepository.findByEmail(email).get();
 
+
         Board savedBoard = boardRepository.save(req.toEntity(category, loginUser));
+        BoardContentDto savedBoardDocument = boardDocumentRepository.save(bcd.init(savedBoard.getId(),savedBoard.getBody()));
 
 //        UploadImage uploadImage = uploadImageService.saveImage(req.getUploadImage(), savedBoard);
 //        if (uploadImage != null) {
@@ -105,6 +111,7 @@ public class BoardService {
 //            board.setUploadImage(uploadImage);
 //        }
         board.update(dto);
+
 
         return board.getId();
     }

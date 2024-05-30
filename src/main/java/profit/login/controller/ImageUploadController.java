@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 @RestController
-@RequestMapping("/s3")
+@RequestMapping("/profileimage")
 @RequiredArgsConstructor
 public class ImageUploadController {
 
@@ -47,7 +47,7 @@ public class ImageUploadController {
     }
 
     @GetMapping("/download")
-    public ResponseEntity<byte[]> downloadFile(@RequestParam("fileName") String fileName) {
+    public ResponseEntity<byte[]> downloadFile(@RequestParam("file") String fileName) {
         try (InputStream inputStream = amazonS3Client.getObject(new GetObjectRequest(bucket, fileName)).getObjectContent();
              ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 
