@@ -21,7 +21,7 @@ import java.util.List;
 //      countAllByCategoryAndUserUserRoleNot() : 해당 카테고리에 공지글을 제외한 글이 몇개 있는지 조회 시 사용
 
 @Repository
-public interface BoardRepository extends MongoRepository<Board, Long> {
+public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Page<Board> findAllByCategoryAndUserUserRoleNot(BoardCategory category, UserRole userRole, PageRequest pageRequest);
     Page<Board> findAllByCategoryAndTitleContainsAndUserUserRoleNot(BoardCategory category, String title, UserRole userRole, PageRequest pageRequest);
