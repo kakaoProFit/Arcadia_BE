@@ -52,7 +52,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/boards/free").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/boards/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/comments/**").authenticated()
                         .anyRequest().authenticated())
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
