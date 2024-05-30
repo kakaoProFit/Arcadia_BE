@@ -76,7 +76,6 @@ public class BoardService {
 
         User loginUser = userRepository.findByEmail(email).get();
 
-
         Board savedBoard = boardRepository.save(req.toEntity(category, loginUser));
         BoardContentDto savedBoardDocument = boardDocumentRepository.save(bcd.init(savedBoard.getId(),savedBoard.getBody()));
 
@@ -91,27 +90,23 @@ public class BoardService {
     @Transactional
     public Long editBoard(Long boardId, String category, BoardDto dto) throws IOException {
         Optional<Board> optBoard = boardRepository.findById(boardId);
+        Optional<BoardContentDto> optBoard2 = boardDocumentRepository.findById(boardId);
+
+        System.out.println(boardId);
 
         // id에 해당하는 게시글이 없거나 카테고리가 일치하지 않으면 null return
-        if (optBoard.isEmpty() || !optBoard.get().getCategory().toString().equalsIgnoreCase(category)) {
+        if (optBoard.isEmpty() || optBoard2.isEmpty() || !optBoard.get().getCategory().toString().equalsIgnoreCase(category)) {
             return null;
         }
 
         Board board = optBoard.get();
+        BoardContentDto boardContentDto = optBoard2.get();
 
-        //이미지관련 일단 생략
-//        // 게시글에 이미지가 있었으면 삭제
-//        if (board.getUploadImage() != null) {
-//            uploadImageService.deleteImage(board.getUploadImage());
-//            board.setUploadImage(null);
-//        }
-//
-//        UploadImage uploadImage = uploadImageService.saveImage(dto.getNewImage(), board);
-//        if (uploadImage != null) {
-//            board.setUploadImage(uploadImage);
-//        }
+//        System.out.println(boardContentDto.getContent());
+//        System.out.println(dto.getBody());
         board.update(dto);
-
+        boardContentDto.update(dto.getBody());
+//        System.out.println(boardContentDto.getContent());
 
         return board.getId();
     }

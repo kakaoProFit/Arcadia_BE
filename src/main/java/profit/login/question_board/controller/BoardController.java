@@ -149,7 +149,7 @@ public class BoardController {
 
     @PostMapping("/{category}/{boardId}/edit")
     public ResponseEntity<BoardWriteResponse> boardEdit(@PathVariable String category, @PathVariable Long boardId,
-                                                        @RequestBody BoardDto boardDto
+                                                        @RequestBody BoardDto boardDto, BoardContentDto boardContentDto
                                                     ) throws IOException {
 
 
