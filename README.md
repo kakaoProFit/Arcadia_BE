@@ -13,6 +13,16 @@
 - /auth/sign-up/emailCheck
 - /auth/sign-up/verify
 - /boards/write/{category}
+- /comments/write/{commentId}
+- EX)
+{
+  "body": "This is comment"
+  }
+- /comments/{commentId}/edit
+- EX) {
+  "body": "edit comment"
+  }
+
 
 ### GET
 - /refresh-token/{id}
@@ -20,6 +30,9 @@
 - /boards/read/{category}/{boardId}
 - /boards/read/{category}/{boardId}/edit
 - /boards/{category}/{boardId}/delete
+- /comments/{commentId}/delete
+- /likes/add/{boardId}
+- /likes/delete{boardId}
 
 ### DELETE
 - /auth/lougout/{id}
