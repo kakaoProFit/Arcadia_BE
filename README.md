@@ -1,10 +1,10 @@
 # API DOCUMENTATION
 
-<<<<<<< Updated upstream
 소셜 로그인을 제외한 문서는 모두 Swagger UI를 통해서 제공 예정
+http://{baseURL}:{port}/v3/api-docs
+
 =======
 # 테스트 가능한 API
-
 
 ### POST
 - /auth/signup
@@ -25,7 +25,14 @@
 - /auth/lougout/{id}
 - /auth/delete
 
+### 기타 테스트가 필요시
+#### MongoDB 
+- /mongo/find (GET)
+- /mongo/save (POST)
 
+#### S3
+- /s3/upload (GET)
+- /s3/download (POST)
 
 ### 일반 로그인
 
