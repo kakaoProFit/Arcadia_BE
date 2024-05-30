@@ -1,10 +1,11 @@
-package profit.login.entity;
+package profit.login.question_board.Entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import profit.login.entity.User;
 import profit.login.question_board.Entity.BaseEntity;
 import profit.login.question_board.Entity.Board;
 
