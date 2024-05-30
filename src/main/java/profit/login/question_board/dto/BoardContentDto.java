@@ -21,12 +21,12 @@ public class BoardContentDto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long BoardId;
+    private Long id;
     private String Content;
 
     public BoardContentDto init(Long id, String body) {
         return BoardContentDto.builder()
-                .BoardId(id)
+                .id(id)
                 .Content(body)
                 .build();
     }

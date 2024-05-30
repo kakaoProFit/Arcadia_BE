@@ -132,6 +132,7 @@ public class BoardService {
 //            uploadImageService.deleteImage(optBoard.get().getUploadImage());
 //        }
         boardRepository.deleteById(boardId);
+        boardDocumentRepository.deleteById(boardId);
         return boardId;
     }
 
