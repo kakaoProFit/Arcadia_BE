@@ -84,9 +84,11 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("https://arcadia-spring.p-e.kr"));
-        configuration.setAllowedOrigins(List.of("https://arcadia.p-e.kr"));
-        configuration.setAllowedOrigins(List.of("https://localhost:3000"));
+        configuration.setAllowedOrigins(List.of(
+                "https://arcadia-spring.p-e.kr",
+                "https://arcadia.p-e.kr",
+                "https://localhost:3000"
+        ));
         configuration.setAllowedMethods(List.of("GET","POST"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
 
