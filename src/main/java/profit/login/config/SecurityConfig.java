@@ -59,6 +59,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
+                                .requestMatchers("/test").permitAll()
 //                                .requestMatchers("/**").permitAll() //토큰 발급해서 인증하고 API 테스트하기 번거로울때 사용, 절대 배포때 주석 풀지 말기
                         .requestMatchers(SwaggerPatterns).permitAll()
                         .requestMatchers(HttpMethod.POST, "/profileimage").authenticated()
@@ -84,11 +85,8 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of(
-                "https://arcadia-spring.p-e.kr",
-                "https://arcadia.p-e.kr",
-                "https://localhost:3000"
-        ));
+
+        configuration.setAllowedOrigins(List.of("https://arcadia.p-e.kr"));
         configuration.setAllowedMethods(List.of("GET","POST"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
 
