@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Getter
-public class UploadImage {
+public class    UploadImage {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

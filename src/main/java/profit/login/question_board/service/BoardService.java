@@ -14,8 +14,10 @@ import profit.login.entity.UserRole;
 import profit.login.question_board.Entity.Board;
 import profit.login.question_board.Entity.BoardCategory;
 import profit.login.question_board.dto.BoardCntDto;
+import profit.login.question_board.dto.BoardContentDto;
 import profit.login.question_board.dto.BoardCreateRequest;
 import profit.login.question_board.dto.BoardDto;
+import profit.login.question_board.repository.BoardDocumentRepository;
 import profit.login.question_board.repository.BoardRepository;
 import profit.login.question_board.repository.CommentRepository;
 import profit.login.question_board.repository.LikeRepository;
@@ -38,11 +40,13 @@ public class BoardService {
     private final CommentRepository commentRepository;
     private final UploadImageService uploadImageService;
 
+    private final BoardDocumentRepository boardDocumentRepository;
+
         public Page<Board> getBoardList(BoardCategory category, PageRequest pageRequest, String searchType, String keyword) {
             if (searchType != null && keyword != null) {
                 if (searchType.equals("title")) {
-                    log.info("find all: " + boardRepository.findAllByCategoryAndTitleContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest));
-                    return boardRepository.findAllByCategoryAndTitleContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
+                    log.info("find all: " + boardRepository.findAllByCategoryAndTitleContains(category, keyword, pageRequest));
+                    return boardRepository.findAllByCategoryAndTitleContains(category, keyword, pageRequest);
                 }
                 else {
                     return boardRepository.findAllByCategoryAndUserNicknameContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
@@ -57,21 +61,27 @@ public class BoardService {
 
     public BoardDto getBoard(Long boardId, String category) {
         Optional<Board> optBoard = boardRepository.findById(boardId);
+        Optional<BoardContentDto> optBoard2 = boardDocumentRepository.findById(boardId);
 
         // id에 해당하는 게시글이 없거나 카테고리가 일치하지 않으면 null return
-        if (optBoard.isEmpty() || !optBoard.get().getCategory().toString().equalsIgnoreCase(category)) {
+        if (optBoard.isEmpty() || optBoard2.isEmpty() || !optBoard.get().getCategory().toString().equalsIgnoreCase(category)) {
             return null;
         }
 
-        return BoardDto.of(optBoard.get());
+        BoardDto boardDto = BoardDto.of(optBoard.get());
+        BoardContentDto boardContentDto = optBoard2.get();
+        boardDto.setBody(boardContentDto.getContent());
+
+        return boardDto;
     }
 
     @Transactional
-    public Long writeBoard(BoardCreateRequest req, BoardCategory category, String email, Authentication authentication) throws IOException {
+    public Long writeBoard(BoardCreateRequest req, BoardContentDto bcd, BoardCategory category, String email, Authentication authentication) throws IOException {
 
         User loginUser = userRepository.findByEmail(email).get();
 
         Board savedBoard = boardRepository.save(req.toEntity(category, loginUser));
+        BoardContentDto savedBoardDocument = boardDocumentRepository.save(bcd.init(savedBoard.getId(),savedBoard.getBody()));
 
 //        UploadImage uploadImage = uploadImageService.saveImage(req.getUploadImage(), savedBoard);
 //        if (uploadImage != null) {
@@ -84,26 +94,23 @@ public class BoardService {
     @Transactional
     public Long editBoard(Long boardId, String category, BoardDto dto) throws IOException {
         Optional<Board> optBoard = boardRepository.findById(boardId);
+        Optional<BoardContentDto> optBoard2 = boardDocumentRepository.findById(boardId);
+
+        System.out.println(boardId);
 
         // id에 해당하는 게시글이 없거나 카테고리가 일치하지 않으면 null return
-        if (optBoard.isEmpty() || !optBoard.get().getCategory().toString().equalsIgnoreCase(category)) {
+        if (optBoard.isEmpty() || optBoard2.isEmpty() || !optBoard.get().getCategory().toString().equalsIgnoreCase(category)) {
             return null;
         }
 
         Board board = optBoard.get();
+        BoardContentDto boardContentDto = optBoard2.get();
 
-        //이미지관련 일단 생략
-//        // 게시글에 이미지가 있었으면 삭제
-//        if (board.getUploadImage() != null) {
-//            uploadImageService.deleteImage(board.getUploadImage());
-//            board.setUploadImage(null);
-//        }
-//
-//        UploadImage uploadImage = uploadImageService.saveImage(dto.getNewImage(), board);
-//        if (uploadImage != null) {
-//            board.setUploadImage(uploadImage);
-//        }
+//        System.out.println(boardContentDto.getContent());
+//        System.out.println(dto.getBody());
         board.update(dto);
+        boardContentDto.update(dto.getBody());
+//        System.out.println(boardContentDto.getContent());
 
         return board.getId();
     }
@@ -124,6 +131,7 @@ public class BoardService {
 //            uploadImageService.deleteImage(optBoard.get().getUploadImage());
 //        }
         boardRepository.deleteById(boardId);
+        boardDocumentRepository.deleteById(boardId);
         return boardId;
     }
 

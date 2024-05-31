@@ -37,15 +37,16 @@ public class SecurityConfig {
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
     private final OAuth2AuthenticationFailureHandler oAuth2AuthenticationFailureHandler;
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
-    private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final TokenProvider tokenProvider;
     private final AuthenticationProvider authenticationProvider;
     private static final String[] SwaggerPatterns = {
             "/swagger-resources/**",
             "/swagger-ui.html",
-            "/v2/api-docs",
-            "/webjars/**"
+            "/v3/api-docs",
+            "/webjars/**",
+            "/swagger-ui/index.html",
+            "/swagger-ui/**"
     };
 
 
@@ -58,6 +59,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
+//                                .requestMatchers("/**").permitAll() //토큰 발급해서 인증하고 API 테스트하기 번거로울때 사용, 절대 배포때 주석 풀지 말기
+                        .requestMatchers(HttpMethod.POST, "/profileimage").authenticated()
                         .requestMatchers(HttpMethod.POST, "/boards/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/comments/**").authenticated()
                         .requestMatchers(SwaggerPatterns).permitAll()
@@ -82,7 +85,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:8080"));
+        configuration.setAllowedOrigins(List.of("http://arcadia-spring.p-e.kr"));
         configuration.setAllowedMethods(List.of("GET","POST"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
 

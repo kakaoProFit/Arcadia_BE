@@ -16,13 +16,10 @@ import org.springframework.web.bind.annotation.*;
 import profit.login.dto.LoginUserDto;
 import profit.login.entity.User;
 import profit.login.question_board.Entity.Board;
+import profit.login.question_board.dto.*;
 import profit.login.question_board.response.BoardListResponse;
 import profit.login.question_board.response.ErrorResponse;
 import profit.login.question_board.Entity.BoardCategory;
-import profit.login.question_board.dto.BoardCreateRequest;
-import profit.login.question_board.dto.BoardDto;
-import profit.login.question_board.dto.BoardSearchRequest;
-import profit.login.question_board.dto.CommentCreateRequest;
 import profit.login.question_board.response.BoardWritePageResponse;
 import profit.login.question_board.response.BoardWriteResponse;
 import profit.login.question_board.service.BoardService;
@@ -77,7 +74,6 @@ public class BoardController {
         }
 
 
-        ;
         Page<Board> boards = boardService.getBoardList(boardCategory, pageRequest, searchType, keyword);
         log.info("board's title: " + boards);
         BoardSearchRequest boardSearchRequest = new BoardSearchRequest(sortType, searchType, keyword);
@@ -107,7 +103,7 @@ public class BoardController {
 
     //게시물 작성
     @PostMapping("/write/{category}")
-    public ResponseEntity<BoardWriteResponse> boardWrite(@PathVariable String category, @RequestBody BoardCreateRequest req,
+    public ResponseEntity<BoardWriteResponse> boardWrite(@PathVariable String category, @RequestBody BoardCreateRequest req, BoardContentDto bcd,
                                                          Authentication authentication) throws IOException {
 
         BoardCategory boardCategory = BoardCategory.of(category);
@@ -118,7 +114,7 @@ public class BoardController {
                     .build());
         }
 
-        Long savedBoardId = boardService.writeBoard(req, boardCategory, authentication.getName(), authentication);
+        Long savedBoardId = boardService.writeBoard(req, bcd, boardCategory, authentication.getName(), authentication);
         log.info("auth.getname(): "+ authentication.getName());
 
         String message;
@@ -152,7 +148,7 @@ public class BoardController {
 
     @PostMapping("/{category}/{boardId}/edit")
     public ResponseEntity<BoardWriteResponse> boardEdit(@PathVariable String category, @PathVariable Long boardId,
-                                                        @RequestBody BoardDto boardDto
+                                                        @RequestBody BoardDto boardDto, BoardContentDto boardContentDto
                                                     ) throws IOException {
 
 

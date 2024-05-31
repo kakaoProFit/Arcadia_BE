@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import profit.login.entity.UserRole;
 import profit.login.question_board.Entity.Board;
@@ -23,7 +24,7 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<Board, Long> {
 
     Page<Board> findAllByCategoryAndUserUserRoleNot(BoardCategory category, UserRole userRole, PageRequest pageRequest);
-    Page<Board> findAllByCategoryAndTitleContainsAndUserUserRoleNot(BoardCategory category, String title, UserRole userRole, PageRequest pageRequest);
+    Page<Board> findAllByCategoryAndTitleContains(BoardCategory category, String title, PageRequest pageRequest);
     Page<Board> findAllByCategoryAndUserNicknameContainsAndUserUserRoleNot(BoardCategory category, String nickname, UserRole userRole, PageRequest pageRequest);
     List<Board> findAllByUserEmail(String email);
     List<Board> findAllByCategoryAndUserUserRole(BoardCategory category, UserRole userRole);

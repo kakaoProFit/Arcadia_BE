@@ -1,5 +1,6 @@
 package profit.login.question_board.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Getter
+@Table(name="board")
 public class Board extends BaseEntity {
 
     @Id
@@ -28,11 +30,13 @@ public class Board extends BaseEntity {
     private BoardCategory category; // 카테고리
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;      // 작성자
 
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<Like> likes;       // 좋아요
-    private Integer likeCnt;        // 좋아요 수
+    private Integer likeCnt;        // 좋아요 수S
 
     @OneToMany(mappedBy = "board", orphanRemoval = true)
     private List<Comment> comments; // 댓글
