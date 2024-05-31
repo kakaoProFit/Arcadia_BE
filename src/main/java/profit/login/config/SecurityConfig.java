@@ -86,7 +86,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of("http://arcadia-spring.p-e.kr"));
         configuration.setAllowedOrigins(List.of("http://arcadia.p-e.kr"));
-        configuration.setAllowedOrigins(List.of("http://localhost:3030"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
         configuration.setAllowedMethods(List.of("GET","POST"));
         configuration.setAllowedHeaders(List.of("Authorization","Content-Type"));
 
