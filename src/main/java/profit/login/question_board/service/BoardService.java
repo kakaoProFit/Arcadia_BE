@@ -46,8 +46,8 @@ public class BoardService {
         public Page<Board> getBoardList(BoardCategory category, PageRequest pageRequest, String searchType, String keyword) {
             if (searchType != null && keyword != null) {
                 if (searchType.equals("title")) {
-                    log.info("find all: " + boardRepository.findAllByCategoryAndTitleContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest));
-                    return boardRepository.findAllByCategoryAndTitleContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
+                    log.info("find all: " + boardRepository.findAllByCategoryAndTitleContains(category, keyword, pageRequest));
+                    return boardRepository.findAllByCategoryAndTitleContains(category, keyword, pageRequest);
                 }
                 else {
                     return boardRepository.findAllByCategoryAndUserNicknameContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
@@ -62,13 +62,18 @@ public class BoardService {
 
     public BoardDto getBoard(Long boardId, String category) {
         Optional<Board> optBoard = boardRepository.findById(boardId);
+        Optional<BoardContentDto> optBoard2 = boardDocumentRepository.findById(boardId);
 
         // id에 해당하는 게시글이 없거나 카테고리가 일치하지 않으면 null return
-        if (optBoard.isEmpty() || !optBoard.get().getCategory().toString().equalsIgnoreCase(category)) {
+        if (optBoard.isEmpty() || optBoard2.isEmpty() || !optBoard.get().getCategory().toString().equalsIgnoreCase(category)) {
             return null;
         }
 
-        return BoardDto.of(optBoard.get());
+        BoardDto boardDto = BoardDto.of(optBoard.get());
+        BoardContentDto boardContentDto = optBoard2.get();
+        boardDto.setBody(boardContentDto.getContent());
+
+        return boardDto;
     }
 
     @Transactional

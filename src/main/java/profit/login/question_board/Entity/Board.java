@@ -1,5 +1,6 @@
 package profit.login.question_board.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @Getter
+@Table(name="board")
 public class Board extends BaseEntity {
 
     @Id
@@ -30,6 +32,8 @@ public class Board extends BaseEntity {
     private BoardCategory category; // 카테고리
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
     private User user;      // 작성자
 
     @OneToMany(mappedBy = "board", orphanRemoval = true)

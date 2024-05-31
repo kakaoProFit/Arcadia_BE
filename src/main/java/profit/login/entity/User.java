@@ -1,5 +1,6 @@
 package profit.login.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +36,8 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole userRole;      // 권한
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     private List<Board> boards;     // 작성글
 
     @OneToMany(mappedBy = "user", orphanRemoval = true)

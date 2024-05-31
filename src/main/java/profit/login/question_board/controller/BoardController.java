@@ -74,7 +74,6 @@ public class BoardController {
         }
 
 
-        ;
         Page<Board> boards = boardService.getBoardList(boardCategory, pageRequest, searchType, keyword);
         log.info("board's title: " + boards);
         BoardSearchRequest boardSearchRequest = new BoardSearchRequest(sortType, searchType, keyword);
