@@ -12,8 +12,7 @@ public class WebConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
 //                .allowedOriginPatterns("*") // “*“같은 와일드카드를 사용
-                .allowedOrigins("https://arcadia.p-e.kr/")
-                .allowedOrigins("https://localhost:3000")
+                .allowedOrigins("https://arcadia.p-e.kr/", "https://localhost:3000")
                 .allowedMethods("GET", "POST") // 허용할 HTTP method
                 .allowCredentials(true); // 쿠키 인증 요청 허용
     }
