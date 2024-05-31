@@ -46,7 +46,8 @@ public class SecurityConfig {
             "/v3/api-docs",
             "/webjars/**",
             "/swagger-ui/index.html",
-            "/swagger-ui/**"
+            "/swagger-ui/**",
+            "**/api-ui.html"
     };
 
 
@@ -55,7 +56,6 @@ public class SecurityConfig {
 
         http.csrf(AbstractHttpConfigurer::disable)
                 .headers(headersConfigurer -> headersConfigurer.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
-                .formLogin(AbstractHttpConfigurer::disable)
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
                         .requestMatchers("/auth/**").permitAll()
