@@ -101,14 +101,8 @@ spring:
     pathmatch:
       matching-strategy: ant_path_matcher
 
-  springdoc:
-    swagger-ui:
-      disable-swagger-default-url: true   #디폴트 페이지 안나오게
-      path: /api-ui.html
-    api-docs:
-      path: /api-docs
-    show-actuator: true
-    default-produces-media-type: application/json
+
+
 
 
 security:
@@ -131,3 +125,11 @@ management:
       exposure:
         include: "*"
 
+springdoc:
+  swagger-ui:
+    disable-swagger-default-url: true   #디폴트 페이지 안나오게
+    path: /api-ui.html
+  api-docs:
+    path: /v3/api-docs  # Base URL을 /v3/api-docs로 설정
+  show-actuator: true
+  default-produces-media-type: application/json
