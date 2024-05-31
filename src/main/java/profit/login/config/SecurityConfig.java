@@ -60,9 +60,10 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
 //                                .requestMatchers("/**").permitAll() //토큰 발급해서 인증하고 API 테스트하기 번거로울때 사용, 절대 배포때 주석 풀지 말기
-                        .requestMatchers(SwaggerPatterns).permitAll()
                         .requestMatchers(HttpMethod.POST, "/profileimage").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/boards/free").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/boards/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/comments/**").authenticated()
+                        .requestMatchers(SwaggerPatterns).permitAll()
                         .anyRequest().authenticated()
                         )
                 .sessionManagement(sessions -> sessions.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

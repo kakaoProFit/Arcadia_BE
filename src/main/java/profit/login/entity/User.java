@@ -9,6 +9,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import profit.login.question_board.Entity.Board;
+import profit.login.question_board.Entity.Comment;
+import profit.login.question_board.Entity.Like;
 
 import java.util.Collection;
 import java.util.Date;

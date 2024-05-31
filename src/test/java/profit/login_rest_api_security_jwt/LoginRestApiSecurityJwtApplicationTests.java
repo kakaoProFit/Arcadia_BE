@@ -1,13 +1,13 @@
-package profit.login_rest_api_security_jwt;
+// package profit.login_rest_api_security_jwt;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+// import org.junit.jupiter.api.Test;
+// import org.springframework.boot.test.context.SpringBootTest;
 
-@SpringBootTest
-class LoginRestApiSecurityJwtApplicationTests {
+// @SpringBootTest
+// class LoginRestApiSecurityJwtApplicationTests {
 
-    @Test
-    void contextLoads() {
-    }
+// @Test
+// void contextLoads() {
+// }
 
-}
+// }

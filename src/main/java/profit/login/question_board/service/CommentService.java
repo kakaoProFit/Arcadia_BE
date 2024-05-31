@@ -3,7 +3,7 @@ package profit.login.question_board.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import profit.login.entity.Comment;
+import profit.login.question_board.Entity.Comment;
 import profit.login.entity.User;
 import profit.login.entity.UserRole;
 import profit.login.question_board.Entity.Board;

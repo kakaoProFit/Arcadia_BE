@@ -1,6 +1,8 @@
 # API DOCUMENTATION
 
 소셜 로그인을 제외한 문서는 모두 Swagger UI를 통해서 제공 예정
+http://{baseURL}:{port}/v3/api-docs
+
 =======
 # 테스트 가능한 API
 
@@ -11,6 +13,16 @@
 - /auth/sign-up/emailCheck
 - /auth/sign-up/verify
 - /boards/write/{category}
+- /comments/write/{commentId}
+- EX)
+{
+  "body": "This is comment"
+  }
+- /comments/{commentId}/edit
+- EX) {
+  "body": "edit comment"
+  }
+
 
 ### GET
 - /refresh-token/{id}
@@ -18,6 +30,9 @@
 - /boards/read/{category}/{boardId}
 - /boards/read/{category}/{boardId}/edit
 - /boards/{category}/{boardId}/delete
+- /comments/{commentId}/delete
+- /likes/add/{boardId}
+- /likes/delete{boardId}
 
 ### DELETE
 - /auth/lougout/{id}
@@ -33,6 +48,7 @@
 - /s3/download (POST)
 
 ### 일반 로그인
+
 
 >>>>>>> Stashed changes
 
