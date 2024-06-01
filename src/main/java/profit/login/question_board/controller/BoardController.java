@@ -58,11 +58,11 @@ public class BoardController {
 
         List<Board> notices = boardService.getNotice(boardCategory);
 
-        PageRequest pageRequest = PageRequest.of(page-1 , 12, Sort.by("id").descending());
+        PageRequest pageRequest = PageRequest.of(page-1 , 12, Sort.by("createdAt").descending());
         if (sortType != null) {
             switch (sortType) {
-                case "date":
-                    pageRequest = PageRequest.of(page-1 , 12, Sort.by("createdAt").descending());
+                case "id":
+                    pageRequest = PageRequest.of(page-1 , 12, Sort.by("id").descending());
                     break;
                 case "like":
                     pageRequest = PageRequest.of(page-1 , 12, Sort.by("likeCnt").descending());
