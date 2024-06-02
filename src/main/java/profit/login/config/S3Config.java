@@ -16,8 +16,6 @@ public class S3Config {
     private String secretKey;
     @Value("${spring.cloud.aws.region.static}")
     private String region;
-//    @Value("${spring.cloud.aws.s3.folder")
-//    private String folder;
 
     @Bean
     public AmazonS3Client amazonS3Client() {
