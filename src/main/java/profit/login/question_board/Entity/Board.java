@@ -35,6 +35,7 @@ public class Board extends BaseEntity {
     private User user;      // 작성자
 
     @OneToMany(mappedBy = "board", orphanRemoval = true)
+    @JsonBackReference
     private List<Like> likes;       // 좋아요
     private Integer likeCnt;        // 좋아요 수S
 

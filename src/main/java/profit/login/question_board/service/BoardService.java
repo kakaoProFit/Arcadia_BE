@@ -45,7 +45,7 @@ public class BoardService {
         public Page<Board> getBoardList(BoardCategory category, PageRequest pageRequest, String searchType, String keyword) {
             if (searchType != null && keyword != null) {
                 if (searchType.equals("title")) {
-                    log.info("find all: " + boardRepository.findAllByCategoryAndTitleContains(category, keyword, pageRequest));
+                        log.info("find all: " + boardRepository.findAllByCategoryAndTitleContains(category, keyword, pageRequest));
                     return boardRepository.findAllByCategoryAndTitleContains(category, keyword, pageRequest);
                 }
                 else {
