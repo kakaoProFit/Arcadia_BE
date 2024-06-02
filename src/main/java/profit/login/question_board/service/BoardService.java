@@ -50,7 +50,8 @@ public class BoardService {
                     return boardRepository.findAllByCategoryAndTitleContains(category, keyword, pageRequest);
                 }
                 else if (searchType.equals("author")) {
-                    return boardRepository.findAllByCategoryAndUserNicknameContains(category, keyword, pageRequest);
+                    List<User> userOptional = userRepository.findByFullNameContains(keyword);
+                    return boardRepository.findAllByCategoryAndUserIn(category, userOptional, pageRequest);
                 }
             }
             return boardRepository.findAllByCategoryAndUserUserRoleNot(category, UserRole.ADMIN, pageRequest);
