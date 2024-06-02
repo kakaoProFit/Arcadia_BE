@@ -6,34 +6,37 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import profit.login.question_board.dto.CommentCreateRequest;
+import profit.login.question_board.dto.ReplyCreateRequest;
 import profit.login.question_board.response.CommentWriteResponse;
+import profit.login.question_board.response.ReplyWriteResponse;
 import profit.login.question_board.service.BoardService;
 import profit.login.question_board.service.CommentService;
+import profit.login.question_board.service.ReplyService;
 
 import java.io.IOException;
 
 @Controller
-@RequestMapping("/comments")
+@RequestMapping("/reply")
 @RequiredArgsConstructor
 public class ReplyController {
 
     private final CommentService commentService;
     private final BoardService boardService;
+    private final ReplyService replyService;
 
     @PostMapping("/write/{boardId}")
-    public ResponseEntity<CommentWriteResponse> commentWrite(@PathVariable Long boardId, @RequestBody CommentCreateRequest req,
-                                                             Authentication authentication) throws IOException {
+    public ResponseEntity<ReplyWriteResponse> commentWrite(@PathVariable Long boardId, @RequestBody ReplyCreateRequest req,
+                                                           Authentication authentication) throws IOException {
 
         // 댓글 작성 서비스 호출
-        commentService.writeComment(boardId, req, authentication.getName());
+        replyService.writeReply(boardId, req, authentication.getName());
 
         // 응답 메시지와 다음 URL 설정
-        String message = "댓글이 추가되었습니다.";
+        String message = "답글이 추가되었습니다.";
         String nextUrl = "/boards/" + boardService.getCategory(boardId) + "/" + boardId;
 
         // 응답 객체 생성
-        CommentWriteResponse response = CommentWriteResponse.builder()
+        ReplyWriteResponse response = ReplyWriteResponse.builder()
                 .message(message)
                 .nextUrl(nextUrl)
                 .build();
@@ -42,10 +45,10 @@ public class ReplyController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/{commentId}/edit")
-    public ResponseEntity<CommentWriteResponse> editComment(@PathVariable Long commentId, @RequestBody CommentCreateRequest req,
+    @PostMapping("/{replyId}/edit")
+    public ResponseEntity<ReplyWriteResponse> editReply(@PathVariable Long replyId, @RequestBody ReplyCreateRequest req,
                                                             Authentication authentication) {
-        Long boardId = commentService.editComment(commentId, req.getBody(), authentication.getName());
+        Long boardId = replyService.editComment(replyId, req.getBody(), authentication.getName());
 
         String message;
         String nextUrl;
@@ -53,11 +56,11 @@ public class ReplyController {
             message = "잘못된 요청입니다.";
             nextUrl = "/";
         } else {
-            message = "댓글이 수정 되었습니다.";
+            message = "답글이 수정 되었습니다.";
             nextUrl = "/boards/" + boardService.getCategory(boardId) + "/" + boardId;
         }
 
-        CommentWriteResponse response = CommentWriteResponse.builder()
+        ReplyWriteResponse response = ReplyWriteResponse.builder()
                 .message(message)
                 .nextUrl(nextUrl)
                 .build();
@@ -66,9 +69,9 @@ public class ReplyController {
     }
 
 
-    @GetMapping("/{commentId}/delete")
-    public ResponseEntity<CommentWriteResponse> deleteComment(@PathVariable Long commentId, Authentication authentication) {
-        Long boardId = commentService.deleteComment(commentId, authentication.getName());
+    @GetMapping("/{replyId}/delete")
+    public ResponseEntity<ReplyWriteResponse> deleteComment(@PathVariable Long replyId, Authentication authentication) {
+        Long boardId = replyService.deleteComment(replyId, authentication.getName());
 
         String message;
         String nextUrl;
@@ -80,7 +83,7 @@ public class ReplyController {
             nextUrl = "/boards/" + boardService.getCategory(boardId) + "/" + boardId;
         }
 
-        CommentWriteResponse response = CommentWriteResponse.builder()
+        ReplyWriteResponse response = ReplyWriteResponse.builder()
                 .message(message)
                 .nextUrl(nextUrl)
                 .build();
