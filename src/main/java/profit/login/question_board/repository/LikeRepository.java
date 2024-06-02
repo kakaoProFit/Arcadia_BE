@@ -11,5 +11,5 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
 
     void deleteByUserEmailAndBoardId(String email, Long boardId);
     Boolean existsByUserEmailAndBoardId(String email, Long boardId);
-    List<Like> findAllByUserEmail(String email);
+    List<Like> findAllByUserId(Long userId);
 }

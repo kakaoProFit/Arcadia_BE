@@ -12,6 +12,10 @@ public class RegisterUserDto {
 
     private String fullName;
 
+    private String phone;
+
+    private String birth;
+
     // getters and setters here...
     String setEmail(String email){
         this.email = email;
