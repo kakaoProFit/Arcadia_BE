@@ -35,6 +35,13 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
+    @Column(nullable = false)
+    private String phone;
+
+    @Column(nullable = false)
+    private String birth;
+
+
     @Enumerated(EnumType.STRING)
     private UserRole userRole;      // 권한
 
@@ -42,10 +49,10 @@ public class User implements UserDetails {
     @JsonManagedReference
     private List<Board> boards;     // 작성글
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes;       // 유저가 누른 좋아요
 
-    @OneToMany(mappedBy = "user", orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments; // 댓글
 
     @CreationTimestamp

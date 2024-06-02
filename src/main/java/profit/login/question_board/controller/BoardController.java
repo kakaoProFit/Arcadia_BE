@@ -56,7 +56,6 @@ public class BoardController {
             return ResponseEntity.badRequest().body(new ErrorResponse("카테고리가 존재하지 않습니다.", "/"));
         }
 
-        List<Board> notices = boardService.getNotice(boardCategory);
 
         PageRequest pageRequest = PageRequest.of(page-1 , 12, Sort.by("id").descending());
         if (sortType != null) {
@@ -78,7 +77,7 @@ public class BoardController {
         log.info("board's title: " + boards);
         BoardSearchRequest boardSearchRequest = new BoardSearchRequest(sortType, searchType, keyword);
 
-        BoardListResponse response = new BoardListResponse(category, notices, boards, boardSearchRequest);
+        BoardListResponse response = new BoardListResponse(category, boards, boardSearchRequest);
 
         return ResponseEntity.ok(response);
     }
@@ -134,16 +133,16 @@ public class BoardController {
     }
 
 
-    @GetMapping("/read/{category}/{boardId}")
-    @ResponseBody
-    public BoardDto boardDetailPage(@PathVariable String category, @PathVariable Long boardId, Authentication authentication) {
-        BoardDto boardDto = boardService.getBoard(boardId, category);
-        if (boardDto == null) {
-            // 게시글이 존재하지 않는 경우 null 반환 또는 적절한 에러 처리
-            return null;
+        @GetMapping("/read/{category}/{boardId}")
+        @ResponseBody
+        public BoardDto boardDetailPage(@PathVariable String category, @PathVariable Long boardId) {
+            BoardDto boardDto = boardService.getBoard(boardId, category);
+            if (boardDto == null) {
+                // 게시글이 존재하지 않는 경우 null 반환 또는 적절한 에러 처리
+                return null;
+            }
+            return boardDto;
         }
-        return boardDto;
-    }
 
 
     @PostMapping("/{category}/{boardId}/edit")
@@ -153,7 +152,6 @@ public class BoardController {
 
 
         Long editedBoardId = boardService.editBoard(boardId, category, boardDto);
-        log.info("Edited Board ID: " + editedBoardId);
 
         if (editedBoardId == null) {
             return ResponseEntity.badRequest().body(BoardWriteResponse.builder()

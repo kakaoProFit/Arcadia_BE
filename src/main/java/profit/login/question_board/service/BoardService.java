@@ -3,6 +3,7 @@ package profit.login.question_board.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -55,9 +57,6 @@ public class BoardService {
             return boardRepository.findAllByCategoryAndUserUserRoleNot(category, UserRole.ADMIN, pageRequest);
         }
 
-    public List<Board> getNotice(BoardCategory category) {
-        return boardRepository.findAllByCategoryAndUserUserRole(category, UserRole.ADMIN);
-    }
 
     public BoardDto getBoard(Long boardId, String category) {
         Optional<Board> optBoard = boardRepository.findById(boardId);
@@ -140,32 +139,7 @@ public class BoardService {
         return board.getCategory().toString().toLowerCase();
     }
 
-    public List<Board> findMyBoard(String category, String email) {
-        if (category.equals("board")) {
-            return boardRepository.findAllByUserEmail(email);
-        } else if (category.equals("like")) {
-            List<Like> likes = likeRepository.findAllByUserEmail(email);
-            List<Board> boards = new ArrayList<>();
-            for (Like like : likes) {
-                boards.add(like.getBoard());
-            }
-            return boards;
-        } else if (category.equals("comment")) {
-            List<Comment> comments = commentRepository.findAllByUserEmail(email);
-            List<Board> boards = new ArrayList<>();
-            //HashSet을 사용하여 중복을 제거해서 return
-            HashSet<Long> commentIds = new HashSet<>();
 
-            for (Comment comment : comments) {
-                if (!commentIds.contains(comment.getBoard().getId())) {
-                    boards.add(comment.getBoard());
-                    commentIds.add(comment.getBoard().getId());
-                }
-            }
-            return boards;
-        }
-        return null;
-    }
     //Admin 있을때 아래사용
     public BoardCntDto getBoardCnt(){
         return BoardCntDto.builder()
@@ -175,5 +149,28 @@ public class BoardService {
                 .totalFreeCnt(boardRepository.countAllByCategoryAndUserUserRoleNot(BoardCategory.FREE, UserRole.ADMIN))
                 .totalGoldCnt(boardRepository.countAllByCategoryAndUserUserRoleNot(BoardCategory.GOLD, UserRole.ADMIN))
                 .build();
+    }
+
+    public Page<Board> getPagedBoards(List<Board> boards, PageRequest pageRequest, String searchType, String keyword) {
+        // 검색 및 필터링 로직을 추가할 수 있습니다.
+        List<Board> filteredBoards = boards.stream()
+                .filter(board -> {
+                    if (searchType != null && keyword != null) {
+                        switch (searchType) {
+                            case "title":
+                                return board.getTitle().contains(keyword);
+                            case "body":
+                                return board.getBody().contains(keyword);
+                            // 필요한 경우 다른 검색 유형을 추가할 수 있습니다.
+                        }
+                    }
+                    return true;
+                })
+                .collect(Collectors.toList());
+
+        // 필터링된 게시물 목록을 페이지네이션합니다.
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), filteredBoards.size());
+        return new PageImpl<>(filteredBoards.subList(start, end), pageRequest, filteredBoards.size());
     }
 }
