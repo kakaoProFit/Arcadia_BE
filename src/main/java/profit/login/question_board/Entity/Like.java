@@ -1,6 +1,5 @@
 package profit.login.question_board.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,11 +21,9 @@ public class Like {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
     private User user;      // 좋아요를 누른 유저
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
     private Board board;    // 좋아요가 추가된 게시글
 
 }
