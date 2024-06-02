@@ -8,16 +8,12 @@ spring:
   cloud:
     aws:
       region:
-        static: us-east-1 #gunminu
-      #        static: us-northeast-2
+        static: us-east-1
       credentials:
-        access-key: AKIAYULU4KVEB2PRPDJR #gunminu
-        #        access-key: AKIA6JHGVMBAWPG7Y2P4
-        secret-key: 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 #gunminu
+        access-key: AKIAYULU4KVEB2PRPDJR
+        secret-key: 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
       s3:
-        bucket: arcadia-image #gunminu
-  #        bucket: arcadia-profit-2
-  #        folder: profile-image #프로필 사진 외 파일을 저장할 때 수정해야됨
+        bucket: arcadia-image
 
   main:
     allow-bean-definition-overriding: true #MONGODB 오류로 임시 추가
@@ -32,13 +28,12 @@ spring:
       ddl-auto: update
     open-in-view: true
   datasource:
-    # url: jdbc:mariadb://35.216.99.76:3306/test
-    # username: test
-    # password: test
+    #url: jdbc:mariadb://35.216.99.76:3306/test
+    #username: test
+    #password: test
     url: jdbc:mariadb://mariadb:3306/arcadia
     username: profit
     password: vmfhvlt!
-
     driver-class-name: org.mariadb.jdbc.Driver
   security:
     oauth2:
@@ -89,12 +84,12 @@ spring:
       mail.smtp.starttls.enable: true
   data:
     redis:
-      # host: 210.109.55.154
-      # port: 6379
-      # password: vmfhvlt!
       host: redis-master
       port: 6379
       password: LJ8lKmQRH1
+      # host: 210.109.55.154
+      # port: 6379
+      # password: vmfhvlt!
     mongodb:
       #      host: localhost
       #      port: 27017
@@ -104,7 +99,6 @@ spring:
       #      password: 1111
       database: test
       uri: mongodb+srv://test:1111@cluster0.hcj9xiu.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0
-
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
