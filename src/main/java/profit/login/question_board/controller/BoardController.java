@@ -56,7 +56,6 @@ public class BoardController {
             return ResponseEntity.badRequest().body(new ErrorResponse("카테고리가 존재하지 않습니다.", "/"));
         }
 
-        List<Board> notices = boardService.getNotice(boardCategory);
 
         PageRequest pageRequest = PageRequest.of(page-1 , 12, Sort.by("id").descending());
         if (sortType != null) {
@@ -78,7 +77,7 @@ public class BoardController {
         log.info("board's title: " + boards);
         BoardSearchRequest boardSearchRequest = new BoardSearchRequest(sortType, searchType, keyword);
 
-        BoardListResponse response = new BoardListResponse(category, notices, boards, boardSearchRequest);
+        BoardListResponse response = new BoardListResponse(category, boards, boardSearchRequest);
 
         return ResponseEntity.ok(response);
     }

@@ -16,7 +16,6 @@ import java.util.List;
 @NoArgsConstructor
 public class BoardListResponse {
     private String category;
-    private List<Board> notices;
     private Page<Board> boards;
     private BoardSearchRequest boardSearchRequest;
 }

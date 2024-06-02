@@ -57,9 +57,6 @@ public class BoardService {
             return boardRepository.findAllByCategoryAndUserUserRoleNot(category, UserRole.ADMIN, pageRequest);
         }
 
-    public List<Board> getNotice(BoardCategory category) {
-        return boardRepository.findAllByCategoryAndUserUserRole(category, UserRole.ADMIN);
-    }
 
     public BoardDto getBoard(Long boardId, String category) {
         Optional<Board> optBoard = boardRepository.findById(boardId);
