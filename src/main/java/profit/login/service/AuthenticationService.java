@@ -1,6 +1,5 @@
 package profit.login.service;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -46,17 +45,14 @@ public class AuthenticationService {
     }
 
     public User signup(RegisterUserDto input) {
+        User user = new User();
+        user.setFullName(input.getFullName());
+        user.setEmail(input.getEmail());
+        user.setPassword(passwordEncoder.encode(input.getPassword()));
+        user.setBirth(input.getBirth());
+        user.setPhone(input.getPhone());
 
-
-            User user = new User();
-            user.setFullName(input.getFullName());
-            user.setEmail(input.getEmail());
-            user.setPassword(passwordEncoder.encode(input.getPassword()));
-
-
-            return userRepository.save(user);
-
-
+        return userRepository.save(user);
     }
 
     public User authenticate(LoginUserDto input) {
