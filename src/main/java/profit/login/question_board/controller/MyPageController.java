@@ -16,6 +16,7 @@ import profit.login.question_board.repository.BoardRepository;
 import profit.login.question_board.repository.LikeRepository;
 import profit.login.question_board.response.BoardListResponse;
 import profit.login.question_board.dto.BoardSearchRequest;
+import profit.login.question_board.response.LikedBoardResponse;
 import profit.login.question_board.service.BoardService;
 
 import java.util.List;
@@ -27,7 +28,6 @@ import java.util.stream.Collectors;
 public class MyPageController {
 
     private final LikeRepository likeRepository;
-    private final BoardRepository boardRepository;
     private final BoardService boardService;
 
     @GetMapping("/mypage/liked-boards/{userId}")
@@ -68,8 +68,14 @@ public class MyPageController {
         BoardSearchRequest boardSearchRequest = new BoardSearchRequest(sortType, searchType, keyword);
 
         // 응답 객체를 생성합니다.
-        BoardListResponse response = new BoardListResponse("liked", null, pagedLikedBoards, boardSearchRequest);
+        BoardListResponse response = new BoardListResponse("liked", pagedLikedBoards, boardSearchRequest);
 
         return ResponseEntity.ok(response);
     }
+
+
+
+
+
+
 }

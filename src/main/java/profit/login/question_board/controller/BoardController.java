@@ -133,16 +133,16 @@ public class BoardController {
     }
 
 
-    @GetMapping("/read/{category}/{boardId}")
-    @ResponseBody
-    public BoardDto boardDetailPage(@PathVariable String category, @PathVariable Long boardId, Authentication authentication) {
-        BoardDto boardDto = boardService.getBoard(boardId, category);
-        if (boardDto == null) {
-            // 게시글이 존재하지 않는 경우 null 반환 또는 적절한 에러 처리
-            return null;
+        @GetMapping("/read/{category}/{boardId}")
+        @ResponseBody
+        public BoardDto boardDetailPage(@PathVariable String category, @PathVariable Long boardId) {
+            BoardDto boardDto = boardService.getBoard(boardId, category);
+            if (boardDto == null) {
+                // 게시글이 존재하지 않는 경우 null 반환 또는 적절한 에러 처리
+                return null;
+            }
+            return boardDto;
         }
-        return boardDto;
-    }
 
 
     @PostMapping("/{category}/{boardId}/edit")
@@ -152,7 +152,6 @@ public class BoardController {
 
 
         Long editedBoardId = boardService.editBoard(boardId, category, boardDto);
-        log.info("Edited Board ID: " + editedBoardId);
 
         if (editedBoardId == null) {
             return ResponseEntity.badRequest().body(BoardWriteResponse.builder()
