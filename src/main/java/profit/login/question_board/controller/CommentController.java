@@ -1,3 +1,4 @@
+// CommentController.java
 package profit.login.question_board.controller;
 
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,9 @@ public class CommentController {
     private final BoardService boardService;
 
     @PostMapping("/write/{boardId}")
-    public ResponseEntity<CommentWriteResponse> commentWrite(@PathVariable Long boardId, @RequestBody CommentCreateRequest req,
-                                                             Authentication authentication) throws IOException {
+    public ResponseEntity<CommentWriteResponse> commentWrite(@PathVariable Long boardId,
+            @RequestBody CommentCreateRequest req,
+            Authentication authentication) throws IOException {
 
         // 댓글 작성 서비스 호출
         commentService.writeComment(boardId, req, authentication.getName());
@@ -43,8 +45,9 @@ public class CommentController {
     }
 
     @PostMapping("/{commentId}/edit")
-    public ResponseEntity<CommentWriteResponse> editComment(@PathVariable Long commentId, @RequestBody CommentCreateRequest req,
-                                                           Authentication authentication) {
+    public ResponseEntity<CommentWriteResponse> editComment(@PathVariable Long commentId,
+            @RequestBody CommentCreateRequest req,
+            Authentication authentication) {
         Long boardId = commentService.editComment(commentId, req.getBody(), authentication.getName());
 
         String message;
@@ -65,9 +68,9 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
-
     @GetMapping("/{commentId}/delete")
-    public ResponseEntity<CommentWriteResponse> deleteComment(@PathVariable Long commentId, Authentication authentication) {
+    public ResponseEntity<CommentWriteResponse> deleteComment(@PathVariable Long commentId,
+            Authentication authentication) {
         Long boardId = commentService.deleteComment(commentId, authentication.getName());
 
         String message;
