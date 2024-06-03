@@ -43,7 +43,7 @@ public class User implements UserDetails {
 
 
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;      // 권한
+    private UserRole userRole = UserRole.NORMAL; // 기본값 설정
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
