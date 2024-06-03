@@ -28,12 +28,12 @@ spring:
       ddl-auto: update
     open-in-view: true
   datasource:
-    url: jdbc:mariadb://35.216.99.76:3306/test
-    username: test
-    password: test
-    #url: jdbc:mariadb://mariadb:3306/arcadia
-    #username: profit
-    #password: vmfhvlt!
+    # url: jdbc:mariadb://35.216.99.76:3306/test
+    # username: test
+    # password: test
+    url: jdbc:mariadb://mariadb:3306/arcadia
+    username: profit
+    password: vmfhvlt!
     driver-class-name: org.mariadb.jdbc.Driver
   security:
     oauth2:
@@ -84,10 +84,9 @@ spring:
       mail.smtp.starttls.enable: true
   data:
     redis:
-      #host: redis-master
-      #port: 6379
-      #password: LJ8lKmQRH1
-      host: 210.109.55.154
+      #host: localhost
+      #ppassword: 1234
+      host: redis-master
       port: 6379
       password: vmfhvlt!
       #host: redis

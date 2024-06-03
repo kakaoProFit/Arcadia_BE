@@ -1,3 +1,4 @@
+// ReployController.java
 package profit.login.question_board.controller;
 
 import lombok.RequiredArgsConstructor;
@@ -59,9 +60,9 @@ public class ReplyController {
                 .userRole(userRole)
                 .build();
 
-        // ResponseEntity로 응답 반환
-        return ResponseEntity.ok(response);
-    }
+    // // ResponseEntity로 응답 반환
+    // return ResponseEntity.ok(response);
+    // }
 
     @PostMapping("/{replyId}/edit")
     public ResponseEntity<ReplyWriteResponse> editReply(@PathVariable Long replyId, @RequestBody ReplyCreateRequest req,
@@ -83,9 +84,15 @@ public class ReplyController {
                 .nextUrl(nextUrl)
                 .build();
 
-        return ResponseEntity.ok(response);
-    }
+    // return ResponseEntity.ok(response);
+    // }
 
+    // @GetMapping("/{commentId}/delete")
+    // public ResponseEntity<CommentWriteResponse> deleteComment(@PathVariable Long
+    // commentId,
+    // Authentication authentication) {
+    // Long boardId = commentService.deleteComment(commentId,
+    // authentication.getName());
 
     @GetMapping("/{replyId}/delete")
     public ResponseEntity<ReplyWriteResponse> deleteComment(@PathVariable Long replyId, Authentication authentication) {
@@ -109,4 +116,6 @@ public class ReplyController {
         return ResponseEntity.ok(response);
     }
 
+    // return ResponseEntity.ok(response);
+    // }
 }
