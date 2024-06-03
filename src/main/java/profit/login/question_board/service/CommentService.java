@@ -27,6 +27,7 @@ public class CommentService {
     public void writeComment(Long boardId, CommentCreateRequest req, String email) {
         Board board = boardRepository.findById(boardId).get();
         User user = userRepository.findByEmail(email).get();
+        UserRole userRole = user.getUserRole();
         board.commentChange(board.getCommentCnt() + 1);
         commentRepository.save(req.toEntity(board, user));
     }
@@ -53,7 +54,7 @@ public class CommentService {
         Optional<Comment> optComment = commentRepository.findById(commentId);
         Optional<User> optUser = userRepository.findByEmail(email);
         if (optComment.isEmpty() || optUser.isEmpty() ||
-                (!optComment.get().getUser().equals(optUser.get()) && !optUser.get().getUserRole().equals(UserRole.ADMIN))) {
+                (!optComment.get().getUser().equals(optUser.get()) && !optUser.get().getUserRole().equals(UserRole.NORMAL))) {
             return null;
         }
 

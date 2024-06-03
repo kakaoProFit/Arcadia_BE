@@ -15,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import profit.login.dto.LoginUserDto;
 import profit.login.entity.User;
+import profit.login.entity.UserRole;
 import profit.login.question_board.Entity.Board;
 import profit.login.question_board.dto.*;
 import profit.login.question_board.response.BoardListResponse;
@@ -26,6 +27,7 @@ import profit.login.question_board.service.BoardService;
 import profit.login.question_board.service.UploadImageService;
 import profit.login.question_board.service.LikeService;
 import profit.login.question_board.service.CommentService;
+import profit.login.repository.UserRepository;
 import profit.login.service.AuthenticationService;
 
 import java.io.IOException;
@@ -43,6 +45,7 @@ public class BoardController {
     private final CommentService commentService;
     private final UploadImageService uploadImageService;
     private final AuthenticationService authenticationService;
+    private final UserRepository userRepository;
 
 
     @GetMapping("/list/{category}")
@@ -114,12 +117,23 @@ public class BoardController {
         }
 
         Long savedBoardId = boardService.writeBoard(req, bcd, boardCategory, authentication.getName(), authentication);
-        log.info("auth.getname(): "+ authentication.getName());
+        //log.info("auth.getname(): "+ authentication.getName());
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email).get();
+        UserRole userRole = user.getUserRole();
+
+        String isExpert;
+
+        if (userRole.equals((UserRole.EXPERT))){
+            isExpert = "전문가입니다.";
+        } else{
+            isExpert = "일반유저입니다";
+        }
 
         String message;
         String nextUrl;
-        if (boardCategory.equals(BoardCategory.GREETING)) {
-            message = "가입인사를 작성하여 SILVER 등급으로 승급했습니다!\n이제 자유게시판에 글을 작성할 수 있습니다!";
+        if (boardCategory.equals(BoardCategory.QUESTION)) {
+            message = "질문글은 삭제할 수 없습니다.";
             nextUrl = "/";
         } else {
             message = savedBoardId + "번 글이 등록되었습니다.";
@@ -129,6 +143,8 @@ public class BoardController {
         return ResponseEntity.ok(BoardWriteResponse.builder()
                 .message(message)
                 .nextUrl(nextUrl)
+                .isExpert(isExpert)
+                .userRole(userRole)
                 .build());
     }
 
@@ -208,14 +224,4 @@ public class BoardController {
                 .build());
     }
 
-//    @ResponseBody
-//    @GetMapping("/images/{filename}")
-//    public Resource showImage(@PathVariable String filename) throws MalformedURLException {
-//        return new UrlResource("file:" + uploadImageService.getFullPath(filename));
-//    }
-//
-//    @GetMapping("/images/download/{boardId}")
-//    public ResponseEntity<UrlResource> downloadImage(@PathVariable Long boardId) throws MalformedURLException {
-//        return uploadImageService.downloadImage(boardId);
-//    }
 }

@@ -11,7 +11,8 @@ public class BoardCntDto {
     // 쓸거면 나중에 일기, 질문, 자유로 나누면 될듯.
     private Long totalNoticeCnt;
     private Long totalBoardCnt;
-    private Long totalGreetingCnt;
+    private Long totalQuestionCnt;
     private Long totalFreeCnt;
-    private Long totalGoldCnt;
+    private Long totalInformCnt;
+    private Long totalDiaryCnt;
 }

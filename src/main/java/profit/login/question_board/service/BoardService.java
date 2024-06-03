@@ -8,8 +8,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import profit.login.question_board.Entity.Comment;
-import profit.login.question_board.Entity.Like;
 import profit.login.entity.User;
 import profit.login.entity.UserRole;
 import profit.login.question_board.Entity.Board;
@@ -25,8 +23,6 @@ import profit.login.question_board.repository.LikeRepository;
 import profit.login.repository.UserRepository;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -51,10 +47,10 @@ public class BoardService {
                     return boardRepository.findAllByCategoryAndTitleContains(category, keyword, pageRequest);
                 }
                 else {
-                    return boardRepository.findAllByCategoryAndUserNicknameContainsAndUserUserRoleNot(category, keyword, UserRole.ADMIN, pageRequest);
+                    return boardRepository.findAllByCategoryAndUserNicknameContainsAndUserUserRoleNot(category, keyword, UserRole.NORMAL, pageRequest);
                 }
             }
-            return boardRepository.findAllByCategoryAndUserUserRoleNot(category, UserRole.ADMIN, pageRequest);
+            return boardRepository.findAllByCategoryAndUserUserRoleNot(category, UserRole.NORMAL, pageRequest);
         }
 
 
@@ -144,10 +140,11 @@ public class BoardService {
     public BoardCntDto getBoardCnt(){
         return BoardCntDto.builder()
                 .totalBoardCnt(boardRepository.count())
-                .totalNoticeCnt(boardRepository.countAllByUserUserRole(UserRole.ADMIN))
-                .totalGreetingCnt(boardRepository.countAllByCategoryAndUserUserRoleNot(BoardCategory.GREETING, UserRole.ADMIN))
-                .totalFreeCnt(boardRepository.countAllByCategoryAndUserUserRoleNot(BoardCategory.FREE, UserRole.ADMIN))
-                .totalGoldCnt(boardRepository.countAllByCategoryAndUserUserRoleNot(BoardCategory.GOLD, UserRole.ADMIN))
+                .totalNoticeCnt(boardRepository.countAllByUserUserRole(UserRole.NORMAL))
+                .totalQuestionCnt(boardRepository.countAllByCategoryAndUserUserRoleNot(BoardCategory.QUESTION, UserRole.NORMAL))
+                .totalFreeCnt(boardRepository.countAllByCategoryAndUserUserRoleNot(BoardCategory.FREE, UserRole.NORMAL))
+                .totalInformCnt(boardRepository.countAllByCategoryAndUserUserRoleNot(BoardCategory.INFORM, UserRole.NORMAL))
+                .totalDiaryCnt(boardRepository.countAllByCategoryAndUserUserRoleNot(BoardCategory.DIARY, UserRole.NORMAL))
                 .build();
     }
 

@@ -6,12 +6,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import profit.login.entity.User;
+import profit.login.entity.UserRole;
 import profit.login.question_board.dto.ReplyCreateRequest;
 import profit.login.question_board.response.CommentWriteResponse;
 import profit.login.question_board.response.ReplyWriteResponse;
 import profit.login.question_board.service.BoardService;
 import profit.login.question_board.service.CommentService;
 import profit.login.question_board.service.ReplyService;
+import profit.login.repository.UserRepository;
 
 import java.io.IOException;
 
@@ -23,6 +26,7 @@ public class ReplyController {
     private final CommentService commentService;
     private final BoardService boardService;
     private final ReplyService replyService;
+    private final UserRepository userRepository;
 
     @PostMapping("/write/{boardId}")
     public ResponseEntity<ReplyWriteResponse> commentWrite(@PathVariable Long boardId, @RequestBody ReplyCreateRequest req,
@@ -30,6 +34,18 @@ public class ReplyController {
 
         // 댓글 작성 서비스 호출
         replyService.writeReply(boardId, req, authentication.getName());
+
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email).get();
+        UserRole userRole = user.getUserRole();
+
+        String isExpert;
+
+        if (userRole.equals((UserRole.EXPERT))){
+            isExpert = "전문가입니다.";
+        } else{
+            isExpert = "일반유저입니다";
+        }
 
         // 응답 메시지와 다음 URL 설정
         String message = "답글이 추가되었습니다.";
@@ -39,6 +55,8 @@ public class ReplyController {
         ReplyWriteResponse response = ReplyWriteResponse.builder()
                 .message(message)
                 .nextUrl(nextUrl)
+                .isExpert(isExpert)
+                .userRole(userRole)
                 .build();
 
         // ResponseEntity로 응답 반환
@@ -48,7 +66,7 @@ public class ReplyController {
     @PostMapping("/{replyId}/edit")
     public ResponseEntity<ReplyWriteResponse> editReply(@PathVariable Long replyId, @RequestBody ReplyCreateRequest req,
                                                             Authentication authentication) {
-        Long boardId = replyService.editComment(replyId, req.getBody(), authentication.getName());
+        Long boardId = replyService.editReply(replyId, req.getBody(), authentication.getName());
 
         String message;
         String nextUrl;
@@ -71,7 +89,7 @@ public class ReplyController {
 
     @GetMapping("/{replyId}/delete")
     public ResponseEntity<ReplyWriteResponse> deleteComment(@PathVariable Long replyId, Authentication authentication) {
-        Long boardId = replyService.deleteComment(replyId, authentication.getName());
+        Long boardId = replyService.deleteReply(replyId, authentication.getName());
 
         String message;
         String nextUrl;

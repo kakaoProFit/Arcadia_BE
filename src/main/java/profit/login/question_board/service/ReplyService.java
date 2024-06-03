@@ -3,15 +3,12 @@ package profit.login.question_board.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import profit.login.question_board.Entity.Comment;
 import profit.login.entity.User;
 import profit.login.entity.UserRole;
 import profit.login.question_board.Entity.Board;
 import profit.login.question_board.Entity.Reply;
-import profit.login.question_board.dto.CommentCreateRequest;
 import profit.login.question_board.dto.ReplyCreateRequest;
 import profit.login.question_board.repository.BoardRepository;
-import profit.login.question_board.repository.CommentRepository;
 import profit.login.question_board.repository.ReplyRepository;
 import profit.login.repository.UserRepository;
 
@@ -39,7 +36,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public Long editComment(Long commentId, String newBody, String email) {
+    public Long editReply(Long commentId, String newBody, String email) {
         Optional<Reply> optReply = replyRepository.findById(commentId);
         Optional<User> optUser = userRepository.findByEmail(email);
         if (optReply.isEmpty() || optUser.isEmpty() || !optReply.get().getUser().equals(optUser.get())) {
@@ -52,11 +49,11 @@ public class ReplyService {
         return reply.getBoard().getId();
     }
 
-    public Long deleteComment(Long replyId, String email) {
+    public Long deleteReply(Long replyId, String email) {
         Optional<Reply> optReply = replyRepository.findById(replyId);
         Optional<User> optUser = userRepository.findByEmail(email);
         if (optReply.isEmpty() || optUser.isEmpty() ||
-                (!optReply.get().getUser().equals(optUser.get()) && !optUser.get().getUserRole().equals(UserRole.ADMIN))) {
+                (!optReply.get().getUser().equals(optUser.get()) && !optUser.get().getUserRole().equals(UserRole.NORMAL))) {
             return null;
         }
 
