@@ -23,7 +23,6 @@ public class BoardContentDto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String content;
 
     public BoardContentDto init(Long id, String body) {

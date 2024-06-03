@@ -30,6 +30,15 @@ public class LikeController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/reply/add/{replyId}")
+    public ResponseEntity<LikeResponse> addLikeToReply(@PathVariable Long replyId, Authentication auth) {
+        likeService.addLikeToReply(auth.getName(), replyId);
+        LikeResponse response = LikeResponse.builder()
+                .message("좋아요가 추가되었습니다.")
+                .build();
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/delete/{boardId}")
     public ResponseEntity<LikeResponse> deleteLike(@PathVariable Long boardId, Authentication auth) {
         likeService.deleteLike(auth.getName(), boardId);

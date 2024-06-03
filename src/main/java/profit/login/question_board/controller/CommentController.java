@@ -7,10 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import profit.login.entity.User;
+import profit.login.entity.UserRole;
 import profit.login.question_board.dto.CommentCreateRequest;
 import profit.login.question_board.response.CommentWriteResponse;
 import profit.login.question_board.service.BoardService;
 import profit.login.question_board.service.CommentService;
+import profit.login.repository.UserRepository;
 
 import java.io.IOException;
 
@@ -21,6 +24,7 @@ public class CommentController {
 
     private final CommentService commentService;
     private final BoardService boardService;
+    private final UserRepository userRepository;
 
     @PostMapping("/write/{boardId}")
     public ResponseEntity<CommentWriteResponse> commentWrite(@PathVariable Long boardId,
@@ -30,6 +34,18 @@ public class CommentController {
         // 댓글 작성 서비스 호출
         commentService.writeComment(boardId, req, authentication.getName());
 
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email).get();
+        UserRole userRole = user.getUserRole();
+
+        String isExpert;
+
+        if (userRole.equals((UserRole.EXPERT))){
+            isExpert = "전문가입니다.";
+        } else{
+            isExpert = "일반유저입니다";
+        }
+
         // 응답 메시지와 다음 URL 설정
         String message = "댓글이 추가되었습니다.";
         String nextUrl = "/boards/" + boardService.getCategory(boardId) + "/" + boardId;
@@ -38,6 +54,8 @@ public class CommentController {
         CommentWriteResponse response = CommentWriteResponse.builder()
                 .message(message)
                 .nextUrl(nextUrl)
+                .isExpert(isExpert)
+                .userRole(userRole)
                 .build();
 
         // ResponseEntity로 응답 반환
