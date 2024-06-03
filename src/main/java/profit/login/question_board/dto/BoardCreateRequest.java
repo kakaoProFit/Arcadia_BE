@@ -15,6 +15,7 @@ public class BoardCreateRequest {
 
     private String title;
     private String body;
+    private Integer point = 0;
     private MultipartFile uploadImage;
 
     public Board toEntity(BoardCategory category, User user) {
@@ -23,6 +24,7 @@ public class BoardCreateRequest {
                 .category(category)
                 .title(title)
                 .body(body)
+                .point(point)
                 .likeCnt(0)
                 .commentCnt(0)
                 .build();

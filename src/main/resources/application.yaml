@@ -255,15 +255,10 @@ spring:
       database : test
       uri: mongodb+srv://test:1111@cluster0.hcj9xiu.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0
 
-
-
+  
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
-
-
-
 
 security:
   jwt:
