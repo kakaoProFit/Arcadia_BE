@@ -44,13 +44,13 @@ public class UserService {
 
 
 
-    @Transactional
-    public void changeRole(String id) {
-        User user = userRepository.findById(id).get();
-        // admin 페이지 만들거면 Role을 일반과 전문가로 이분화 하여서 진행해야함
-        //일단 예시로 만들어놓음.
-        user.changeRole();
-    }
+//    @Transactional
+//    public void changeRole(String id) {
+//        User user = userRepository.findById(id).get();
+//        // admin 페이지 만들거면 Role을 일반과 전문가로 이분화 하여서 진행해야함
+//        //일단 예시로 만들어놓음.
+//        user.changeRole();
+//    }
 
 
 

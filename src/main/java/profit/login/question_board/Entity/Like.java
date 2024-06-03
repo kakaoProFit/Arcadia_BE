@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import profit.login.entity.User;
 import profit.login.question_board.Entity.Board;
+import profit.login.question_board.Entity.Reply;
 
 @Entity
 @AllArgsConstructor
@@ -28,5 +29,9 @@ public class Like {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonBackReference
     private Board board;    // 좋아요가 추가된 게시글
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
+    private Reply reply;
 
 }
