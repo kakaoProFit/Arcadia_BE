@@ -14,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import profit.login.oauth2.service.OAuth2UserPrincipal;
 
 import java.security.Key;
 import java.util.Collections;
@@ -70,8 +71,9 @@ public class TokenProvider {
         Date date = new Date(System.currentTimeMillis());
         Date expiryDate = new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRE_TIME_IN_MILLISECONDS);
 
+
         String token = Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject("더미더미더미")
                 .setIssuedAt(date)
                 .setExpiration(expiryDate)
                 .signWith(key, SignatureAlgorithm.HS256)
