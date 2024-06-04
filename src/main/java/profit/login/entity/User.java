@@ -49,6 +49,7 @@ public class User implements UserDetails {
     @JsonManagedReference
     private List<Board> boards;     // 작성글
 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes;       // 유저가 누른 좋아요
 
