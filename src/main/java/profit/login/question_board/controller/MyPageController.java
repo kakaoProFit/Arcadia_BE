@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import profit.login.question_board.Entity.Like;
 import profit.login.question_board.dto.BoardDto;
@@ -18,12 +19,13 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("/mypage")
 public class MyPageController {
 
     private final LikeRepository likeRepository;
     private final BoardService boardService;
 
-    @GetMapping("/mypage/liked-boards/{userId}")
+    @GetMapping("/liked-boards/{userId}")
     public ResponseEntity<?> getLikedBoards(@PathVariable Long userId) {
         // 유저가 좋아요를 누른 Like 엔티티 리스트를 가져옵니다.
         List<Like> likes = likeRepository.findAllByUserId(userId);
@@ -41,4 +43,9 @@ public class MyPageController {
 
         return ResponseEntity.ok(response);
     }
+
+//    @GetMapping("/writed-boards/{userId}")
+//    public ResponseEntity<?> getWritedBoards(@PathVariable Long userId){
+//        List
+//    }
 }
