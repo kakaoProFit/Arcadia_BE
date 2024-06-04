@@ -35,7 +35,6 @@ public class Board extends BaseEntity {
     private User user;      // 작성자
 
 
-
     @OneToMany(mappedBy = "board",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private List<Like> likes;       // 좋아요
