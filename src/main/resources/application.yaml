@@ -239,12 +239,17 @@ spring:
       mail.smtp.starttls.enable: true
   data:
     redis:
-      host: localhost
+      host: 210.109.55.154
       port: 6379
-      password: 1234
-    #      host: redis-master
-    #      port: 6379
-    #      password: LJ8lKmQRH1
+      password: vmfhvlt!
+      #host: localhost
+      #ppassword: 1234
+#      host: redis-master
+#      port: 6379
+#      password: vmfhvlt!
+      #host: redis
+      #port: 6379
+      #password: 1234
     mongodb:
       #      host: localhost
       #      port: 27017

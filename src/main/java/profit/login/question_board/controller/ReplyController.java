@@ -60,7 +60,7 @@ public class ReplyController {
                 .userRole(userRole)
                 .build();
 
-     // ResponseEntity로 응답 반환
+    // // ResponseEntity로 응답 반환
      return ResponseEntity.ok(response);
      }
 
@@ -87,16 +87,12 @@ public class ReplyController {
      return ResponseEntity.ok(response);
      }
 
-    // @GetMapping("/{commentId}/delete")
-    // public ResponseEntity<CommentWriteResponse> deleteComment(@PathVariable Long
-    // commentId,
-    // Authentication authentication) {
-    // Long boardId = commentService.deleteComment(commentId,
-    // authentication.getName());
 
     @GetMapping("/{replyId}/delete")
     public ResponseEntity<ReplyWriteResponse> deleteComment(@PathVariable Long replyId, Authentication authentication) {
         Long boardId = replyService.deleteReply(replyId, authentication.getName());
+
+
 
         String message;
         String nextUrl;
