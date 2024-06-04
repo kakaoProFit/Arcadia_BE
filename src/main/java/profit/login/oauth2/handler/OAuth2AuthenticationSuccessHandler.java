@@ -1,6 +1,10 @@
 package profit.login.oauth2.handler;
 
 import io.lettuce.core.AbstractRedisAsyncCommands;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import profit.login.dto.RegisterUserDto;
 import profit.login.dto.SocialRegisterUserDto;
 import profit.login.entity.User;
@@ -22,6 +26,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
 import profit.login.repository.UserRepository;
 import profit.login.dto.SocialRegisterUserDto;
+import profit.login.service.JwtService;
+import profit.login.service.TokenRedisService;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -32,13 +38,14 @@ import static profit.login.oauth2.HttpCookieOAuth2AuthorizationRequestRepository
 @Slf4j
 @RequiredArgsConstructor
 @Component
+@Service
 public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final HttpCookieOAuth2AuthorizationRequestRepository httpCookieOAuth2AuthorizationRequestRepository;
     private final OAuth2UserUnlinkManager oAuth2UserUnlinkManager;
     private final TokenProvider tokenProvider;
-    private final UserRepository UserRepository;
     private final UserRepository userRepository;
+
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -91,6 +98,23 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     principal.getUserInfo().getRefreshToken()
             );
 
+            String email = principal.getUserInfo().getEmail();
+            Optional<User> existingUser = userRepository.findByEmail(email);
+
+            if (existingUser.isEmpty()) {
+                // 사용자가 존재하지 않으면 새로운 User 객체 생성 및 저장
+                User user = new User();
+                user.setFullName(principal.getUserInfo().getName());
+                user.setEmail(email);
+                user.setPassword("SOCIAL");
+                user.setBirth(principal.getUserInfo().getBirthday());
+                user.setPhone(principal.getUserInfo().getPhoneNumber());
+
+                userRepository.save(user);
+            } else {
+                // 필요하면 기존 사용자 정보를 업데이트하는 로직 추가
+                log.info("User already exists");
+            }
 
             String accessToken = tokenProvider.createToken(authentication);
             String refreshToken = tokenProvider.createRefreshToken(authentication);

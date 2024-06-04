@@ -21,8 +21,10 @@ import java.util.List;
 @Table(name = "users")
 @Entity
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     @Column(nullable = false)
     private Long id;
 
@@ -41,13 +43,16 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String birth;
 
+    @Column(nullable = false)
+    private Integer point = 0;
 
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;      // 권한
+    private UserRole userRole = UserRole.NORMAL; // 기본값 설정
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Board> boards;     // 작성글
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes;       // 유저가 누른 좋아요
@@ -108,7 +113,6 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
-
 
 
 

@@ -33,6 +33,7 @@ public class Reply extends BaseEntity {
     private Integer likeCnt;        // 좋아요 수
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private User user;      // 작성자
 
     @ManyToOne(fetch = FetchType.LAZY)

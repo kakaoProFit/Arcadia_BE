@@ -119,6 +119,7 @@ public class BoardController {
         //log.info("auth.getname(): "+ authentication.getName());
         String email = authentication.getName();
         User user = userRepository.findByEmail(email).get();
+
         UserRole userRole = user.getUserRole();
 
         String isExpert;
@@ -132,6 +133,7 @@ public class BoardController {
         String message;
         String nextUrl;
         if (boardCategory.equals(BoardCategory.QUESTION)) {
+
             message = "질문글은 삭제할 수 없습니다.";
             nextUrl = "/";
         } else {

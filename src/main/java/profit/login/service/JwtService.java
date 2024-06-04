@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import profit.login.entity.User;
 
 import java.security.Key;
 import java.util.Date;
@@ -49,6 +50,10 @@ public class JwtService {
             UserDetails userDetails,
             long expiration
     ) {
+        User user = (User) userDetails; // 추가된 부분: UserDetails를 상속한 User 엔티티 사용
+        extraClaims.put("userId", user.getId()); // 추가된 부분: 유저 ID 추가
+        extraClaims.put("email", user.getEmail()); // 추가된 부분: 유저 이메일 추가
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
