@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import profit.login.repository.UserRepository;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,19 +27,20 @@ import java.io.InputStream;
 public class ImageUploadController {
 
     private final AmazonS3Client amazonS3Client;
+    private final UserRepository userRepository;
 
     @Value("${spring.cloud.aws.s3.bucket}")
     private String bucket;
 
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file) {
+    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
+                                             @RequestParam("user_id") Long id) {
         try {
-            String fileName = file.getOriginalFilename();
-            String fileUrl = "https://" + bucket + "/test/" + fileName;
+            String fileUrl = "https://" + bucket + "/test/" + id;
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
-            amazonS3Client.putObject(bucket, fileName, file.getInputStream(), metadata);
+            amazonS3Client.putObject(bucket, Long.toString(id), file.getInputStream(), metadata);
             return ResponseEntity.ok(fileUrl);
         } catch (IOException e) {
             e.printStackTrace();
@@ -47,8 +49,9 @@ public class ImageUploadController {
     }
 
     @GetMapping("/download")
-    public ResponseEntity<byte[]> downloadFile(@RequestParam("file") String fileName) {
-        try (InputStream inputStream = amazonS3Client.getObject(new GetObjectRequest(bucket, fileName)).getObjectContent();
+    public ResponseEntity<byte[]> downloadFile(@RequestParam("user_id") Long id) {
+        try (
+            InputStream inputStream = amazonS3Client.getObject(new GetObjectRequest(bucket, Long.toString(id))).getObjectContent();
              ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 
             byte[] buffer = new byte[1024];

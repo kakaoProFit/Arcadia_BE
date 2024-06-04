@@ -60,11 +60,11 @@ public class BoardController {
         }
 
 
-        PageRequest pageRequest = PageRequest.of(page-1 , 12, Sort.by("id").descending());
+        PageRequest pageRequest = PageRequest.of(page-1 , 12, Sort.by("createdAt").descending());
         if (sortType != null) {
             switch (sortType) {
-                case "date":
-                    pageRequest = PageRequest.of(page-1 , 12, Sort.by("createdAt").descending());
+                case "id":
+                    pageRequest = PageRequest.of(page-1 , 12, Sort.by("id").descending());
                     break;
                 case "like":
                     pageRequest = PageRequest.of(page-1 , 12, Sort.by("likeCnt").descending());
@@ -74,7 +74,6 @@ public class BoardController {
                     break;
             }
         }
-
 
         Page<Board> boards = boardService.getBoardList(boardCategory, pageRequest, searchType, keyword);
         log.info("board's title: " + boards);
