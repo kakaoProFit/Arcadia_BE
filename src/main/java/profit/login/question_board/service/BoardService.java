@@ -43,11 +43,11 @@ public class BoardService {
         public Page<Board> getBoardList(BoardCategory category, PageRequest pageRequest, String searchType, String keyword) {
             if (searchType != null && keyword != null) {
                 if (searchType.equals("title")) {
-                        log.info("find all: " + boardRepository.findAllByCategoryAndTitleContains(category, keyword, pageRequest));
                     return boardRepository.findAllByCategoryAndTitleContains(category, keyword, pageRequest);
                 }
-                else {
-                    return boardRepository.findAllByCategoryAndUserNicknameContainsAndUserUserRoleNot(category, keyword, UserRole.NORMAL, pageRequest);
+                else if (searchType.equals("author")) {
+                    List<User> userOptional = userRepository.findByFullNameContains(keyword);
+                    return boardRepository.findAllByCategoryAndUserIn(category, userOptional, pageRequest);
                 }
             }
             return boardRepository.findAllByCategoryAndUserUserRoleNot(category, UserRole.NORMAL, pageRequest);

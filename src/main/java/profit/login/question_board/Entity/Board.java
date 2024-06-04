@@ -34,10 +34,12 @@ public class Board extends BaseEntity {
     @JsonBackReference
     private User user;      // 작성자
 
+
+
     @OneToMany(mappedBy = "board",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private List<Like> likes;       // 좋아요
-    private Integer likeCnt;        // 좋아요 수S
+    private Integer likeCnt;        // 좋아요 수
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
@@ -47,10 +49,14 @@ public class Board extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private UploadImage uploadImage;
 
+    @Column(nullable = false)
+    private Integer point = 0; //채택 포인트, 카테고리 구분없이 board 엔티티는 통일되다보니 기본값은 0으로 설정
+
     public void update(BoardDto dto) {
         this.title = dto.getTitle();
         this.body = dto.getBody();
     }
+
 
     public void likeChange(Integer likeCnt) {
         this.likeCnt = likeCnt;
