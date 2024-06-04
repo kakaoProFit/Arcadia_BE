@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
 //                .allowedOrigins("https://arcadia.p-e.kr", "https://localhost:3000")
                 .allowedMethods("GET", "POST") // 허용할 HTTP method
                 .allowedHeaders("*") 
-                .allowCredentials(true)
+                .allowCredentials(false)
                 .maxAge(3600);
 
 
