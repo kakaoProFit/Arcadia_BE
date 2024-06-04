@@ -13,9 +13,9 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOriginPatterns("https://arcadiaprofit.shop", "https://arcadia.p-e.kr","http://localhost:3000") // “*“같은 와일드카드를 사용
 //                .allowedOrigins("https://arcadia.p-e.kr", "https://localhost:3000")
-                .allowedMethods("GET", "POST") // 허용할 HTTP method
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // 허용할 HTTP method
                 .allowedHeaders("*") 
-                .allowCredentials(false)
+                .allowCredentials(true)
                 .maxAge(3600);
 
 
