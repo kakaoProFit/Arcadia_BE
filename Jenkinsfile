@@ -1,5 +1,5 @@
 pipeline {
-    environment{
+    environment {
         repository = 'gcu-profit-dev.kr-central-2.kcr.dev/arcadia-nextjs/springboot-login'
         DOCKERHUB_CREDENTIALS = credentials('kicToken')
         dockerImage = ''
@@ -20,34 +20,32 @@ pipeline {
                     git branch: "$gitlabbranch", credentialsId: 'gitlabToken', url: "$gitlaburl"
                     COMMIT_MESSAGE = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
                     slackSend (
-                        channel: SLACK_CHANNEL, 
-                        color: '#FFFF00', 
+                        channel: SLACK_CHANNEL,
+                        color: '#FFFF00',
                         message: "Build Started: ${env.JOB_NAME} - ${env.BUILD_NUMBER}\nCommit Message: ${COMMIT_MESSAGE}"
                     )
                 }
             }
         }
 
-        stage('Gradlew  Build') {
+        stage('Gradlew Build') {
             steps {
                 script {
                     try {
                         sh 'chmod +x gradlew'
-                        sh  './gradlew clean build'
+                        sh './gradlew clean build'
                     } catch (Exception e) {
                         slackSend (
-                            channel: SLACK_CHANNEL, 
-                            color: 'danger', 
+                            channel: SLACK_CHANNEL,
+                            color: 'danger',
                             message: "Gradlew Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
                         )
                         throw e
                     }
                 }
-                // 	"빌드" 단계와 관련된 몇 가지 단계를 수행
-                sh 'chmod +x gradlew'
-                sh  './gradlew clean build'
             }
         }
+
         stage('Docker build') {
             steps {
                 script {
@@ -56,25 +54,27 @@ pipeline {
                         sh 'docker image tag $repository:$BUILD_NUMBER $repository:latest'
                     } catch (Exception e) {
                         slackSend (
-                            channel: SLACK_CHANNEL, 
-                            color: 'danger', 
+                            channel: SLACK_CHANNEL,
+                            color: 'danger',
                             message: "Docker Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
                         )
                         throw e
                     }
                     slackSend (
-                        channel: SLACK_CHANNEL, 
-                        color: 'good', 
+                        channel: SLACK_CHANNEL,
+                        color: 'good',
                         message: "Docker Build Success: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
                     )
                 }
             }
         }
+
         stage('Login') {
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login gcu-profit-dev.kr-central-2.kcr.dev -u $DOCKERHUB_CREDENTIALS_USR --password-stdin' // docker hub 로그인
             }
         }
+
         stage('Deliver image') {
             steps {
                 script {
@@ -83,11 +83,13 @@ pipeline {
                 }
             }
         }
-        stage('Checkout_to_github_manifest'){
-            steps{
+
+        stage('Checkout_to_github_manifest') {
+            steps {
                 git branch: "${githubbranch}", credentialsId: 'githubToken', url: "${githuburl}"
             }
         }
+
         stage('Update rollout.yaml') {
             steps {
                 script {
@@ -111,24 +113,25 @@ pipeline {
                         git add ${rolloutFilePath}
                         git commit -m 'Update image version in rollout.yaml'
                         git push https://${GITHUB_USR}:${GITHUB_PSW}@github.com/kakaoProFit/arcadia-manifest.git ${githubbranch}
-                    """
+                        """
                     }
                 }
             }
         }
     }
+
     post {
         success {
             slackSend (
-                channel: SLACK_CHANNEL, 
-                color: 'good', 
+                channel: SLACK_CHANNEL,
+                color: 'good',
                 message: "Build Successful: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
             )
         }
         failure {
             slackSend (
-                channel: SLACK_CHANNEL, 
-                color: 'danger', 
+                channel: SLACK_CHANNEL,
+                color: 'danger',
                 message: "Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
             )
         }
