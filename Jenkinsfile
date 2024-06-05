@@ -128,6 +128,7 @@ pipeline {
                 message: "Build Successful: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
             )
         }
+        
         failure {
             slackSend (
                 channel: SLACK_CHANNEL,
