@@ -2,8 +2,8 @@ pipeline {
     environment{
         repository = 'gcu-profit-dev.kr-central-2.kcr.dev/arcadia-nextjs/springboot-login'
         DOCKERHUB_CREDENTIALS = credentials('kicToken')
-        gitlaburl = 'http://172.16.212.109/kakaoprofit/Arcadia_BE'
         dockerImage = ''
+        gitlaburl = 'http://172.16.212.109/kakaoprofit/Arcadia_BE'
         gitlabbranch = 'main'
         githuburl = 'https://github.com/kakaoProFit/arcadia-manifest'
         githubbranch = 'main'
@@ -14,8 +14,8 @@ pipeline {
 
     agent any 	// 사용 가능한 에이전트에서 이 파이프라인 또는 해당 단계를 실행
     stages {
-        stage('Prepare'){
-            steps{
+        stage('Prepare') {
+            steps {
                 script {
                     git branch: "$gitlabbranch", credentialsId: 'gitlabToken', url: "$gitlaburl"
                     COMMIT_MESSAGE = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
@@ -27,7 +27,7 @@ pipeline {
                 }
             }
         }
-        
+
         stage('Gradlew  Build') {
             steps {
                 script {
@@ -62,6 +62,11 @@ pipeline {
                         )
                         throw e
                     }
+                    slackSend (
+                        channel: SLACK_CHANNEL, 
+                        color: 'good', 
+                        message: "Docker Build Success: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                    )
                 }
             }
         }
