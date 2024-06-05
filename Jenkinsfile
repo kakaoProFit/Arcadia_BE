@@ -11,6 +11,7 @@ pipeline {
         SLACK_CREDENTIALS = credentials('slack_alert_token')
         COMMIT_MESSAGE = ''
     }
+
     agent any 	// 사용 가능한 에이전트에서 이 파이프라인 또는 해당 단계를 실행
     stages {
         stage('Prepare'){
@@ -26,6 +27,7 @@ pipeline {
                 }
             }
         }
+        
         stage('Gradlew  Build') {
             steps {
                 script {
