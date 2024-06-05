@@ -22,7 +22,7 @@ pipeline {
                     slackSend (
                         channel: SLACK_CHANNEL,
                         color: '#FFFF00',
-                        message: "Build Started: ${env.JOB_NAME} - ${env.BUILD_NUMBER}\nCommit Message: ${COMMIT_MESSAGE}"
+                        message: "SpringBoot Build Started: ${env.JOB_NAME} - ${env.BUILD_NUMBER}\nCommit Message: ${COMMIT_MESSAGE}"
                     )
                 }
             }
@@ -119,7 +119,6 @@ pipeline {
             }
         }
     }
-
     post {
         success {
             slackSend (
