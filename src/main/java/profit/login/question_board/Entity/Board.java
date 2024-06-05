@@ -23,6 +23,9 @@ public class Board extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String documentId;
+
     private String title;   // 제목
     private String body;    // 본문
 
@@ -34,6 +37,11 @@ public class Board extends BaseEntity {
     @JsonBackReference
     private User user;      // 작성자
 
+    @Column(name = "user_id", insertable = false, updatable = false)
+    private Long userId;
+
+    @Transient
+    private String userName;
 
 
     @OneToMany(mappedBy = "board",cascade = CascadeType.ALL, orphanRemoval = true)
@@ -42,6 +50,7 @@ public class Board extends BaseEntity {
     private Integer likeCnt;        // 좋아요 수
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     private List<Comment> comments; // 댓글
     private Integer commentCnt;     // 댓글 수
 
@@ -67,6 +76,11 @@ public class Board extends BaseEntity {
 
     public void setUploadImage(UploadImage uploadImage) {
         this.uploadImage = uploadImage;
+    }
+
+    @PostLoad
+    private void postLoad() {
+        this.userName = user != null ? user.getFullName() : null;
     }
 
 }
