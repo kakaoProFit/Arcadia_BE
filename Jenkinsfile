@@ -7,7 +7,9 @@ pipeline {
         gitlabbranch = 'main'
         githuburl = 'https://github.com/kakaoProFit/arcadia-manifest'
         githubbranch = 'main'
-        lastCommitMessage = ''
+        SLACK_CHANNEL = '#jenkins-alert'
+        SLACK_CREDENTIALS = credentials('slack_alert_token')
+        COMMIT_MESSAGE = ''
     }
 
     agent any 	// 사용 가능한 에이전트에서 이 파이프라인 또는 해당 단계를 실행
@@ -15,12 +17,13 @@ pipeline {
         stage('Prepare') {
             steps {
                 script {
-                    // Git checkout
                     git branch: "$gitlabbranch", credentialsId: 'gitlabToken', url: "$gitlaburl"
-                    // Get the last commit message
-                    lastCommitMessage = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
-                    // Send Slack notification with the last commit message
-                    slackSend channel: '#jenkins-alert', message: "Pipeline started for branch: $gitlabbranch\nLast commit message: $lastCommitMessage"
+                    COMMIT_MESSAGE = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                    slackSend (
+                        channel: SLACK_CHANNEL,
+                        color: '#FFFF00',
+                        message: "Build Started: ${env.JOB_NAME} - ${env.BUILD_NUMBER}\nCommit Message: ${COMMIT_MESSAGE}"
+                    )
                 }
             }
         }
@@ -28,20 +31,41 @@ pipeline {
         stage('Gradlew Build') {
             steps {
                 script {
-                    sh 'chmod +x gradlew'
-                    sh './gradlew clean build'
+                    try {
+                        sh 'chmod +x gradlew'
+                        sh './gradlew clean build'
+                    } catch (Exception e) {
+                        slackSend (
+                            channel: SLACK_CHANNEL,
+                            color: 'danger',
+                            message: "Gradlew Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                        )
+                        throw e
+                    }
                 }
-                slackSend channel: '#jenkins-alert', message: "Gradlew Build stage started."
             }
         }
 
         stage('Docker build') {
             steps {
                 script {
-                    dockerImage = docker.build repository + ":$BUILD_NUMBER"
-                    sh 'docker image tag $repository:$BUILD_NUMBER $repository:latest'
+                    try {
+                        dockerImage = docker.build repository + ":$BUILD_NUMBER"
+                        sh 'docker image tag $repository:$BUILD_NUMBER $repository:latest'
+                    } catch (Exception e) {
+                        slackSend (
+                            channel: SLACK_CHANNEL,
+                            color: 'danger',
+                            message: "Docker Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                        )
+                        throw e
+                    }
+                    slackSend (
+                        channel: SLACK_CHANNEL,
+                        color: 'good',
+                        message: "Docker Build Success: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                    )
                 }
-                slackSend channel: '#jenkins-alert', message: "Docker build stage started."
             }
         }
 
@@ -57,14 +81,12 @@ pipeline {
                     sh 'docker push $repository:$BUILD_NUMBER' //docker push
                     sh 'docker push $repository:latest'
                 }
-                slackSend channel: '#jenkins-alert', message: "Deliver image stage started."
             }
         }
 
         stage('Checkout_to_github_manifest') {
             steps {
                 git branch: "${githubbranch}", credentialsId: 'githubToken', url: "${githuburl}"
-                slackSend channel: '#jenkins-alert', message: "Checkout to GitHub manifest stage started."
             }
         }
 
@@ -94,20 +116,25 @@ pipeline {
                         """
                     }
                 }
-                slackSend channel: '#jenkins-alert', message: "Update rollout.yaml stage started."
             }
         }
     }
 
     post {
         success {
-            slackSend channel: '#jenkins-alert', message: "Pipeline succeeded."
+            slackSend (
+                channel: SLACK_CHANNEL,
+                color: 'good',
+                message: "Build Successful: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+            )
         }
+        
         failure {
-            slackSend channel: '#jenkins-alert', message: "Pipeline failed."
-        }
-        always {
-            slackSend channel: '#jenkins-alert', message: "Pipeline finished."
+            slackSend (
+                channel: SLACK_CHANNEL,
+                color: 'danger',
+                message: "Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+            )
         }
     }
 }
