@@ -7,17 +7,40 @@ pipeline {
         gitlabbranch = 'main'
         githuburl = 'https://github.com/kakaoProFit/arcadia-manifest'
         githubbranch = 'main'
-
+        SLACK_CHANNEL = '#jenkins-alert'
+        SLACK_CREDENTIALS = credentials('slack_alert_token')
+        COMMIT_MESSAGE = ''
     }
     agent any 	// 사용 가능한 에이전트에서 이 파이프라인 또는 해당 단계를 실행
     stages {
         stage('Prepare'){
             steps{
-                git branch: "$gitlabbranch", credentialsId: 'gitlabToken', url: "$gitlaburl"
+                script {
+                    git branch: "$gitlabbranch", credentialsId: 'gitlabToken', url: "$gitlaburl"
+                    COMMIT_MESSAGE = sh(script: 'git log -1 --pretty=%B', returnStdout: true).trim()
+                    slackSend (
+                        channel: SLACK_CHANNEL, 
+                        color: '#FFFF00', 
+                        message: "Build Started: ${env.JOB_NAME} - ${env.BUILD_NUMBER}\nCommit Message: ${COMMIT_MESSAGE}"
+                    )
+                }
             }
         }
         stage('Gradlew  Build') {
             steps {
+                script {
+                    try {
+                        sh 'chmod +x gradlew'
+                        sh  './gradlew clean build'
+                    } catch (Exception e) {
+                        slackSend (
+                            channel: SLACK_CHANNEL, 
+                            color: 'danger', 
+                            message: "Gradlew Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                        )
+                        throw e
+                    }
+                }
                 // 	"빌드" 단계와 관련된 몇 가지 단계를 수행
                 sh 'chmod +x gradlew'
                 sh  './gradlew clean build'
@@ -26,9 +49,18 @@ pipeline {
         stage('Docker build') {
             steps {
                 script {
-                    dockerImage = docker.build repository + ":$BUILD_NUMBER"
+                    try {
+                        dockerImage = docker.build repository + ":$BUILD_NUMBER"
+                        sh 'docker image tag $repository:$BUILD_NUMBER $repository:latest'
+                    } catch (Exception e) {
+                        slackSend (
+                            channel: SLACK_CHANNEL, 
+                            color: 'danger', 
+                            message: "Docker Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+                        )
+                        throw e
+                    }
                 }
-                sh 'docker image tag $repository:$BUILD_NUMBER $repository:latest'
             }
         }
         stage('Login') {
@@ -76,6 +108,22 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+    post {
+        success {
+            slackSend (
+                channel: SLACK_CHANNEL, 
+                color: 'good', 
+                message: "Build Successful: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+            )
+        }
+        failure {
+            slackSend (
+                channel: SLACK_CHANNEL, 
+                color: 'danger', 
+                message: "Build Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
+            )
         }
     }
 }
