@@ -37,7 +37,7 @@ public class BoardService {
     private final UserRepository userRepository;
     private final LikeRepository likeRepository;
     private final CommentRepository commentRepository;
-    private final UploadImageService uploadImageService;
+
 
     private final BoardDocumentRepository boardDocumentRepository;
 

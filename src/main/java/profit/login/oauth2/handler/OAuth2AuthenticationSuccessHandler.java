@@ -45,7 +45,7 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
     private final OAuth2UserUnlinkManager oAuth2UserUnlinkManager;
     private final TokenProvider tokenProvider;
     private final UserRepository userRepository;
-
+    private final TokenRedisService tokenRedisService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -85,8 +85,6 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
         }
 
         if ("login".equalsIgnoreCase(mode)) {
-            // TODO: DB 저장
-            // TODO: 리프레시 토큰 DB 저장
 
             log.info("email={}, name={}, nickname={}, phoneNumber={}, birthday={}, gender={}, accessToken={}, refreshToken={}", principal.getUserInfo().getEmail(),
                     principal.getUserInfo().getName(),
@@ -101,9 +99,11 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
             String email = principal.getUserInfo().getEmail();
             Optional<User> existingUser = userRepository.findByEmail(email);
 
+            User user;
+
             if (existingUser.isEmpty()) {
                 // 사용자가 존재하지 않으면 새로운 User 객체 생성 및 저장
-                User user = new User();
+                user = new User();
                 user.setFullName(principal.getUserInfo().getName());
                 user.setEmail(email);
                 user.setPassword("SOCIAL");
@@ -111,14 +111,19 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 user.setPhone(principal.getUserInfo().getPhoneNumber());
 
                 userRepository.save(user);
+
             } else {
+                user = existingUser.get();
                 // 필요하면 기존 사용자 정보를 업데이트하는 로직 추가
                 log.info("User already exists");
             }
 
+
+
             String accessToken = tokenProvider.createToken(authentication);
             String refreshToken = tokenProvider.createRefreshToken(authentication);
 
+            tokenRedisService.saveToken(String.valueOf(user.getId()), refreshToken);
 
             return UriComponentsBuilder.fromUriString(targetUrl)
                     .queryParam("access_token", accessToken)
@@ -126,14 +131,18 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                     .build().toUriString();
 
 
-
         } else if ("unlink".equalsIgnoreCase(mode)) {
 
+            String email = principal.getUserInfo().getEmail();
             String accessToken = principal.getUserInfo().getAccessToken();
             String refreshToken = principal.getUserInfo().getRefreshToken();
             OAuth2Provider provider = principal.getUserInfo().getProvider();
 
-            // TODO: DB 삭제
+            userRepository.findByEmail(email).ifPresent(user -> {
+                userRepository.delete(user);
+                log.info("User with email {} deleted", email);
+            });
+
             oAuth2UserUnlinkManager.unlink(provider, accessToken, refreshToken);
 
             return UriComponentsBuilder.fromUriString(targetUrl)

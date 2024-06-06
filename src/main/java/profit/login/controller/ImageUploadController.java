@@ -34,18 +34,15 @@ public class ImageUploadController {
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file,
-                                             @RequestParam("user_id") Long id) {
-        try {
+                                             @RequestParam("user_id") Long id) throws IOException {
+
             String fileUrl = "https://" + bucket + "/test/" + id;
             ObjectMetadata metadata = new ObjectMetadata();
             metadata.setContentType(file.getContentType());
             metadata.setContentLength(file.getSize());
             amazonS3Client.putObject(bucket, Long.toString(id), file.getInputStream(), metadata);
             return ResponseEntity.ok(fileUrl);
-        } catch (IOException e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+
     }
 
     @GetMapping("/download")

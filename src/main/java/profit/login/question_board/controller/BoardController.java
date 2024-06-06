@@ -2,18 +2,12 @@ package profit.login.question_board.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import profit.login.dto.LoginUserDto;
 import profit.login.entity.User;
 import profit.login.entity.UserRole;
 import profit.login.question_board.Entity.Board;
@@ -21,18 +15,14 @@ import profit.login.question_board.dto.*;
 import profit.login.question_board.response.BoardListResponse;
 import profit.login.question_board.response.ErrorResponse;
 import profit.login.question_board.Entity.BoardCategory;
-import profit.login.question_board.response.BoardWritePageResponse;
 import profit.login.question_board.response.BoardWriteResponse;
 import profit.login.question_board.service.BoardService;
-import profit.login.question_board.service.UploadImageService;
 import profit.login.question_board.service.LikeService;
 import profit.login.question_board.service.CommentService;
 import profit.login.repository.UserRepository;
 import profit.login.service.AuthenticationService;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.util.List;
 
 @RestController
 @RequestMapping("/boards")
@@ -43,7 +33,7 @@ public class BoardController {
     private final BoardService boardService;
     private final LikeService likeService;
     private final CommentService commentService;
-    private final UploadImageService uploadImageService;
+
     private final AuthenticationService authenticationService;
     private final UserRepository userRepository;
 
