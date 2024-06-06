@@ -60,6 +60,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers("/test").permitAll()
+                        .requestMatchers("/**").permitAll()
                         .requestMatchers("/boards/list/**").permitAll()
                         .requestMatchers("/boards/read/**").permitAll()
                         .requestMatchers("/authentication/**").permitAll()
