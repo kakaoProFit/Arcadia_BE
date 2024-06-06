@@ -69,8 +69,8 @@ public class BoardController {
                 case "like":
                     pageRequest = PageRequest.of(page-1 , 12, Sort.by("likeCnt").descending());
                     break;
-                case "comment":
-                    pageRequest = PageRequest.of(page-1 , 12, Sort.by("commentCnt").descending());
+                case "view":
+                    pageRequest = PageRequest.of(page-1 , 12, Sort.by("viewCount").descending());
                     break;
             }
         }
@@ -224,5 +224,7 @@ public class BoardController {
                 .nextUrl(nextUrl)
                 .build());
     }
+
+
 
 }

@@ -63,6 +63,10 @@ public class BoardService {
             return null;
         }
 
+        Board board = optBoard.get();
+        board.incrementViewCount(); // 조회수 증가
+        boardRepository.save(board); // 변경 사항 저장
+
         BoardDto boardDto = BoardDto.of(optBoard.get());
         BoardContentDto boardContentDto = optBoard2.get();
         boardDto.setBody(boardContentDto.getContent());

@@ -26,6 +26,10 @@ public class Board extends BaseEntity {
     private String title;   // 제목
     private String body;    // 본문
 
+    @Builder.Default
+    @Column(nullable = false)
+    private int viewCount = 0; // 조회수 필드 추가
+
     @Enumerated(EnumType.STRING)
     private BoardCategory category; // 카테고리
 
@@ -48,12 +52,17 @@ public class Board extends BaseEntity {
     @OneToOne(fetch = FetchType.LAZY)
     private UploadImage uploadImage;
 
+    @Builder.Default
     @Column(nullable = false)
     private Integer point = 0; //채택 포인트, 카테고리 구분없이 board 엔티티는 통일되다보니 기본값은 0으로 설정
 
     public void update(BoardDto dto) {
         this.title = dto.getTitle();
         this.body = dto.getBody();
+    }
+
+    public void incrementViewCount() {
+        this.viewCount++;
     }
 
 
