@@ -53,8 +53,6 @@ public class Board extends BaseEntity {
     private List<Comment> comments; // 댓글
     private Integer commentCnt;     // 댓글 수
 
-    @OneToOne(fetch = FetchType.LAZY)
-    private UploadImage uploadImage;
 
     @Column(nullable = false)
     private Integer point = 0; //채택 포인트, 카테고리 구분없이 board 엔티티는 통일되다보니 기본값은 0으로 설정
@@ -73,9 +71,6 @@ public class Board extends BaseEntity {
         this.commentCnt = commentCnt;
     }
 
-    public void setUploadImage(UploadImage uploadImage) {
-        this.uploadImage = uploadImage;
-    }
 
     @PostLoad
     private void postLoad() {
