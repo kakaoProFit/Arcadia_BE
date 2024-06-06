@@ -47,6 +47,9 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Integer point = 0;
 
+    @Column
+    private String description;
+
     @Enumerated(EnumType.STRING)
     private UserRole userRole = UserRole.NORMAL; // 기본값 설정
 

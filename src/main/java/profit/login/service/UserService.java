@@ -62,6 +62,11 @@ public class UserService {
             user.setBirth(changeUserDto.getBirth());
         }
 
+        // 한줄 소개 변경
+        if (changeUserDto.getDescription() != null && !changeUserDto.getDescription().isEmpty()) {
+            user.setDescription(changeUserDto.getDescription());
+        }
+
         // 변경된 유저 정보 저장
         return userRepository.save(user);
     }

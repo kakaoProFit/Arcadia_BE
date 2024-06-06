@@ -15,6 +15,7 @@ public class ChangeUserDto {
     private String newPassword;
     private String birth;
     private String phone;
+    private String description;
 
     public static ChangeUserDto of(User user) {
         return ChangeUserDto.builder()
@@ -23,6 +24,7 @@ public class ChangeUserDto {
                 .fullName(user.getFullName())
                 .birth(user.getBirth())
                 .phone(user.getPhone())
+                .description(user.getDescription())
                 .build();
     }
 }
