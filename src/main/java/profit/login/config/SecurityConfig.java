@@ -65,7 +65,7 @@ public class SecurityConfig {
                         .requestMatchers("/authentication/**").permitAll()
                         .requestMatchers("/profileimage/download").permitAll()
 
-//                        .requestMatchers("/**").permitAll() //토큰 발급해서 인증하고 API 테스트하기 번거로울때 사용, 절대 배포때 주석 풀지 말기
+                        .requestMatchers("/**").permitAll() //토큰 발급해서 인증하고 API 테스트하기 번거로울때 사용, 절대 배포때 주석 풀지 말기
                         .requestMatchers("/profileimage/upload").authenticated()
                         .requestMatchers("/boards/**").authenticated()
                         .requestMatchers("/comments/**").authenticated()
