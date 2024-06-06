@@ -27,6 +27,8 @@ public class Reply extends BaseEntity {
 
     private String body;
 
+    private boolean selected;       // 채택여부
+
     @OneToMany(mappedBy = "reply",cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonBackReference
     private List<Like> likes;       // 좋아요
@@ -47,5 +49,13 @@ public class Reply extends BaseEntity {
 
     public void likeChange(Integer likeCnt) {
         this.likeCnt = likeCnt;
+    }
+
+    public void select() {
+        this.selected = true;
+    }
+
+    public void deselect() {
+        this.selected = false;
     }
 }

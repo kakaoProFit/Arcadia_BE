@@ -44,7 +44,7 @@ public class User implements UserDetails {
     private String birth;
 
     @Column(nullable = false)
-    private Integer point = 0;
+    private Integer points = 0;
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole = UserRole.NORMAL; // 기본값 설정
@@ -94,6 +94,13 @@ public class User implements UserDetails {
 //        else if (userRole.equals(UserRole.GOLD)) userRole = UserRole.BLACKLIST;
 //        else if (userRole.equals(UserRole.BLACKLIST)) userRole = UserRole.BRONZE;
 //    }
+    public void addPoints(int points) {
+        this.points += points;
+    }
+
+    public void subtractPoints(int points) {
+        this.points -= points;
+    }
 
 
 
