@@ -9,16 +9,20 @@ import profit.login.entity.User;
 @Builder
 public class ChangeUserDto {
 
-    private String loginId;
-    private String nickname;
-    private String nowPassword;
+    private Long loginId;
+    private String fullName;
+    private String password;
     private String newPassword;
-    private String newPasswordCheck;
+    private String birth;
+    private String phone;
 
     public static ChangeUserDto of(User user) {
         return ChangeUserDto.builder()
-                .loginId(user.getEmail())
-                .nickname(user.getNickname())
+                .loginId(user.getId())
+//                .password(user.getPassword())
+                .fullName(user.getFullName())
+                .birth(user.getBirth())
+                .phone(user.getPhone())
                 .build();
     }
 }
