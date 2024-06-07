@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.mapping.Document;
 import profit.login.entity.User;
 import profit.login.question_board.Entity.Board;
@@ -21,19 +22,18 @@ import profit.login.question_board.Entity.BoardCategory;
 public class BoardContentDto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    private String content;
+    private ObjectId id;
 
-    public BoardContentDto init(Long id, String body) {
-        return BoardContentDto.builder()
-                .id(id)
-                .content(body)
-                .build();
+    private String body;
+
+    public BoardContentDto init(String body) {
+        this.id = new ObjectId(); // MongoDB에서 자동 생성되는 ObjectId 설정
+        this.body = body;
+        return this;
     }
 
-    public void update(String content) {
-        this.content = content;
+    public void update(String body) {
+        this.body = body;
     }
 }
 

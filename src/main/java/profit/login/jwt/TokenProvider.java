@@ -19,6 +19,8 @@ import profit.login.oauth2.service.OAuth2UserPrincipal;
 import java.security.Key;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
+import java.util.function.Function;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -35,6 +37,8 @@ public class TokenProvider {
     private String secretKey;
 
     private Key key;
+
+
 
 
     @PostConstruct
@@ -67,15 +71,21 @@ public class TokenProvider {
         return false;
     }
 
+
+
     // 액세스 토큰 생성
-    public String createToken(Authentication authentication, String id) {
+    public String createToken(Authentication authentication, String id, String email) {
         Date date = new Date(System.currentTimeMillis());
         Date expiryDate = new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRE_TIME_IN_MILLISECONDS);
 //        OAuth2UserPrincipal principal = getOAuth2UserPrincipal(authentication);
 
+        Claims claims = Jwts.claims();
+        claims.put("userId", id);
+        claims.put("email", email);
 
         String token = Jwts.builder()
-                .setSubject(id)
+                .setClaims(claims)
+                .setSubject(email)
                 .setIssuedAt(date)
                 .setExpiration(expiryDate)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -85,12 +95,17 @@ public class TokenProvider {
     }
 
     // 리프레시 토큰 생성
-    public String createRefreshToken(Authentication authentication, String id) {
+    public String createRefreshToken(Authentication authentication, String id, String email) {
         Date date = new Date(System.currentTimeMillis());
         Date expiryDate = new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRE_TIME_IN_MILLISECONDS);
 
+        Claims claims = Jwts.claims();
+        claims.put("userId", id);
+        claims.put("email", email);
+
         String refreshToken = Jwts.builder()
-                .setSubject(id)
+                .setClaims(claims)
+                .setSubject(email)
                 .setIssuedAt(date)
                 .setExpiration(expiryDate)
                 .signWith(key, SignatureAlgorithm.HS256)

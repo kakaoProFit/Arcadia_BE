@@ -118,10 +118,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
                 log.info("User already exists");
             }
 
-
-
-            String accessToken = tokenProvider.createToken(authentication, String.valueOf(user.getId()));
-            String refreshToken = tokenProvider.createRefreshToken(authentication, String.valueOf(user.getId()));
+            String accessToken = tokenProvider.createToken(authentication, String.valueOf(user.getId()),String.valueOf(user.getEmail()));
+            String refreshToken = tokenProvider.createRefreshToken(authentication, String.valueOf(user.getId()),String.valueOf(user.getEmail()));
 
             tokenRedisService.saveToken(String.valueOf(user.getId()), refreshToken);
 

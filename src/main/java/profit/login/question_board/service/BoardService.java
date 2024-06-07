@@ -70,23 +70,26 @@ public class BoardService {
 
         BoardDto boardDto = BoardDto.of(optBoard.get());
         BoardContentDto boardContentDto = optBoard2.get();
-        boardDto.setBody(boardContentDto.getContent());
+        boardDto.setBody(boardContentDto.getBody());
 
         return boardDto;
     }
 
     @Transactional
-    public Long writeBoard(BoardCreateRequest req, BoardContentDto bcd, BoardCategory category, String email, Authentication authentication) throws IOException {
+    public Long writeBoard(BoardCreateRequest req, BoardCategory category, String email, Authentication authentication) throws IOException {
 
         User loginUser = userRepository.findByEmail(email).get();
-
         Board savedBoard = boardRepository.save(req.toEntity(category, loginUser));
-        BoardContentDto savedBoardDocument = boardDocumentRepository.save(bcd.init(savedBoard.getId(),savedBoard.getBody()));
 
-//        UploadImage uploadImage = uploadImageService.saveImage(req.getUploadImage(), savedBoard);
-//        if (uploadImage != null) {
-//            savedBoard.setUploadImage(uploadImage);
-//        }
+        // BoardContentDto 엔티티 생성 및 초기화
+        BoardContentDto bcd = new BoardContentDto();
+        bcd = boardDocumentRepository.save(bcd.init(req.getBody())); // MongoDB에 저장하고 반환된 bcd로 업데이트
+
+        System.out.println(bcd.getId().toString() + "OBJECTED"); //TEST
+        // 저장된 BoardContentDto의 ObjectId를 가져와 BoardCreateRequest의 documentId에 설정
+        savedBoard.setDocumentId(bcd.getId());
+        boardRepository.save(savedBoard);
+
 //         아래 부분에 글작성시 추가 포인트 지급하는 코드 구현 필요
         return savedBoard.getId();
     }

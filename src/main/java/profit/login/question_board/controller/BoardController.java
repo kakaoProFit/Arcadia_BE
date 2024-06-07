@@ -105,7 +105,7 @@ public class BoardController {
                     .build());
         }
 
-        Long savedBoardId = boardService.writeBoard(req, bcd, boardCategory, authentication.getName(), authentication);
+        Long savedBoardId = boardService.writeBoard(req, boardCategory, authentication.getName(), authentication);
         //log.info("auth.getname(): "+ authentication.getName());
         String email = authentication.getName();
         User user = userRepository.findByEmail(email).get();
