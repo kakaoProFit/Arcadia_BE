@@ -120,8 +120,8 @@ public class OAuth2AuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 
 
 
-            String accessToken = tokenProvider.createToken(authentication);
-            String refreshToken = tokenProvider.createRefreshToken(authentication);
+            String accessToken = tokenProvider.createToken(authentication, String.valueOf(user.getId()));
+            String refreshToken = tokenProvider.createRefreshToken(authentication, String.valueOf(user.getId()));
 
             tokenRedisService.saveToken(String.valueOf(user.getId()), refreshToken);
 
