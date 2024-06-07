@@ -8,7 +8,7 @@ import profit.login.question_board.Entity.BoardCategory;
 public class BoardEditRequest {
     private String title;
     private String body;
-    private MultipartFile uploadImage;
+
 
     public Board toEntity(BoardCategory category, User user) {
         return Board.builder()

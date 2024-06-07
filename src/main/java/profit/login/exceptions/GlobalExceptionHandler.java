@@ -82,18 +82,16 @@ public class GlobalExceptionHandler {
             errorDetail.setProperty("description", "The requested entity was not found");
         } // JPA에서 엔터티를 찾을 수 없을 때 발생
 
-//        if (exception instanceof IllegalArgumentException) {
-//            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(400), exception.getMessage());
-//            errorDetail.setProperty("description", "Illegal argument provided");
-//        }
 
         if (exception instanceof NullPointerException) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(409), exception.getMessage());
             errorDetail.setProperty("description", "A null pointer exception occurred");
-
-            return errorDetail;
         } // 널 포인터 참조가 발생
 
+        if (exception instanceof IllegalArgumentException) {
+            errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(410), exception.getMessage());
+            errorDetail.setProperty("description", "Illegal argument provided");
+        }
 
         if (errorDetail == null) {
             errorDetail = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500), exception.getMessage());

@@ -60,6 +60,7 @@ public class SecurityConfig {
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/oauth2/**").permitAll()
                         .requestMatchers("/test").permitAll()
+                        // .requestMatchers("/**").permitAll()
                         .requestMatchers("/boards/list/**").permitAll()
                         .requestMatchers("/boards/read/**").permitAll()
                         // .requestMatchers("/**").permitAll() //토큰 발급해서 인증하고 API 테스트하기 번거로울때 사용, 절대 배포때 주석 풀지 말기

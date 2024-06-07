@@ -29,10 +29,30 @@
 #    properties:
 #      hibernate:
 #        format_sql: true
+#        dialect: org.hibernate.dialect.MariaDBDialect
 #    defer-datasource-initialization: true
 #    hibernate:
 #      ddl-auto: update
 #    open-in-view: true
+#
+##  # Master (Write) Database
+##  datasource:
+##    master:
+##      url: jdbc:mariadb://profit-rdb-master.chke6w2cu29b.ap-northeast-2.rds.amazonaws.com:3306/arcadia
+##      username: admin
+##      password: 1q2w3e4r
+##
+##    # Slave (Read) Databases
+##    slave1:
+##      url: jdbc:mariadb://profit-rdb-slave1.chke6w2cu29b.ap-northeast-2.rds.amazonaws.com:3306/arcadia
+##      username: admin
+##      password: 1q2w3e4r
+##
+##    slave2:
+##      url: jdbc:mariadb://profit-rdb-slave2.chke6w2cu29b.ap-northeast-2.rds.amazonaws.com:3306/arcadia
+##      username: admin
+##      password: 1q2w3e4r
+#
 #  datasource:
 #    url: jdbc:mariadb://35.216.99.76:3306/test
 #    username: test
@@ -269,7 +289,7 @@ spring:
       database : test
       uri: mongodb+srv://test:1111@cluster0.hcj9xiu.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0
 
-  
+
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher

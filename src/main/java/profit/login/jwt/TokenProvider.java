@@ -36,6 +36,7 @@ public class TokenProvider {
 
     private Key key;
 
+
     @PostConstruct
     public void init() {
         // Base64 디코딩된 비밀 키를 사용하여 Key 객체를 생성합니다.
@@ -67,13 +68,14 @@ public class TokenProvider {
     }
 
     // 액세스 토큰 생성
-    public String createToken(Authentication authentication) {
+    public String createToken(Authentication authentication, String id) {
         Date date = new Date(System.currentTimeMillis());
         Date expiryDate = new Date(System.currentTimeMillis() + ACCESS_TOKEN_EXPIRE_TIME_IN_MILLISECONDS);
+//        OAuth2UserPrincipal principal = getOAuth2UserPrincipal(authentication);
 
 
         String token = Jwts.builder()
-                .setSubject("더미더미더미")
+                .setSubject(id)
                 .setIssuedAt(date)
                 .setExpiration(expiryDate)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -83,12 +85,12 @@ public class TokenProvider {
     }
 
     // 리프레시 토큰 생성
-    public String createRefreshToken(Authentication authentication) {
+    public String createRefreshToken(Authentication authentication, String id) {
         Date date = new Date(System.currentTimeMillis());
         Date expiryDate = new Date(System.currentTimeMillis() + REFRESH_TOKEN_EXPIRE_TIME_IN_MILLISECONDS);
 
         String refreshToken = Jwts.builder()
-                .setSubject(authentication.getName())
+                .setSubject(id)
                 .setIssuedAt(date)
                 .setExpiration(expiryDate)
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -108,4 +110,13 @@ public class TokenProvider {
         UserDetails user = new User(claims.getSubject(), "", Collections.emptyList());
         return new UsernamePasswordAuthenticationToken(user, "", Collections.emptyList());
     }
+
+//    private OAuth2UserPrincipal getOAuth2UserPrincipal(Authentication authentication) {
+//        Object principal = authentication.getPrincipal();
+//
+//        if (principal instanceof OAuth2UserPrincipal) {
+//            return (OAuth2UserPrincipal) principal;
+//        }
+//        return null;
+//    }
 }
