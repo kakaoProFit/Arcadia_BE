@@ -22,6 +22,7 @@ public class BoardDto {
     private String title;
     private String body;
     private Integer likeCnt;
+    private Integer viewCount;
     private LocalDateTime createdAt;
     private LocalDateTime lastModifiedAt;
     private List<Comment> comments;
@@ -34,6 +35,7 @@ public class BoardDto {
                 .userNickname(board.getUser().getNickname())
                 .title(board.getTitle())
                 .body(board.getBody())
+                .viewCount(board.getViewCount())
                 .createdAt(board.getCreatedAt())
                 .lastModifiedAt(board.getLastModifiedAt())
                 .likeCnt(board.getLikes().size())

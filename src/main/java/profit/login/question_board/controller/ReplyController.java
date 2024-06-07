@@ -29,6 +29,8 @@ public class ReplyController {
     private final ReplyService replyService;
     private final UserRepository userRepository;
 
+
+    // 답변 작성
     @PostMapping("/write/{boardId}")
     public ResponseEntity<ReplyWriteResponse> commentWrite(@PathVariable Long boardId, @RequestBody ReplyCreateRequest req,
                                                            Authentication authentication) throws IOException {
@@ -64,6 +66,8 @@ public class ReplyController {
      return ResponseEntity.ok(response);
      }
 
+     // 답변 수정
+
     @PostMapping("/{replyId}/edit")
     public ResponseEntity<ReplyWriteResponse> editReply(@PathVariable Long replyId, @RequestBody ReplyCreateRequest req,
                                                             Authentication authentication) {
@@ -88,6 +92,7 @@ public class ReplyController {
      }
 
 
+     // 답변 삭제
     @GetMapping("/{replyId}/delete")
     public ResponseEntity<ReplyWriteResponse> deleteComment(@PathVariable Long replyId, Authentication authentication) {
         Long boardId = replyService.deleteReply(replyId, authentication.getName());
@@ -107,6 +112,20 @@ public class ReplyController {
         ReplyWriteResponse response = ReplyWriteResponse.builder()
                 .message(message)
                 .nextUrl(nextUrl)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+    // 답변채택
+
+    @PostMapping("/select/{replyId}")
+    public ResponseEntity<ReplyWriteResponse> selectReply(@PathVariable Long replyId, Authentication authentication) {
+        replyService.selectReply(replyId, authentication.getName());
+
+        ReplyWriteResponse response = ReplyWriteResponse.builder()
+                .message("답변이 채택되었습니다.")
+                .nextUrl("/boards/" + boardService.getCategory(replyId) + "/" + replyId)
                 .build();
 
         return ResponseEntity.ok(response);

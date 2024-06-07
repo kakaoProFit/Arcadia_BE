@@ -1,6 +1,7 @@
 package profit.login.question_board.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import profit.login.entity.User;
@@ -18,6 +19,7 @@ import java.util.Optional;
 //댓글 관련 CRUD
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ReplyService {
 
 
@@ -61,5 +63,25 @@ public class ReplyService {
 
         replyRepository.delete(optReply.get());
         return board.getId();
+    }
+
+    @Transactional
+    public void selectReply(Long replyId, String email) {
+        Optional<Reply> optReply = replyRepository.findById(replyId);
+        if (optReply.isEmpty()) {
+            throw new IllegalArgumentException("답글이 존재하지 않습니다.");
+        }
+
+        Reply reply = optReply.get();
+        if (!reply.getBoard().getUser().getEmail().equals(email)) {
+            throw new IllegalArgumentException("작성자만 답변을 채택할 수 있습니다.");
+        }
+
+        reply.select();
+        User user = reply.getUser();
+        log.info("user: " + user);
+        user.addPoints(200);
+        log.info("user points: " + user.getPoints());
+        userRepository.save(user);
     }
 }
