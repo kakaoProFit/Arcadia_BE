@@ -10,12 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/authentication")
 @RestController
 @Slf4j
-public class ExternalAuthentication {
+public class ExternalAuthenticationController {
 
     @PostMapping
     public ResponseEntity<String> externalAuthenticate(Authentication authentication) {
         if (authentication != null && authentication.isAuthenticated()) {
             String username = authentication.getName();
+
+
             log.info("External authentication successful for user: {}", username);
             return ResponseEntity.ok("OK");
         }
