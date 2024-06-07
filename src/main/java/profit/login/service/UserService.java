@@ -4,6 +4,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import profit.login.dto.ChangeUserDto;
 import profit.login.entity.User;
 import profit.login.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,42 +19,57 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-
-
     public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> allUsers() {
-        List<User> users = new ArrayList<>();
-
-        try {
-            // 사용자를 찾을 때 예외가 발생할 수 있으므로 try-catch 블록을 사용하여 예외를 처리합니다.
-            userRepository.findAll().forEach(users::add);
-        } catch (Exception e) {
-            // 예외가 발생하면 클라이언트에게 적절한 오류 메시지를 반환합니다.
-
-            throw new RuntimeException("Internal Server Error: Failed to find all users.");
+    public User getUserInfo(Long userId) {
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("유저를 찾을 수 없습니다. userId: " + userId);
         }
 
-        return users;
+        return optionalUser.get();
     }
 
+    public User updateUser(Long userId, ChangeUserDto changeUserDto) {
+        // 유저 정보 조회
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isEmpty()) {
+            throw new IllegalArgumentException("유저를 찾을 수 없습니다. userId: " + userId);
+        }
 
+        User user = optionalUser.get();
 
+//        // 비밀번호 변경
+//        if (changeUserDto.getNewPassword() != null && !changeUserDto.getNewPassword().isEmpty()) {
+//            user.setPassword(changeUserDto.getNewPassword());
+//        }
 
+        // 닉네임 변경
+        if (changeUserDto.getFullName() != null && !changeUserDto.getFullName().isEmpty()) {
+            user.setFullName(changeUserDto.getFullName());
+        }
 
+        // 전화번호 변경
+        if (changeUserDto.getPhone() != null && !changeUserDto.getPhone().isEmpty()) {
+            user.setPhone(changeUserDto.getPhone());
+        }
 
-//    @Transactional
-//    public void changeRole(String id) {
-//        User user = userRepository.findById(id).get();
-//        // admin 페이지 만들거면 Role을 일반과 전문가로 이분화 하여서 진행해야함
-//        //일단 예시로 만들어놓음.
-//        user.changeRole();
-//    }
+        // 생년월일 변경
+        if (changeUserDto.getBirth() != null && !changeUserDto.getBirth().isEmpty()) {
+            user.setBirth(changeUserDto.getBirth());
+        }
 
+        // 한줄 소개 변경
+        if (changeUserDto.getDescription() != null && !changeUserDto.getDescription().isEmpty()) {
+            user.setDescription(changeUserDto.getDescription());
+        }
 
+        // 변경된 유저 정보 저장
+        return userRepository.save(user);
+    }
 
 
 }

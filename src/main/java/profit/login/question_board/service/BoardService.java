@@ -30,13 +30,14 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class BoardService {
 
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
     private final LikeRepository likeRepository;
     private final CommentRepository commentRepository;
-    private final UploadImageService uploadImageService;
+
 
     private final BoardDocumentRepository boardDocumentRepository;
 

@@ -1,5 +1,6 @@
 package profit.login.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -46,17 +47,21 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Integer points = 0;
 
+    @Column
+    private String description;
+
     @Enumerated(EnumType.STRING)
     private UserRole userRole = UserRole.NORMAL; // 기본값 설정
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonBackReference
     private List<Board> boards;     // 작성글
 
-
+    @JsonBackReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Like> likes;       // 유저가 누른 좋아요
 
+    @JsonBackReference
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments; // 댓글
 

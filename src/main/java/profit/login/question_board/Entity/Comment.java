@@ -1,5 +1,6 @@
 package profit.login.question_board.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,9 +24,11 @@ public class Comment extends BaseEntity {
     private String body;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private User user;      // 작성자
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Board board;    // 댓글이 달린 게시판
 
     public void update(String newBody) {
