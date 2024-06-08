@@ -4,10 +4,8 @@ package profit.login.question_board.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.bson.types.ObjectId;
 import profit.login.entity.User;
 import profit.login.question_board.Entity.BaseEntity;
 import profit.login.question_board.Entity.Board;
@@ -25,6 +23,10 @@ public class Reply extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
+    @Column
+    private ObjectId documentId;
+
     private String body;
 
     private boolean selected;       // 채택여부
@@ -40,8 +42,6 @@ public class Reply extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;    // 답글이 달린 게시판
-
-
 
 
     public void update(String newBody) {

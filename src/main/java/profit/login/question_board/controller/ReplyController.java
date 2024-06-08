@@ -20,7 +20,6 @@ import profit.login.repository.UserRepository;
 import java.io.IOException;
 
 @Controller
-@RestController
 @RequestMapping("/reply")
 @RequiredArgsConstructor
 @Slf4j

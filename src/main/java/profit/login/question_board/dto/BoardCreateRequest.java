@@ -16,7 +16,7 @@ public class BoardCreateRequest {
 
     private String title;
     private String body;
-    private Integer point = 0;
+    private Integer point;
     private ObjectId documentId;
 
     public void setDocumentId(ObjectId documentId) {

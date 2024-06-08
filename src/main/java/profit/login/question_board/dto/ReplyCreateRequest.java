@@ -18,7 +18,7 @@ public class ReplyCreateRequest {
                 .user(user)
                 .board(board)
                 .likeCnt(0)
-                .body(body)
+//                .body(body)
                 .build();
     }
 }
