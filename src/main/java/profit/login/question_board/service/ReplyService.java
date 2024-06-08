@@ -66,7 +66,7 @@ public class ReplyService {
     }
 
     @Transactional
-    public void selectReply(Long replyId, String email) {
+    public void selectReply(Long replyId, String email, Integer customPoints) {
         Optional<Reply> optReply = replyRepository.findById(replyId);
         if (optReply.isEmpty()) {
             throw new IllegalArgumentException("답글이 존재하지 않습니다.");
@@ -80,7 +80,7 @@ public class ReplyService {
         reply.select();
         User user = reply.getUser();
         log.info("user: " + user);
-        user.addPoints(200);
+        user.addPoints(customPoints);
         log.info("user points: " + user.getPoints());
         userRepository.save(user);
     }

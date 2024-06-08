@@ -18,6 +18,7 @@ import profit.login.repository.UserRepository;
 import java.io.IOException;
 
 @Controller
+@RestController
 @RequestMapping("/comments")
 @RequiredArgsConstructor
 public class CommentController {

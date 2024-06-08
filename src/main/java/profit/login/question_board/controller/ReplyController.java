@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import profit.login.entity.User;
 import profit.login.entity.UserRole;
 import profit.login.question_board.dto.ReplyCreateRequest;
+import profit.login.question_board.dto.ReplyDto;
 import profit.login.question_board.response.CommentWriteResponse;
 import profit.login.question_board.response.ReplyWriteResponse;
 import profit.login.question_board.service.BoardService;
@@ -20,6 +21,7 @@ import profit.login.repository.UserRepository;
 import java.io.IOException;
 
 @Controller
+@RestController
 @RequestMapping("/reply")
 @RequiredArgsConstructor
 public class ReplyController {
@@ -119,9 +121,9 @@ public class ReplyController {
 
     // 답변채택
 
-    @PostMapping("/select/{replyId}")
-    public ResponseEntity<ReplyWriteResponse> selectReply(@PathVariable Long replyId, Authentication authentication) {
-        replyService.selectReply(replyId, authentication.getName());
+    @PostMapping("/select/{replyId}/{points}")
+    public ResponseEntity<ReplyWriteResponse> selectReply(@PathVariable Long replyId, @PathVariable Integer points, Authentication authentication) {
+        replyService.selectReply(replyId, authentication.getName(), points);
 
         ReplyWriteResponse response = ReplyWriteResponse.builder()
                 .message("답변이 채택되었습니다.")
