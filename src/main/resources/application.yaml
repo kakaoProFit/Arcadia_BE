@@ -205,7 +205,7 @@ spring:
 #   url: jdbc:mariadb://35.216.99.76:3306/test1
 #   username: test
 #   password: test
-     url: jdbc:mariadb://mariadb-master-0:3306:arcadia
+     url: jdbc:mariadb://mariadb-master:3306:arcadia
      username: profit
      password: vmfhvlt!
   driver-class-name: org.mariadb.jdbc.Driver
