@@ -34,7 +34,7 @@ public class BoardDto {
                 .userLoginId(board.getUser().getEmail())
                 .userNickname(board.getUser().getNickname())
                 .title(board.getTitle())
-                .body(board.getBody())
+//                .body(board.getBody())
                 .viewCount(board.getViewCount())
                 .createdAt(board.getCreatedAt())
                 .lastModifiedAt(board.getLastModifiedAt())
