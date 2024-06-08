@@ -8,7 +8,9 @@ import profit.login.entity.User;
 import profit.login.entity.UserRole;
 import profit.login.question_board.Entity.Board;
 import profit.login.question_board.Entity.Reply;
+import profit.login.question_board.dto.BoardContentDto;
 import profit.login.question_board.dto.ReplyCreateRequest;
+import profit.login.question_board.repository.BoardDocumentRepository;
 import profit.login.question_board.repository.BoardRepository;
 import profit.login.question_board.repository.ReplyRepository;
 import profit.login.repository.UserRepository;
@@ -22,15 +24,20 @@ import java.util.Optional;
 @Slf4j
 public class ReplyService {
 
-
     private final ReplyRepository replyRepository;
     private final BoardRepository boardRepository;
     private final UserRepository userRepository;
+    private final BoardDocumentRepository boardDocumentRepository;
 
     public void writeReply(Long boardId, ReplyCreateRequest req, String email) {
         Board board = boardRepository.findById(boardId).get();
         User user = userRepository.findByEmail(email).get();
-        replyRepository.save(req.toEntity(board, user));
+        Reply reply = replyRepository.save(req.toEntity(board, user));
+
+        BoardContentDto bcd = new BoardContentDto();
+        bcd = boardDocumentRepository.save(bcd.init(req.getBody())); // MongoDB에 저장하고 반환된 bcd로 업데이트
+        reply.setDocumentId(bcd.getId());
+        replyRepository.save(reply);
     }
 
     public List<Reply> findAll(Long boardId) {
@@ -59,9 +66,11 @@ public class ReplyService {
             return null;
         }
 
+        Reply reply = optReply.get();
         Board board = optReply.get().getBoard();
 
         replyRepository.delete(optReply.get());
+        boardDocumentRepository.deleteById(reply.getDocumentId());
         return board.getId();
     }
 
@@ -73,6 +82,7 @@ public class ReplyService {
         }
 
         Reply reply = optReply.get();
+
         if (!reply.getBoard().getUser().getEmail().equals(email)) {
             throw new IllegalArgumentException("작성자만 답변을 채택할 수 있습니다.");
         }

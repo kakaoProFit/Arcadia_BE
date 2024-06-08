@@ -14,7 +14,6 @@ import profit.login.question_board.service.LikeService;
 
 @RestController
 @Controller
-@RestController
 @RequestMapping("/likes")
 @RequiredArgsConstructor
 public class LikeController {

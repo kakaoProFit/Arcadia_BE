@@ -19,7 +19,6 @@ import java.io.IOException;
 
 @RestController
 @Controller
-@RestController
 @RequestMapping("/comments")
 @RequiredArgsConstructor
 public class CommentController {

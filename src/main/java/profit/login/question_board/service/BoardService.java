@@ -91,7 +91,6 @@ public class BoardService {
         BoardContentDto bcd = new BoardContentDto();
         bcd = boardDocumentRepository.save(bcd.init(req.getBody())); // MongoDB에 저장하고 반환된 bcd로 업데이트
 
-        System.out.println(bcd.getId().toString() + "OBJECTED"); //TEST
         // 저장된 BoardContentDto의 ObjectId를 가져와 BoardCreateRequest의 documentId에 설정
         savedBoard.setDocumentId(bcd.getId());
         boardRepository.save(savedBoard);

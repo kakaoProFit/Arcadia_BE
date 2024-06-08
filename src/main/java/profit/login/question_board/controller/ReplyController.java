@@ -21,7 +21,6 @@ import java.io.IOException;
 
 @RestController
 @Controller
-@RestController
 @RequestMapping("/reply")
 @RequiredArgsConstructor
 @Slf4j
