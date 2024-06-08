@@ -111,7 +111,7 @@ public class BoardController {
                     .build());
         }
 
-        Long savedBoardId = boardService.writeBoard(req, bcd, boardCategory, authentication.getName(), authentication);
+        Long savedBoardId = boardService.writeBoard(req, boardCategory, authentication.getName(), authentication);
         //log.info("auth.getname(): "+ authentication.getName());
         String email = authentication.getName();
         User user = userRepository.findByEmail(email).get();
@@ -160,7 +160,7 @@ public class BoardController {
 
     @PostMapping("/{category}/{boardId}/edit")
     public ResponseEntity<BoardWriteResponse> boardEdit(@PathVariable String category, @PathVariable Long boardId,
-                                                        @RequestBody BoardDto boardDto, BoardContentDto boardContentDto
+                                                        @RequestBody BoardDto boardDto
                                                     ) throws IOException {
 
 

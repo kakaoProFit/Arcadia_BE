@@ -2,10 +2,8 @@ package profit.login.question_board.Entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.bson.types.ObjectId;
 import profit.login.entity.User;
 import profit.login.question_board.dto.BoardDto;
 
@@ -23,8 +21,9 @@ public class Board extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter
     @Column
-    private String documentId;
+    private ObjectId documentId;
 
     private String title;   // 제목
     private String body;    // 본문

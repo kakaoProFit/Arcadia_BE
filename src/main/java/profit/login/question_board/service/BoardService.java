@@ -57,10 +57,9 @@ public class BoardService {
 
     public BoardDto getBoard(Long boardId, String category) {
         Optional<Board> optBoard = boardRepository.findById(boardId);
-        Optional<BoardContentDto> optBoard2 = boardDocumentRepository.findById(boardId);
 
         // id에 해당하는 게시글이 없거나 카테고리가 일치하지 않으면 null return
-        if (optBoard.isEmpty() || optBoard2.isEmpty() || !optBoard.get().getCategory().toString().equalsIgnoreCase(category)) {
+        if (optBoard.isEmpty()) {
             return null;
         }
 
@@ -69,48 +68,63 @@ public class BoardService {
         boardRepository.save(board); // 변경 사항 저장
 
         BoardDto boardDto = BoardDto.of(optBoard.get());
-        BoardContentDto boardContentDto = optBoard2.get();
-        boardDto.setBody(boardContentDto.getContent());
+
+        Optional<BoardContentDto> savedBoardDocument = boardDocumentRepository.findById(board.getDocumentId());
+
+        if (savedBoardDocument.isEmpty()) {
+            return null;
+        }
+
+        BoardContentDto boardContentDto = savedBoardDocument.get();
+        boardDto.setBody(boardContentDto.getBody());
 
         return boardDto;
     }
 
     @Transactional
-    public Long writeBoard(BoardCreateRequest req, BoardContentDto bcd, BoardCategory category, String email, Authentication authentication) throws IOException {
+    public Long writeBoard(BoardCreateRequest req, BoardCategory category, String email, Authentication authentication) throws IOException {
 
         User loginUser = userRepository.findByEmail(email).get();
-
         Board savedBoard = boardRepository.save(req.toEntity(category, loginUser));
-        BoardContentDto savedBoardDocument = boardDocumentRepository.save(bcd.init(savedBoard.getId(),savedBoard.getBody()));
 
-//        UploadImage uploadImage = uploadImageService.saveImage(req.getUploadImage(), savedBoard);
-//        if (uploadImage != null) {
-//            savedBoard.setUploadImage(uploadImage);
-//        }
+        // BoardContentDto 엔티티 생성 및 초기화
+        BoardContentDto bcd = new BoardContentDto();
+        bcd = boardDocumentRepository.save(bcd.init(req.getBody())); // MongoDB에 저장하고 반환된 bcd로 업데이트
 
+        System.out.println(bcd.getId().toString() + "OBJECTED"); //TEST
+        // 저장된 BoardContentDto의 ObjectId를 가져와 BoardCreateRequest의 documentId에 설정
+        savedBoard.setDocumentId(bcd.getId());
+        boardRepository.save(savedBoard);
+
+//         아래 부분에 글작성시 추가 포인트 지급하는 코드 구현 필요
         return savedBoard.getId();
     }
 
     @Transactional
     public Long editBoard(Long boardId, String category, BoardDto dto) throws IOException {
-        Optional<Board> optBoard = boardRepository.findById(boardId);
-        Optional<BoardContentDto> optBoard2 = boardDocumentRepository.findById(boardId);
 
-        System.out.println(boardId);
+        Optional<Board> savedBoard = boardRepository.findById(boardId);
 
-        // id에 해당하는 게시글이 없거나 카테고리가 일치하지 않으면 null return
-        if (optBoard.isEmpty() || optBoard2.isEmpty() || !optBoard.get().getCategory().toString().equalsIgnoreCase(category)) {
+        if (savedBoard.isEmpty()) {
             return null;
         }
 
-        Board board = optBoard.get();
-        BoardContentDto boardContentDto = optBoard2.get();
+        Board board = savedBoard.get();
 
-//        System.out.println(boardContentDto.getContent());
-//        System.out.println(dto.getBody());
+        Optional<BoardContentDto> savedBoardDocument = boardDocumentRepository.findById(board.getDocumentId());
+
+        if (savedBoardDocument.isEmpty()) {
+            return null;
+        }
+
+
+        BoardContentDto boardContentDto = savedBoardDocument.get();
+
         board.update(dto);
         boardContentDto.update(dto.getBody());
-//        System.out.println(boardContentDto.getContent());
+
+        boardRepository.save(board);
+        boardDocumentRepository.save(boardContentDto);
 
         return board.getId();
     }
@@ -124,6 +138,9 @@ public class BoardService {
         if (optBoard.isEmpty() || !optBoard.get().getCategory().toString().equalsIgnoreCase(category)) {
             return null;
         }
+
+        Board board = optBoard.get();
+
         //질문게시글은 어차피 삭제 안되고, 자유 게시글을 삭제할 경우 해당 게시글에 좋아를요를 표시한 유저의 좋아요 표시글 리스트를 갱신한다.
 //        User boardUser = optBoard.get().getUser();
 //        boardUser.likeChange(boardUser.getReceivedLikeCnt() - optBoard.get().getLikeCnt());
@@ -131,7 +148,7 @@ public class BoardService {
 //            uploadImageService.deleteImage(optBoard.get().getUploadImage());
 //        }
         boardRepository.deleteById(boardId);
-        boardDocumentRepository.deleteById(boardId);
+        boardDocumentRepository.deleteById(board.getDocumentId());
         return boardId;
     }
 

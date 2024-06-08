@@ -12,6 +12,7 @@ import profit.login.question_board.response.LikeResponse;
 import profit.login.question_board.service.BoardService;
 import profit.login.question_board.service.LikeService;
 
+@RestController
 @Controller
 @RestController
 @RequestMapping("/likes")
