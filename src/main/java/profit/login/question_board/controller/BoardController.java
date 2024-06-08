@@ -104,6 +104,12 @@ public class BoardController {
                     .nextUrl("/")
                     .build());
         }
+        if (boardCategory.equals(BoardCategory.QUESTION) && req.getPoint() == null ){
+            return ResponseEntity.badRequest().body(BoardWriteResponse.builder()
+                    .message("채택 포인트를 설정해 주십시오.")
+                    .nextUrl("/")
+                    .build());
+        }
 
         Long savedBoardId = boardService.writeBoard(req, bcd, boardCategory, authentication.getName(), authentication);
         //log.info("auth.getname(): "+ authentication.getName());

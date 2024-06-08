@@ -15,7 +15,7 @@ public class BoardCreateRequest {
 
     private String title;
     private String body;
-    private Integer point = 0;
+    private Integer point;
 
 
     public Board toEntity(BoardCategory category, User user) {

@@ -87,7 +87,7 @@ public class BoardService {
 //        if (uploadImage != null) {
 //            savedBoard.setUploadImage(uploadImage);
 //        }
-//         아래 부분에 글작성시 추가 포인트 지급하는 코드 구현 필요
+
         return savedBoard.getId();
     }
 

@@ -205,9 +205,9 @@ spring:
 #   url: jdbc:mariadb://35.216.99.76:3306/test1
 #   username: test
 #   password: test
-     url: jdbc:mariadb://mariadb-master-0:3306:arcadia
-     username: profit
-     password: vmfhvlt!
+    url: jdbc:mariadb://mariadb-master-0:3306:arcadia
+    username: profit
+    password: vmfhvlt!
   driver-class-name: org.mariadb.jdbc.Driver
   security:
     oauth2:
@@ -262,18 +262,18 @@ spring:
 #      host: localhost
 #      port: 6379
 #      password: 1234
-       host: redis-master
-       port: 6379
-       password: LJ8lKmQRH1
+#       host: redis-master
+#       port: 6379
+#       password: LJ8lKmQRH1
 
 #      host: 210.109.55.154
 #      port: 6379
 #      password: vmfhvlt!
       #host: localhost
       #ppassword: 1234
-#      host: redis-master
-#      port: 6379
-#      password: vmfhvlt!
+      host: redis-master
+      port: 6379
+      password: vmfhvlt!
       #host: redis
       #port: 6379
       #password: 1234
