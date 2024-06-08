@@ -1,5 +1,6 @@
 package profit.login.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +15,7 @@ import profit.login.repository.UserRepository;
 import java.util.Optional;
 
 @Service
+@Slf4j
 public class AuthenticationService {
 
     private final JwtService jwtService;
@@ -51,6 +53,9 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(input.getPassword()));
         user.setBirth(input.getBirth());
         user.setPhone(input.getPhone());
+        user.setPoints(3000);
+        log.info("point: " + user.getPoints());
+
 
         return userRepository.save(user);
     }

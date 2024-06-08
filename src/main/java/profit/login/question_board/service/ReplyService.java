@@ -77,10 +77,14 @@ public class ReplyService {
             throw new IllegalArgumentException("작성자만 답변을 채택할 수 있습니다.");
         }
 
+        Integer customPoints = reply.getBoard().getPoint();
+
+
+
         reply.select();
         User user = reply.getUser();
         log.info("user: " + user);
-        user.addPoints(200);
+        user.addPoints(customPoints);
         log.info("user points: " + user.getPoints());
         userRepository.save(user);
     }

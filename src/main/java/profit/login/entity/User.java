@@ -3,8 +3,7 @@ package profit.login.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,10 +16,14 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Getter
 @Setter
 @Table(name = "users")
 @Entity
+
 public class User implements UserDetails {
 
     @Id
@@ -44,8 +47,10 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String birth;
 
+
+    @Builder.Default
     @Column(nullable = false)
-    private Integer points = 0;
+    private Integer points = 3000;
 
     @Column
     private String description;
@@ -72,6 +77,7 @@ public class User implements UserDetails {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private Date updatedAt;
+
 
 
     private Integer receivedLikeCnt; // 유저가 받은 좋아요 개수(본인제외)

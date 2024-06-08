@@ -2,15 +2,15 @@
 package profit.login.question_board.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import profit.login.entity.User;
 import profit.login.entity.UserRole;
 import profit.login.question_board.dto.ReplyCreateRequest;
-import profit.login.question_board.response.CommentWriteResponse;
+import profit.login.question_board.dto.PointRequest;
 import profit.login.question_board.response.ReplyWriteResponse;
 import profit.login.question_board.service.BoardService;
 import profit.login.question_board.service.CommentService;
@@ -21,8 +21,10 @@ import java.io.IOException;
 
 @RestController
 @Controller
+@RestController
 @RequestMapping("/reply")
 @RequiredArgsConstructor
+@Slf4j
 public class ReplyController {
 
     private final CommentService commentService;
@@ -122,6 +124,10 @@ public class ReplyController {
 
     @PostMapping("/select/{replyId}")
     public ResponseEntity<ReplyWriteResponse> selectReply(@PathVariable Long replyId, Authentication authentication) {
+
+
+
+
         replyService.selectReply(replyId, authentication.getName());
 
         ReplyWriteResponse response = ReplyWriteResponse.builder()
