@@ -17,7 +17,6 @@ import profit.login.repository.UserRepository;
 
 import java.io.IOException;
 
-@RestController
 @Controller
 @RestController
 @RequestMapping("/comments")
