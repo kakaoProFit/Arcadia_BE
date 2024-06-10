@@ -22,12 +22,12 @@ import profit.login.question_board.Entity.BoardCategory;
 public class BoardContentDto {
 
     @Id
-    private ObjectId id;
+    private String id;
 
     private String body;
 
     public BoardContentDto init(String body) {
-        this.id = new ObjectId(); // MongoDB에서 자동 생성되는 ObjectId 설정
+        this.id = new ObjectId().toString(); // MongoDB에서 자동 생성되는 ObjectId 설정
         this.body = body;
         return this;
     }

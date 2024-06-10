@@ -55,6 +55,7 @@ public class User implements UserDetails {
     @Column
     private String description;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     private UserRole userRole = UserRole.NORMAL; // 기본값 설정
 

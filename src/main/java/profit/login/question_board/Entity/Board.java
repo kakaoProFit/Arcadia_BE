@@ -23,13 +23,12 @@ public class Board extends BaseEntity {
 
     @Setter
     @Column
-    private ObjectId documentId;
+    private String documentId;
 
     private String title;   // 제목
     private String body;    // 본문
 
     @Builder.Default
-    @Column(nullable = false)
     private int viewCount = 0; // 조회수 필드 추가
 
     @Enumerated(EnumType.STRING)
@@ -58,7 +57,7 @@ public class Board extends BaseEntity {
 
 
     @Builder.Default
-    @Column(nullable = false)
+    @Column
     private Integer point = 0; //채택 포인트, 카테고리 구분없이 board 엔티티는 통일되다보니 기본값은 0으로 설정
 
     public void update(BoardDto dto) {

@@ -9,6 +9,6 @@ import profit.login.question_board.dto.BoardContentDto;
 import java.util.Optional;
 
 @Repository
-public interface BoardDocumentRepository extends MongoRepository<BoardContentDto, ObjectId> {
+public interface BoardDocumentRepository extends MongoRepository<BoardContentDto, String> {
 //    Optional<BoardContentDto> findByDocumentId(ObjectId documentId);
 }
