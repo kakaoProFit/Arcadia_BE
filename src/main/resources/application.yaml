@@ -207,7 +207,7 @@ spring:
 #   password: test
 
 
-    url: jdbc:mariadb://mariadb-master:3306/arcadia
+    url: jdbc:mariadb://mariadb-galera:3306/arcadia
     username: profit
     password: vmfhvlt!
   driver-class-name: org.mariadb.jdbc.Driver
@@ -266,7 +266,7 @@ spring:
 #      password: 1234
        host: redis-master
        port: 6379
-       password: LJ8lKmQRH1
+       password: oIrVzIbmTX
 
 #      host: 210.109.55.154
 #      port: 6379
@@ -306,7 +306,7 @@ logging:
     profit.login.jwt: DEBUG
 
 server:
-  port: 8080
+  port: 8000
 
 management:
   endpoints:
