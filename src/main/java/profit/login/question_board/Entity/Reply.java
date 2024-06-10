@@ -25,7 +25,7 @@ public class Reply extends BaseEntity {
 
     @Setter
     @Column
-    private ObjectId documentId;
+    private String documentId;
 
     private String body;
 
