@@ -41,7 +41,10 @@ public class Reply extends BaseEntity {
     private User user;      // 작성자
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonBackReference
     private Board board;    // 답글이 달린 게시판
+
+    private String nickname;
 
 
     public void update(String newBody) {

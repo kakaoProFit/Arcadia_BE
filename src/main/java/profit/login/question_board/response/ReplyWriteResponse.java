@@ -12,4 +12,5 @@ public class ReplyWriteResponse {
     private String nextUrl;
     private String isExpert;
     private UserRole userRole;
+    private String nickName;
 }

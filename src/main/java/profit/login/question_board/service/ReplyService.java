@@ -33,7 +33,7 @@ public class ReplyService {
     public void writeReply(Long boardId, ReplyCreateRequest req, String email) {
         Board board = boardRepository.findById(boardId).get();
         User user = userRepository.findByEmail(email).get();
-        Reply reply = replyRepository.save(req.toEntity(board, user));
+        Reply reply = replyRepository.save(req.toEntity(board, user, user.getNickname()));
 
         BoardContentDto bcd = new BoardContentDto();
         bcd = boardDocumentRepository.save(bcd.init(req.getBody())); // MongoDB에 저장하고 반환된 bcd로 업데이트

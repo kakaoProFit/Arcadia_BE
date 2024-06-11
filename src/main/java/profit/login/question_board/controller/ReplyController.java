@@ -51,6 +51,8 @@ public class ReplyController {
         User user = userRepository.findByEmail(email).get();
         UserRole userRole = user.getUserRole();
 
+        String nickName = user.getNickname();
+
         String isExpert;
 
         if (userRole.equals((UserRole.EXPERT))){
@@ -69,6 +71,7 @@ public class ReplyController {
                 .nextUrl(nextUrl)
                 .isExpert(isExpert)
                 .userRole(userRole)
+                .nickName(nickName)
                 .build();
 
     // // ResponseEntity로 응답 반환
@@ -137,10 +140,10 @@ public class ReplyController {
 
         String message;
         if (reply == null){
-            message =  "댓글이 없습니다.";
+            message =  "답글이 없습니다.";
         }
         else{
-            message = "댓글을 불러왔습니다.";
+            message = "답글을 불러왔습니다.";
         }
 
         ReplyReadResponse response = ReplyReadResponse.builder()
