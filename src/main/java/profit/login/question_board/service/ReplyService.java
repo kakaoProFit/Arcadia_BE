@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import profit.login.entity.User;
 import profit.login.entity.UserRole;
 import profit.login.question_board.Entity.Board;
+import profit.login.question_board.Entity.Comment;
 import profit.login.question_board.Entity.Reply;
 import profit.login.question_board.dto.BoardContentDto;
 import profit.login.question_board.dto.ReplyCreateRequest;
@@ -38,6 +39,8 @@ public class ReplyService {
         bcd = boardDocumentRepository.save(bcd.init(req.getBody())); // MongoDB에 저장하고 반환된 bcd로 업데이트
         reply.setDocumentId(bcd.getId());
         replyRepository.save(reply);
+
+
     }
 
     public List<Reply> findAll(Long boardId) {
@@ -72,6 +75,10 @@ public class ReplyService {
         replyRepository.delete(optReply.get());
         boardDocumentRepository.deleteById(reply.getDocumentId());
         return board.getId();
+    }
+
+    public List<Reply> getReplyByBoardId(Long boardId) {
+        return replyRepository.findAllByBoardId(boardId);
     }
 
     @Transactional

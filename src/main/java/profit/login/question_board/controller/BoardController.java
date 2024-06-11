@@ -118,6 +118,9 @@ public class BoardController {
 
         UserRole userRole = user.getUserRole();
 
+        user.subtractPoints(req.getPoint());
+        userRepository.save(user);
+
         String isExpert;
 
         if (userRole.equals((UserRole.EXPERT))){

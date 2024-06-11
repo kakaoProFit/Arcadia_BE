@@ -13,6 +13,8 @@ import profit.login.question_board.Entity.Reply;
 import profit.login.question_board.dto.ReplyCreateRequest;
 import profit.login.question_board.dto.PointRequest;
 import profit.login.question_board.repository.ReplyRepository;
+import profit.login.question_board.response.CommentReadResponse;
+import profit.login.question_board.response.ReplyReadResponse;
 import profit.login.question_board.response.ReplySelectResponse;
 import profit.login.question_board.response.ReplyWriteResponse;
 import profit.login.question_board.service.BoardService;
@@ -21,6 +23,7 @@ import profit.login.question_board.service.ReplyService;
 import profit.login.repository.UserRepository;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @Controller
@@ -123,6 +126,34 @@ public class ReplyController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping ("/{boardId}/read")
+    public ResponseEntity<ReplyReadResponse> getReplyByBoardId(@PathVariable Long boardId, Authentication authentication){
+        List<Reply> reply = replyService.getReplyByBoardId(boardId);
+
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email).get();
+
+        String nickName = user.getNickname();
+
+        String message;
+        if (reply == null){
+            message =  "댓글이 없습니다.";
+        }
+        else{
+            message = "댓글을 불러왔습니다.";
+        }
+
+        ReplyReadResponse response = ReplyReadResponse.builder()
+                .message(message)
+                .nickName(nickName)
+                .reply(reply)
+                .build();
+
+        return ResponseEntity.ok(response);
+
+
+    }
+
     // 답변채택
 
     @PostMapping("/select/{replyId}")
@@ -143,8 +174,10 @@ public class ReplyController {
             return ResponseEntity.ok(response);
         }
         else{
+            boolean selected = false;
             ReplySelectResponse response = ReplySelectResponse.builder()
                     .message("이미 채택되었습니다.")
+                    .selected(selected)
                     .nextUrl("/boards/" + boardService.getCategory(replyId) + "/" + replyId)
                     .build();
 
