@@ -301,7 +301,7 @@ logging:
     profit.login.jwt: DEBUG
 
 server:
-  port: 8000
+  port: 8080
 
 management:
   endpoints:
