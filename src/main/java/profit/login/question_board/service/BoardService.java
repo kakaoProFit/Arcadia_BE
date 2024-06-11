@@ -157,6 +157,8 @@ public class BoardService {
     }
 
 
+
+
     //Admin 있을때 아래사용
     public BoardCntDto getBoardCnt(){
         return BoardCntDto.builder()

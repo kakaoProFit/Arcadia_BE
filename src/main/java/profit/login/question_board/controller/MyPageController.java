@@ -7,13 +7,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import profit.login.question_board.Entity.Board;
+import profit.login.question_board.Entity.BoardCategory;
 import profit.login.question_board.Entity.Like;
 import profit.login.question_board.dto.BoardDto;
+import profit.login.question_board.repository.BoardRepository;
 import profit.login.question_board.response.LikedBoardListResponse;
+import profit.login.question_board.response.UserPostsResponse;
 import profit.login.question_board.service.BoardService;
 import profit.login.question_board.repository.LikeRepository;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -23,6 +28,7 @@ import java.util.stream.Collectors;
 public class MyPageController {
 
     private final LikeRepository likeRepository;
+    private final BoardRepository boardRepository;
     private final BoardService boardService;
 
     @GetMapping("/liked-boards/{userId}")
@@ -44,8 +50,36 @@ public class MyPageController {
         return ResponseEntity.ok(response);
     }
 
-//    @GetMapping("/writed-boards/{userId}")
-//    public ResponseEntity<?> getWritedBoards(@PathVariable Long userId){
-//        List
-//    }
+    @GetMapping("/user-posts/{userId}/{category}")
+    public ResponseEntity<?> getUserPosts(@PathVariable Long userId, @PathVariable String category) {
+        BoardCategory boardCategory;
+
+        try {
+            boardCategory = BoardCategory.valueOf(category.toUpperCase());  // 문자열을 enum으로 변환
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body("Invalid category");
+        }
+
+        List<Board> userBoards = boardRepository.findAllByUserIdAndCategory(userId, boardCategory);
+        List<BoardDto> boardDtos = userBoards.stream()
+                .map(BoardDto::of)
+                .collect(Collectors.toList());
+
+        String message = "게시글 리스트입니다.";
+        UserPostsResponse response = UserPostsResponse.builder()
+                .message(message)
+                .boards(boardDtos)
+                .build();
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
+
+
+
+
+
+
 }
