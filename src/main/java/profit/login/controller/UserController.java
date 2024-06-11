@@ -3,11 +3,12 @@ package profit.login.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import profit.login.dto.ChangeUserDto;
+import profit.login.dto.UpdatePasswordDto;
 import profit.login.entity.User;
+import profit.login.repository.UserRepository;
 import profit.login.service.UserService;
 
 
@@ -16,10 +17,12 @@ import profit.login.service.UserService;
 public class UserController {
 
     private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     // 유저 정보 조회 API
@@ -35,6 +38,17 @@ public class UserController {
 
         User updatedUser = userService.updateUser(userId, changeUserDto);
         return ResponseEntity.ok(updatedUser);
+    }
+
+    @PostMapping("/change-password")
+    public ResponseEntity<?> changePassword(@RequestBody UpdatePasswordDto updatePasswordDto, Authentication authentication) {
+
+        String email = authentication.getName();
+        User user = userRepository.findByEmail(email).get();
+
+
+        userService.changePassword(user, updatePasswordDto.getNewPassword());
+        return ResponseEntity.ok("Password updated successfully");
     }
 
 }
