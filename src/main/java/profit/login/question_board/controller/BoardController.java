@@ -101,10 +101,13 @@ public class BoardController {
         if (boardCategory == null) {
             return ResponseEntity.badRequest().body(BoardWriteResponse.builder()
                     .message("카테고리가 존재하지 않습니다.")
+
                     .nextUrl("/")
                     .build());
         }
         if (boardCategory.equals(BoardCategory.QUESTION) && req.getPoint() == null ){
+
+
             return ResponseEntity.badRequest().body(BoardWriteResponse.builder()
                     .message("채택 포인트를 설정해 주십시오.")
                     .nextUrl("/")
@@ -135,7 +138,7 @@ public class BoardController {
         if (boardCategory.equals(BoardCategory.QUESTION)) {
 
             message = "질문글은 삭제할 수 없습니다.";
-            nextUrl = "/";
+            nextUrl = "/boards/" + category + "/" + savedBoardId;
         } else {
             message = savedBoardId + "번 글이 등록되었습니다.";
             nextUrl = "/boards/" + category + "/" + savedBoardId;
