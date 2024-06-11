@@ -262,7 +262,7 @@ spring:
       #      password: 1234
       host: redis
       port: 6379
-      password: vmfhvlt
+      password: vmfhvlt!
 
     #      host: 210.109.55.154
     #      port: 6379
