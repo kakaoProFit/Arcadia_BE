@@ -11,5 +11,6 @@ public class BoardWriteResponse {
     private String nextUrl;
     private String isExpert;
     private UserRole userRole;
+    private Integer points;
 }
 

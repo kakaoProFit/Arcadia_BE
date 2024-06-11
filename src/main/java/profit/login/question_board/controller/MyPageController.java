@@ -61,14 +61,14 @@ public class MyPageController {
         }
 
         List<Board> userBoards = boardRepository.findAllByUserIdAndCategory(userId, boardCategory);
-        List<BoardDto> boardDtos = userBoards.stream()
-                .map(BoardDto::of)
-                .collect(Collectors.toList());
+//        List<BoardDto> boardDtos = userBoards.stream()
+//                .map(BoardDto::of)
+//                .collect(Collectors.toList());
 
         String message = "게시글 리스트입니다.";
         UserPostsResponse response = UserPostsResponse.builder()
                 .message(message)
-                .boards(boardDtos)
+                .boards(userBoards)
                 .build();
 
         return ResponseEntity.ok(response);

@@ -120,6 +120,7 @@ public class BoardController {
 
         user.subtractPoints(req.getPoint());
         userRepository.save(user);
+        Integer remainedpoints = user.getPoints();
 
         String isExpert;
 
@@ -145,6 +146,7 @@ public class BoardController {
                 .nextUrl(nextUrl)
                 .isExpert(isExpert)
                 .userRole(userRole)
+                .points(remainedpoints)
                 .build());
     }
 
