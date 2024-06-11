@@ -53,6 +53,7 @@ public class AuthenticationService {
         user.setPassword(passwordEncoder.encode(input.getPassword()));
         user.setBirth(input.getBirth());
         user.setPhone(input.getPhone());
+        user.setNickname(input.getNickname());
         user.setPoints(3000);
         log.info("point: " + user.getPoints());
 
@@ -73,9 +74,7 @@ public class AuthenticationService {
     }
 
 
-    //향후 추가 구현해야함.
-//    private final LikeRepository likeRepository;
-//    private final CommentRepository commentRepository;
+
     @Transactional
     public void deleteUser(String email, String password) {
         Optional<User> optionalUser = userRepository.findByEmail(email);

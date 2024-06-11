@@ -31,7 +31,14 @@ public class Comment extends BaseEntity {
     @JsonBackReference
     private Board board;    // 댓글이 달린 게시판
 
+    private String nickname;
+
+
     public void update(String newBody) {
         this.body = newBody;
+    }
+
+    public Long getCommentUserId() {
+        return user.getId();
     }
 }

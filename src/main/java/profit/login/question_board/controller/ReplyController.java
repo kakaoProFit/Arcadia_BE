@@ -9,8 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import profit.login.entity.User;
 import profit.login.entity.UserRole;
+import profit.login.question_board.Entity.Reply;
 import profit.login.question_board.dto.ReplyCreateRequest;
 import profit.login.question_board.dto.PointRequest;
+import profit.login.question_board.repository.ReplyRepository;
+import profit.login.question_board.response.ReplySelectResponse;
 import profit.login.question_board.response.ReplyWriteResponse;
 import profit.login.question_board.service.BoardService;
 import profit.login.question_board.service.CommentService;
@@ -30,6 +33,7 @@ public class ReplyController {
     private final BoardService boardService;
     private final ReplyService replyService;
     private final UserRepository userRepository;
+    private final ReplyRepository replyRepository;
 
 
     // 답변 작성
@@ -122,19 +126,35 @@ public class ReplyController {
     // 답변채택
 
     @PostMapping("/select/{replyId}")
-    public ResponseEntity<ReplyWriteResponse> selectReply(@PathVariable Long replyId, Authentication authentication) {
+    public ResponseEntity<ReplySelectResponse> selectReply(@PathVariable Long replyId, Authentication authentication) {
+
+        Reply reply = replyRepository.findById(replyId).get();
+
+        if(reply.isSelected() == false){
+            replyService.selectReply(replyId, authentication.getName());
+            boolean selected = true;
+
+            ReplySelectResponse response = ReplySelectResponse.builder()
+                    .message("답변이 채택되었습니다.")
+                    .nextUrl("/boards/" + boardService.getCategory(replyId) + "/" + replyId)
+                    .selected(selected)
+                    .build();
+
+            return ResponseEntity.ok(response);
+        }
+        else{
+            ReplySelectResponse response = ReplySelectResponse.builder()
+                    .message("이미 채택되었습니다.")
+                    .nextUrl("/boards/" + boardService.getCategory(replyId) + "/" + replyId)
+                    .build();
+
+            return ResponseEntity.ok(response);
+        }
 
 
 
 
-        replyService.selectReply(replyId, authentication.getName());
 
-        ReplyWriteResponse response = ReplyWriteResponse.builder()
-                .message("답변이 채택되었습니다.")
-                .nextUrl("/boards/" + boardService.getCategory(replyId) + "/" + replyId)
-                .build();
-
-        return ResponseEntity.ok(response);
     }
 
 

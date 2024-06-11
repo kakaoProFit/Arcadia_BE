@@ -29,7 +29,7 @@ public class CommentService {
         User user = userRepository.findByEmail(email).get();
         UserRole userRole = user.getUserRole();
         board.commentChange(board.getCommentCnt() + 1);
-        commentRepository.save(req.toEntity(board, user));
+        commentRepository.save(req.toEntity(board, user, user.getNickname()));
     }
 
     public List<Comment> findAll(Long boardId) {
@@ -63,5 +63,9 @@ public class CommentService {
 
         commentRepository.delete(optComment.get());
         return board.getId();
+    }
+
+    public List<Comment> getCommentsByBoardId(Long boardId) {
+        return commentRepository.findAllByBoardId(boardId);
     }
 }

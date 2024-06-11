@@ -13,9 +13,10 @@ public class CommentCreateRequest {
 
     private String body;
 
-    public Comment toEntity(Board board, User user) {
+    public Comment toEntity(Board board, User user, String nickname) {
         return Comment.builder()
                 .user(user)
+                .nickname(nickname)
                 .board(board)
                 .body(body)
                 .build();
