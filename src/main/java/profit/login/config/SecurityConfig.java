@@ -63,7 +63,7 @@ public class SecurityConfig {
                         .requestMatchers("/boards/list/**").permitAll()
                         .requestMatchers("/boards/read/**").permitAll()
                         .requestMatchers("/authentication").permitAll()
-//                         .requestMatchers("/**").permitAll() //토큰 발급해서 인증하고 API 테스트하기 번거로울때 사용, 절대 배포때 주석 풀지 말기
+                        .requestMatchers("/**").permitAll() //토큰 발급해서 인증하고 API 테스트하기 번거로울때 사용, 절대 배포때 주석 풀지 말기
                         .requestMatchers(HttpMethod.POST, "/profileimage/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/boards/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/comments/**").authenticated()

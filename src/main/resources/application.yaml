@@ -217,7 +217,7 @@ spring:
             client-secret: 4vVsarkBmq
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
-            redirect-uri: https://arcadiaprofit.shop
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
             scope:
               - name
               - email
@@ -232,7 +232,7 @@ spring:
               - profile_nickname
               - profile_image
               - account_email
-            redirect-uri: https://arcadiaprofit.shop
+            redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
             client-name: Kakao
         provider:
           naver:
@@ -260,9 +260,9 @@ spring:
       #      host: localhost
       #      port: 6379
       #      password: 1234
-#      host: redis-cluster
-#      port: 6379
-#      password: vmfhvlt!
+      host: redis
+      port: 6379
+      password: vmfhvlt!
 
 #          host: 210.109.55.154
 #          port: 6379
