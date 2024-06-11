@@ -85,27 +85,19 @@ public class User implements UserDetails {
     public void likeChange(Integer receivedLikeCnt) {
         this.receivedLikeCnt = receivedLikeCnt;
 
-//        //우리는 아래형식을 좋아요수 대신 포인트로 대체예정
-//        if (this.receivedLikeCnt >= 10 && this.userRole.equals(UserRole.SILVER)) {
-//            this.userRole = UserRole.GOLD;
-//        }
+
     }
 
 
+    @Column(nullable = false)
     private String nickname;    // 닉네임
+
     public void edit(String newPassword, String newNickname) {
         this.password = newPassword;
         this.nickname = newNickname;
     }
 
-    // admin 페이지 만들거면 아래 등급을 일반과 전문가로 이분화 하여서 진행해야함
-    //일단 예시로 만들어놓음.
-//    public void changeRole() {
-//        if (userRole.equals(UserRole.BRONZE)) userRole = UserRole.SILVER;
-//        else if (userRole.equals(UserRole.SILVER)) userRole = UserRole.GOLD;
-//        else if (userRole.equals(UserRole.GOLD)) userRole = UserRole.BLACKLIST;
-//        else if (userRole.equals(UserRole.BLACKLIST)) userRole = UserRole.BRONZE;
-//    }
+
     public void addPoints(int points) {
         this.points += points;
     }

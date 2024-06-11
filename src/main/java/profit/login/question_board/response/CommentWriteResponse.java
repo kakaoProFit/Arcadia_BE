@@ -12,4 +12,6 @@ public class CommentWriteResponse {
     private String nextUrl;
     private String isExpert;
     private UserRole userRole;
+    private Long userId;
+    private String nickName;
 }

@@ -13,9 +13,10 @@ public class ReplyCreateRequest {
 
     private String body;
 
-    public Reply toEntity(Board board, User user) {
+    public Reply toEntity(Board board, User user, String nickname) {
         return Reply.builder()
                 .user(user)
+                .nickname(nickname)
                 .board(board)
                 .likeCnt(0)
 //                .body(body)

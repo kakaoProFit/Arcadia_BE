@@ -18,6 +18,8 @@ public class RegisterUserDto {
 
     private Integer point;
 
+    private String nickname;
+
     // getters and setters here...
     String setEmail(String email){
         this.email = email;

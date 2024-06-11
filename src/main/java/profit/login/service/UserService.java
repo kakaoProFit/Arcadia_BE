@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import profit.login.dto.ChangeUserDto;
+import profit.login.dto.UpdatePasswordDto;
 import profit.login.entity.User;
 import profit.login.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,7 @@ public class UserService {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
     }
+
 
     public User getUserInfo(Long userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
@@ -69,6 +71,17 @@ public class UserService {
 
         // 변경된 유저 정보 저장
         return userRepository.save(user);
+    }
+
+    public void changePassword(User user, String newPassword) {
+        // 새로운 비밀번호를 암호화
+        String encodedPassword = passwordEncoder.encode(newPassword);
+
+        // 사용자의 비밀번호를 변경
+        user.setPassword(encodedPassword);
+
+        // 변경된 사용자 정보를 저장
+        userRepository.save(user);
     }
 
 
