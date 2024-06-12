@@ -200,9 +200,9 @@ spring:
       ddl-auto: update
     open-in-view: true
   datasource:
-#       url: jdbc:mariadb://35.216.99.76:3306/test1
-#       username: test
-#       password: test
+    #       url: jdbc:mariadb://35.216.99.76:3306/test1
+    #       username: test
+    #       password: test
 
     url: jdbc:mariadb://mariadb-galera:3306/arcadia
     username: profit
@@ -261,17 +261,17 @@ spring:
       #      port: 6379
       #      password: 1234
 
-#          host: 210.109.55.154
-#          port: 6379
-#          password: vmfhvlt!
-    #host: localhost
-    #ppassword: 1234
-    #      host: redis-master
-    #      port: 6379
-    #      password: vmfhvlt!
-      host: redis
+      #          host: 210.109.55.154
+      #          port: 6379
+      #          password: vmfhvlt!
+      #host: localhost
+      #ppassword: 1234
+      host: redis-master
       port: 6379
       password: vmfhvlt!
+      # host: redis
+      # port: 6379
+      # password: vmfhvlt!
     mongodb:
       #      host: localhost
       #      port: 27017
