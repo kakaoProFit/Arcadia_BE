@@ -280,7 +280,7 @@ spring:
       #      username: test
       #      password: 1111
       database: test
-      uri: mongodb+srv://test:1111@cluster0.hcj9xiu.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0
+      uri: mongodb://root:ZOwCmZlZ1O@mongodb:27017/test?authSource=admin
 
   mvc:
     pathmatch:
