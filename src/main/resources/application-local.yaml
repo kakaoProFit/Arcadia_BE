@@ -1,9 +1,20 @@
+## 로컬 환경에서 실행할 수 있도록 설정
+## 개인마다 로컬 설정은 다를 수 있기때문에 보편적인 설정으로 통일, 필요시 각자 수정
+## mysql 필요
+## mongodb 서버 실행
+## redis 서버 실행
+## oauth 미작동
+## smtp 임시 유저 데이터 작성중
+
 spring:
   datasource:
-    url: jdbc:mariadb://mariadb-galera:3306/arcadia
-    username: profit
-    password: vmfhvlt!
-    driver-class-name: org.mariadb.jdbc.Driver
+#    url: jdbc:mariadb://localhost:3306/
+#    SQL 쿼리문으로 ` create database arcadia_local; ` 실행
+    url: jdbc:mysql://localhost:3306/arcadia_local
+    username: root
+    password: 1234
+#    driver-class-name: org.mariadb.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     show-sql: true
@@ -12,23 +23,23 @@ spring:
         format_sql: true
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: update
+      ddl-auto: create
     open-in-view: true
 
   data:
     redis:
-      host: redis-master
+      host: localhost
       port: 6379
-      password: vmfhvlt!
+      password: 1234
     mongodb:
       database: test
-      uri: mongodb+srv://test:1111@cluster0.hcj9xiu.mongodb.net/test?retryWrites=true&w=majority&appName=Cluster0
+      uri: mongodb://localhost:27017/
 
   mail:
     host: smtp.gmail.com
     port: 587
-    username: gwanilgim632@gmail.com
-    password: awlhveeywrshjtwb
+    username: m2nuuu@gmail.com
+    password: rdqx azkf kkjk nosc
     properties:
       mail.smtp.auth: true
       mail.smtp.starttls.enable: true
@@ -38,18 +49,18 @@ spring:
       region:
         static: us-east-1
       credentials:
-        access-key: AKIAYULU4KVEB2PRPDJR
-        secret-key: Rxijmi9ZmndvYig6X57jW9DE7i2PG3FfuxsVqF/b
+        access-key: dummy
+        secret-key: dummy
       s3:
-        bucket: arcadia-image
+        bucket: local-bucket
 
   security:
     oauth2:
       client:
         registration:
           naver:
-            client-id: 3rVboUvxEZ7HwQuY30OB
-            client-secret: 4vVsarkBmq
+            client-id: dummy
+            client-secret: dummy
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
@@ -59,8 +70,8 @@ spring:
               - profile_image
             client-name: Naver
           kakao:
-            client-id: 0c1ede23c3f7062dad95583783c87699
-            client-secret: JfyJ3ZXursQ1SnQv8jUB4IWbyg7zNg2J
+            client-id: dummy
+            client-secret: dummy
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
             redirect-uri: "{baseUrl}/{action}/oauth2/code/{registrationId}"
